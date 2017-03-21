@@ -1,0 +1,49 @@
+\documentclass[11]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amssymb}
+\usepackage[parfill]{parskip}
+\usepackage[ngerman]{babel}
+\usepackage[fleqn]{amsmath}
+\usepackage{mathtools}
+\usepackage{graphicx}
+\graphicspath{ {images/} }
+\usepackage
+[
+        a4paper,% other options: a3paper, a5paper, etc
+        left=2cm,
+        right=2cm,
+        top=2cm,
+        bottom=3cm
+]
+{geometry}
+{\setlength{\mathindent}{0.5cm}
+\allowdisplaybreaks
+
+\begin{document}
+\title
+{
+L\"osungen von \"Ubungsblatt 9 \\
+Funktionale Programmierung (Prof. Dr. Margarita Esponda) \\
+\normalsize Tutorium: Zachrau, Alexande; Dienstag; 12:00 - 14:00
+}
+\author{Boyan Hristov und Luis Herrmann}
+\date{\today}
+\maketitle
+
+\section*{7a}
+
+\begin{align*}
+& S(KK)I \equiv \tag*{S Anwenden} \\
+& \equiv (\lambda xyz.xz(yz)(KK)I) \equiv \tag*{Vereinfachen} \\
+& \equiv (\lambda yz.(KK)z(yz))I \equiv \tag*{Vereinfachen} \\
+& \equiv \lambda z.(\lambda b.K)z(Iz) \equiv \tag*{Vereinfachen} \\
+& \equiv \lambda z.K(Iz) \equiv \tag*{K Anwenden} \\
+& \equiv \lambda z.(\lambda ab.a)(Iz) \equiv \tag*{Vereinfachen} \\
+& \equiv \lambda z. \lambda b.Iz \equiv \tag*{Vereinfachen} \\
+& \equiv \lambda zb.(Iz) \equiv \tag*{I Anwenden} \\
+& \equiv \lambda zb.((\lambda x.x)z) \equiv \tag*{Vereinfachen} \\
+& \equiv \lambda zb.z \equiv \tag*{K Anwenden} \\
+& \equiv K
+\end{align*}
+
+\end{document}

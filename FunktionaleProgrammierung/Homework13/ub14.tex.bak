@@ -1,0 +1,84 @@
+\documentclass[11, 12pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{amssymb}
+\usepackage[parfill]{parskip}
+\usepackage[ngerman]{babel}
+\usepackage[fleqn]{amsmath}
+\usepackage{mathtools}
+\usepackage{enumerate}
+\usepackage{graphicx}
+\usepackage{color}
+\usepackage
+[
+        a4paper,% other options: a3paper, a5paper, etc
+        left=2cm,
+        right=2cm,
+        top=2cm,
+        bottom=3cm
+]
+{geometry}
+{\setlength{\mathindent}{0.5cm}
+\allowdisplaybreaks
+
+%Definitions:
+\definecolor{bg}{RGB}{230,230,230}
+\newcommand{\haskell}[1]{\mintinline{haskell}{#1}}
+
+\begin{document}
+\title
+{
+Lösungen von Übungsblatt 9 \\
+Funktionale Programmierung (Prof. Dr. Margarita Esponda) \\
+\normalsize Tutorium: Zachrau, Alexander; Dienstag; 12:00 - 14:00
+}
+\author{Boyan Hristov und Luis Herrmann}
+\date{\today}
+\maketitle
+
+\begin{tabular}{|r|r|r|r|r|r|r|r}
+\hline 
+Aufgabe 1 & Aufgabe 2 & Aufgabe 3 & Aufgabe 4 & Aufgabe 5 & Aufgabe 6 & Aufgabe 7 \\ 
+\hline 
+/6 & /4 & /3 & /3 & /6 & /4 & /6\\ 
+\hline 
+\end{tabular}
+%
+
+div x y = div` y x
+
+div`:
+
+h = $\pi^3_1$ $\circ$ [$\pi^3_2$, sub $\circ$ [$\pi^3_3$, $\pi^3_2$]]
+g = Z
+
+\section*{Aufgabe 3}
+\begin{description}
+\item[A)]
+Motivation: Eine Lösung wäre, wie in der Vorlesung, einfach beide Werte mit einander zu multiplizieren, da mul eine primitiv rekursive Funktion ist. Wir haben And auch mit zwei Funktionen g und h definiert, wobei g konstante 0 zurückgibt, wenn das erste Argument eine Null ist, und sonst das zweite Argument.
+
+g = $C^1_0$ \\
+h = $\pi^2_2$ \\
+
+\item[B)]
+Motivation: Wenn zwei Zahlen gleich sind, dann solle beide Min und Max Funktion gleiche Werte zurückgeben. Wir geben bei Equal deswegen (min+1) - max. Wir nutzen dabei das Eigenschaft, dass 0-x=0 für jedes x definiert ist.
+
+equal = sub $\circ$ [S$\circ$[min $\circ$ [$\pi^2_1, \pi^2_2$]], max $\circ$ [$\pi^2_1, \pi^2_2$]] 
+
+\end{description}
+
+\section*{Aufgabe 4}
+\begin{description}
+\item[A)]
+f = add $\circ$ [$\pi^3_1$, div $\circ$ [mul $\circ$ [add $\circ$ [$\pi^3_1$, $\pi^3_3$], [$\pi^3_1$, $\pi^3_3$]], S $\circ$[$C^3_2$] ]]
+g = Z
+\item[B)]
+p = sub $\circ$ [pow $\circ$ [$C^1_2$, $\pi^1_1$], $C^1_1$]
+\item[C)]
+abst = add $\circ$ [sub $\circ$ [$\pi^2_1$, $\pi^2_2$], sub $\circ$ [$\pi^2_2$, $\pi^2_1$]]
+\item[D)]
+g = $C^1_1$ \\
+h = add $\circ$ [$\pi^2_1$ $\circ$ [$\pi^2_2$], $\pi^2_2$] 
+\end{description}
+
+\end{document}

@@ -1,0 +1,152 @@
+\documentclass[11]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amssymb}
+\usepackage[parfill]{parskip}
+\usepackage[ngerman]{babel}
+\usepackage[fleqn]{amsmath}
+\usepackage{mathtools}
+\usepackage{graphicx}
+\graphicspath{ {images/} }
+\usepackage
+[
+        a4paper,% other options: a3paper, a5paper, etc
+        left=2cm,
+        right=2cm,
+        top=2cm,
+        bottom=3cm
+]
+{geometry}
+{\setlength{\mathindent}{0.5cm}
+\allowdisplaybreaks
+
+\begin{document}
+\title
+{
+L\"osungen von \"Ubungsblatt 12 \\
+Funktionale Programmierung (Prof. Dr. Margarita Esponda) \\
+\normalsize Tutorium: Zachrau, Alexande; Dienstag; 12:00 - 14:00
+}
+\author{Boyan Hristov und Luis Herrmann}
+\date{\today}
+\maketitle
+
+\begin{tabular}{|r|r|r|r|r}
+\hline 
+Aufgabe 1 & Aufgabe 2 & Aufgabe 3 & Aufgabe 4 \\ 
+\hline 
+/6 & /4 & /6 & /8\\ 
+\hline 
+\end{tabular}
+%
+\section*{Aufgabe 2}
+Zu zeigen: $length \; (powset \; xs) \equiv 2^{length \; xs}$ \\ \\
+Beweis per strukturelle Induktion \\ \\
+%
+\textbf{IA: } \\
+\begin{equation*}
+\begin{aligned}
+& length \; (powset \; []) \\
+& \qquad || powset \; 1 \\
+& length \; [[]] \\
+& \qquad || \\
+& 1
+\end{aligned}
+\qquad \qquad \qquad
+\begin{aligned}
+& 2^{(length \; [])}\\
+& \qquad || length 1 \\
+& 2^0  \qquad \\
+& \qquad || \\
+& 1
+\end{aligned}
+\end{equation*}
+%
+\textbf{IV: } \\
+IV 1: $length \; (powset \; xs) \equiv 2^{length \; xs}$ \\
+IV 2: $length \; xs \equiv length \; [z|x <- xs]$ \\\\
+%
+\textbf{IS: } \\
+%
+\begin{align*}
+& length \; (powset \; x:xs) \\
+& \qquad || powset 1 \\
+& length \; (powset' ++ [x:ys|ys <- powset']) \\
+& \qquad || 2. Induktion \\
+& (length \; powset') + (length \; [x:ys|ys <- powset']) \\
+& \qquad || powset' \\
+& (length \; xs) + (length [x:ys|ys <- xs]) \\
+& \qquad || IV 2 \\
+& (length \; xs) + (length \; xs) \\
+& 2.(length \; xs) \\
+& \qquad || IV 1 \\
+& 2.2^{length \; xs} \\
+& \qquad || 2.2^{n} = 2^{n+1} \\
+& 2^{(length \; xs) + 1} \\
+& \qquad || length 2 \\
+& 2^{length \; (x:xs)}
+\end{align*}
+%
+Zu zeigen: $length \; (xs ++ ys) \equiv (length \; xs) + (length \; ys)$ \\
+Beweis per strukturellen Induktion \\
+\textbf{IA: } \\
+$length \; ([] ++ ys) \equiv length \; ys \equiv length \; ys + 0 \stackrel{length \; 1}{\equiv} legth []+ length \; ys$ \\
+\textbf{IV:} \\
+$length \; (xs ++ ys) \equiv (length \; xs) + (length \; ys)$ \\
+\textbf{IS: } $xs -> x:xs$ \\
+\begin{equation*}
+\begin{aligned}
+& length \; ((x:xs) ++ ys) \\
+& \qquad || (:) \; Operator \\
+& length \; ([x] ++ xs ++ ys) \\
+& \qquad || (:) \; Operator \\
+& length \; (x:(xs++ys)) \\
+& \qquad  || length 2 \\
+& 1 + length \; (xs ++ ys) \\
+& \qquad || IV \\
+& 1 + length \; xs + length \; ys \\
+& \qquad || length 2 \\
+& length \; (x:xs) + length \; ys
+\end{aligned}
+\end{equation*}
+
+\section*{Aufgabe 3}
+Zu zeigen: Leaves (Node lt rt) $\equiv$ SumLeaves (Node lt rt) \\
+Beweis per strukturellen Induktion: \\ \\
+\textbf{IA: } \\
+sum Leaves (Leaf x) $\stackrel{?}{\equiv}$ 
+	\text{(sumNodes lt) + 1}
+\begin{equation*}
+\begin{aligned}
+& \qquad || \text{sumLeaves 1} \\
+& 1
+\end{aligned}
+\qquad
+\begin{aligned}
+& \qquad ||\text{sumNodes 1} \\
+& 0 + 1 \\
+& \qquad || \\
+& 1
+\end{aligned}
+\end{equation*}
+\textbf{IV: } \\
+sumLeaves lt $\equiv$ (sumNodes lt) + 1 \\
+sumLeaves rt $\equiv$ (sumNodes rt) + 1 \\
+\textbf{IS: }
+\begin{align*}
+& \text{sumLeaves (Node lt rt)} \\
+& \qquad ||\text{sumLeaves 2} \\
+& \text{(sumLeaves lt) + (sumLeaves rt)} \\
+& \qquad || \text{IV. 1, IV. 2} \\
+& \text{(sumNodes lt) + 1 + (sumNodes rt) + 1} \\
+& \qquad || \text{sumNodes 2} \\
+& \text{sumNodes (Node lt rt) + 1}
+\end{align*}
+
+
+
+
+
+
+
+
+\end{document}

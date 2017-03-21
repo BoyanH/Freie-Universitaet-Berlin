@@ -1,0 +1,225 @@
+\documentclass[11, 12pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{amssymb}
+\usepackage[parfill]{parskip}
+\usepackage[ngerman]{babel}
+\usepackage[fleqn]{amsmath}
+\usepackage{mathtools}
+\usepackage{enumerate}
+\usepackage{graphicx}
+\usepackage{color}
+\usepackage{minted}
+\usepackage
+[
+        a4paper,% other options: a3paper, a5paper, etc
+        left=2cm,
+        right=2cm,
+        top=2cm,
+        bottom=3cm
+]
+{geometry}
+{\setlength{\mathindent}{0.5cm}
+\allowdisplaybreaks
+
+%Definitions:
+\definecolor{bg}{RGB}{230,230,230}
+\newcommand{\haskell}[1]{\mintinline{haskell}{#1}}
+
+\begin{document}
+\title
+{
+Lösungen von Übungsblatt 9 \\
+Funktionale Programmierung (Prof. Dr. Margarita Esponda) \\
+\normalsize Tutorium: Zachrau, Alexander; Dienstag; 12:00 - 14:00
+}
+\author{Boyan Hristov und Luis Herrmann}
+\date{\today}
+\maketitle
+
+\begin{tabular}{|r|r|r|r|r|r|r|r}
+\hline 
+Aufgabe 1 & Aufgabe 2 & Aufgabe 3 & Aufgabe 4 & Aufgabe 5 & Aufgabe 6 & Aufgabe 7 \\ 
+\hline 
+/6 & /4 & /3 & /3 & /6 & /4 & /6\\ 
+\hline 
+\end{tabular}
+%
+\section*{Aufgabe 1}
+Wir haben ganze Zahlen in der Vorlesung wieder effektiv als Paare natürlicher Zahlen $(a,b)\in\mathbb{N}^2$ definiert, ausgedrückt durch die zugehörige $\lambda$-Abstraktion $\lambda z.zab$. Die Tupel sind zu interpretieren als $z=-a+b=I(a,b)$. Die Normalform $N(z)$ einer ganzen Zahl definieren wir als:
+\begin{equation*}
+	N(z)=\begin{cases}
+	\lambda z.0n0,& z=-n,n\in\mathbb{N}\\
+	\lambda z.000,& z=0\\
+	\lambda z.00n,& z=n,n\in\mathbb{N}
+	\end{cases}
+\end{equation*}
+Seien $z_1=(-a_1+b_1)$ und $z_2=(-a_2+b_2)$ ganze Zahlen. Dann muss für die Subtraktion gelten:
+\begin{equation*}
+	z_1-z_2=(-a_1+b_1)-(-a_2+b_2)=(-(a_1+b_2)+(a_2+b_1))=I((a_1+b_2),(a_2+b_1))
+\end{equation*}
+Unter Verwendung der bereits definierten Addition für natürliche Zahlen $(+)\equiv \lambda xy. xSy$ mit $S\equiv λwyx.y(wyx))$ können also die ganzzahlige Subtraktion definieren:
+\begin{equation*}
+	\{Z-\}\equiv \lambda xy.\lambda z.z((xT)S(yF))((xF)S(yT))
+\end{equation*}
+Für die Multiplikation überlegt man sich analog:
+\begin{equation*}
+	z_1\cdot z_2 = (-a_1+b_1)(-a_2+b_2)=-(a_1b_2+a_2b_1)+(a_1a_2+b_1b_2)=I((a_1b_2+a_2b_1),(a_1a_2+b_1b_2))
+\end{equation*}
+Unter Verwendung der bereits definierten Multiplikation für natürliche Zahlen $M=\lambda xya.x(ya)$ kann man die ganzzahlige Multiplikation also definieren als:
+\begin{equation*}
+	\{MZ\}\equiv \lambda xy.\lambda z.z\underbrace{((M(xT)(yF))S(M(xF)(yT)))}_{\equiv a_1b_2+a_2b_1}\underbrace{((M(xT)(yT))S(M(xF)(yF)))}_{\equiv a_1a_2+b_1b_2}
+\end{equation*}
+
+Möchte man noch garantieren, dass die Funktionen Ausdrücke in Normalform zurückgeben, so können wir, unter der Annahme, dass wir eine Simplifierungsfunktion $\{ZS\}$ definiert haben, diese weiter umschreiben zu:
+\begin{align*}
+&	\{Z-\}\equiv \lambda xy.(ZS)(\lambda z.z((xT)S(yF))((xF)S(yT)))\\
+&	\{MZ\}\equiv \lambda xy.(ZS)(\lambda z.z((M(xT)(yF))S(M(xF)(yT)))((M(xT)(yT))S(M(xF)(yF))))
+\end{align*}
+
+\section*{Aufgabe 2}
+Die rekursive Simpflizierungsfunktion $\{ZS\}$ soll folgendes leisten:
+\begin{equation*}
+	\{ZS\}(a,b)=\begin{cases}
+	(a-1,b-1), & a\neq 0 \land b\neq 0\\
+	(a,0),& b=0\\
+	(0,b),& a=0\\
+	\end{cases}
+\end{equation*}
+Unter Verwendung der bereits vordefinierten isZero-Funktion $Z$, der Vorgänger-Funktion $P$, sowie der logischen $(\lor)$-Funktion können wir die nachfolgede $\lambda$-Abstraktion definieren:
+\begin{equation*}
+	\{ZS\}\equiv\lambda rz.(\lor)(Z(zT))(Z(zF))z(r(\lambda z.z(P(zT))(P(xF))))
+\end{equation*}
+Die Anwendung auf eine ganze Zahle $w$ erfolgt mittels Rekursions-Operator $Y$ als $Y\{ZS\}w$.
+
+\section*{Aufgabe 3}
+Gesucht sind die $\lambda$-Abstraktionen für die Vergleichsfunktionen $(Z=)$ und $(Z<)$ für ganze Zahlen. Man überlegt sich wieder:
+\begin{equation*}
+	z_1=z_2\Leftrightarrow(-a_1+b_1)=(-a_2+b_2)\Leftrightarrow(b_1+a_2)=(a_1+b_2)
+\end{equation*}
+Analog für $(Z<)$. Mit der Gleichheitsfunktion $(=)$ und der Kleiner-Funktion $(<)$ für natürliche Zahlen, die wir bereits auf dem letzten Zettel definiert haben, können wir nun $(Z=)$ und $(Z<)$ definieren:
+\begin{align*}
+&	(Z=)\equiv \lambda xy.(=)((xF)S(yT))((xT)S(yF))\\
+&	(Z<)\equiv \lambda xy.(<)((xF)S(yT))((xT)S(yF))
+\end{align*}
+
+\section*{Aufgabe 4}
+Seien $m$ und $n$ Listen. Dann soll der Vergleichsoperator $(L\le)$ für Listen Folgendes leisten:
+\begin{equation*}
+	(L$\le$) m n = \begin{cases}
+	1,& m<n\\
+	0,& m=n\\
+	-1,& m>n
+	\end{cases}
+\end{equation*}
+Dazu können ähnlich wie bei der für den algebraischen Datentyp \textbf{ZInteger} in der Vorlesung definierten Funktion $(\le)$-Funktion verfahren, jedoch mit Listen: Wir verkürzen beide Listen in jedem Durchlauf um ein Element, bis eine der Listen leer ist:
+\begin{equation*}
+	(L\le) m n = \begin{cases}
+	(L\le) (\{\text{TAIL}\}m) (\{\text{TAIL}\}n),&m\neq\text{NIL} \land n\neq\text{NIL}\\
+	1,&m=\text{NIL} \land n\neq\text{NIL}\\
+	0,& m=\text{NIL} \land n=\text{NIL}\\
+	-1,&m\neq\text{NIL} \land n=\text{NIL}
+	\end{cases}
+\end{equation*}
+
+Wir verwenden in der Vorlesung definierte Funktion $\{\text{TNIL}\}$, welche $T$ liefert falls das zugehörige Argument eine leere Liste ist und $F$ sonst. Ferner wertet $\{\text{HEAD}\}$ eine Liste zum Listenkopf aus und $\{\text{TAIL}\}$ zum Listenrumpf. Damit ist:
+\begin{align*}
+	(L\le)\equiv&\lambda rmn.((\lor)(\{\text{TNIL}\}m)(\{\text{TNIL}\}n))(\lambda z.z((\{\text{TNIL}\}m)01)((\{\text{TNIL}\}n)01))\\
+	&(r(\{\text{TAIL}\}m)(\{\text{TAIL}\}n))
+\end{align*}
+
+\section*{Aufgabe 5}
+\begin{enumerate}[(a)]
+\item In der Vorlesung haben wie folgt definiert:
+\begin{equation*}
+	(T,\_,\_):=\text{NIL}\quad \text{oder}\quad (F,a,b):=(head:tail)
+\end{equation*}
+... in $\lambda$-Ausdrücken:
+\begin{align*}
+	&\text{NIL}\equiv \lambda x.xTFF\\
+	&\text{NIL}\equiv \lambda x.xFab
+\end{align*}
+Nehmen wir an, wir haben eine Liste $l$ mit $\lambda$-Ausdrücken, die zu einer bestimmten Klasse $K$ gehören. Sei $x$ Element dieser Klasse. Dann soll die \{FIND\}-Funktion leisten:
+\begin{equation*}
+	\{\text{FIND}\} x l = \begin{cases}
+	T, x\in l\\
+	F, x\not\in l
+	\end{cases}
+\end{equation*}
+Wir definieren die Funktion rekursiv:
+\begin{equation*}
+	\{\text{FIND}\} x l = \begin{cases}
+	F,&l=\{\text{NIL}\}\\
+	\{FIND\} x (\{TAIL\}l),&l\neq(\{\text{TAIL}\})\\
+	T,&(\{\text{HEAD}\}l)=x\\
+	\end{cases}
+\end{equation*}
+Unter der Annahme, dass eine $(=)$-Funktion für die entsprechende Klasse definiert ist, ist die zugehörige $\lambda$-Abstraktion:
+\begin{equation*}
+	\{\text{FIND}\}\equiv \lambda rxl.(\{\text{TNIL}\}l)F(((=)x(\{\text{HEAD}\}l))T(r(x)(\{\text{TAIL}\}l)))
+\end{equation*}
+\item Unter den obigen Annahmen definieren wir nun eine Funktion \{DEL\}, die ALLE Vorkommen eines Elementes $x$ aus einer Liste $l$ löscht. Wir definieren die Funktion rekursiv mit Rekursionsanker bei \{NIL\}:
+\begin{equation*}
+	\{\text{DEL}\} x l = \begin{cases}
+	\{\text{NIL}\},& l={NIL}\\
+	\{\text{DEL}\}(\{\text{TAIL}\}l),& x=\{\text{HEAD}\}l\\
+	\{(F,(\{\text{HEAD}\}l),(\{\text{DEL}\}(\{\text{TAIL}\}l)),& x\not=\{\text{HEAD}\}l\\
+	\end{cases}
+\end{equation*}
+... als $\lambda$-Abstraktion ausgedrückt:
+\begin{equation*}
+\{\text{DEL}\} = \lambda rxl.  (\{\text{TNIL}\}l) \{\text{NIL}\} ((=)(\{\text{HEAD}\}l)x)(\{\text{TAIL}\}l)(\lambda b.bFx(gx(\{\text{TAIL}\}l)))
+\end{equation*}
+
+\section*{Aufgabe 6}
+\begin{enumerate}[(a)]
+\item ${}$\\
+\begin{minipage}{\linewidth}
+	\begin{minted}[mathescape,bgcolor=bg,linenos,numbersep=5pt,tabsize=3]{haskell}
+	longmacro "2**"="/rx.Zx1((*)2(r(Px)))"
+	longmacro "."="/fga.f(ga)"
+	\end{minted}
+\end{minipage}
+\item ${}$\\
+\begin{minipage}{\linewidth}
+	\begin{minted}[mathescape,bgcolor=bg,linenos,numbersep=5pt,tabsize=3]{haskell}
+	power2 n = (\n -> 2**n)
+	reverse list = foldl (\xs x -> x:xs) [] list
+	\end{minted}
+\end{minipage}
+\end{enumerate}
+
+\section*{Aufgabe 7}
+\begin{enumerate}[(a)]
+	\item Es soll gezeigt werden, dass der Kombinator-Ausdruck $S(KK)I$ und $K$ äquivalent sind. Wir zeigen das, indem wir beweisen, dass für beliebige Ausdrücke $E_1$, $E_2$ gilt:
+	\begin{equation*}
+		S(KK)IE_1 E_2 = K E_1 E_2\Leftrightarrow (KK) E_1 (I E_1) E_2 \equiv E_1 \Leftrightarrow K (E_1) E_2 \equiv E_1\Leftrightarrow E_1\equiv E_1
+	\end{equation*}
+	Alternativ können die zugehörigen $lambda$-Ausdrücke ineinander überführt werden:
+	\begin{align*}
+	& S(KK)I \equiv &&\tag*{S Anwenden} \\
+	& \equiv (\lambda xyz.xz(yz)(KK)I) \equiv &&\tag*{Vereinfachen} \\
+	& \equiv (\lambda yz.(KK)z(yz))I \equiv &&\tag*{Vereinfachen} \\
+	& \equiv \lambda z.(\lambda b.K)z(Iz) \equiv &&\tag*{Vereinfachen} \\
+	& \equiv \lambda z.K(Iz) \equiv &&\tag*{K Anwenden} \\
+	& \equiv \lambda z.(\lambda ab.a)(Iz) \equiv &&\tag*{Vereinfachen} \\
+	& \equiv \lambda z. \lambda b.Iz \equiv &&\tag*{Vereinfachen} \\
+	& \equiv \lambda zb.(Iz) \equiv &&\tag*{I Anwenden} \\
+	& \equiv \lambda zb.((\lambda x.x)z) \equiv &&\tag*{Vereinfachen} \\
+	& \equiv \lambda zb.z \equiv &&\tag*{K Anwenden} \\
+	& \equiv K
+	\end{align*}
+	\item Es soll der nachfolgende Ausdruck reduziert werden:
+	\begin{align*}
+		SS(SI(K(KI)))(K\underbrace{K}_{1.}\underbrace{(S(KK)I)}_{2.})(KI)&\equiv S\underbrace{S(SI(K(KI)))}_{1.}\underbrace{K}_{2.}\underbrace{(KI)}_{3.}\\
+		&\equiv S\underbrace{K}_{1.}\underbrace{((SI(K(KI)))K)}_{2.}\underbrace{(KI)}_{3.}\\
+		&\equiv K\underbrace{(KI)}_{1.}\underbrace{(((SI(K(KI)))K)(KI))}_{2.}\\
+		&\equiv (KI)\\
+		&\equiv (\lambda xy.x)(\lambda z.z)\equiv \lambda y.(\lambda z.z)\equiv \lambda yz.z\equiv F
+	\end{align*}
+	... da die Reduktion selbsterklärend ist, beschränken wir uns darauf, die Argumente der jeweiligen Applikation auszuzeichnen.
+\end{enumerate}
+
+\end{enumerate}
+
+\end{document}

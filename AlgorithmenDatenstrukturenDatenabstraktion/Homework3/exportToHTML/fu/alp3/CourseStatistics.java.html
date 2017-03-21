@@ -1,0 +1,159 @@
+<html>
+<head>
+<title>CourseStatistics.java</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+.ln { color: rgb(0,0,0); font-weight: normal; font-style: normal; }
+.s0 { color: rgb(0,0,128); font-weight: bold; }
+.s1 { color: rgb(0,0,0); }
+.s2 { color: rgb(0,0,255); }
+.s3 { color: rgb(0,128,0); font-weight: bold; }
+.s4 { color: rgb(128,128,128); font-style: italic; }
+</style>
+</head>
+<BODY BGCOLOR="#ffffff">
+<TABLE CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#C0C0C0" >
+<TR><TD><CENTER>
+<FONT FACE="Arial, Helvetica" COLOR="#000000">
+CourseStatistics.java</FONT>
+</center></TD></TR></TABLE>
+<pre>
+<a name="l1"><span class="ln">1    </span></a><span class="s0">package </span><span class="s1">fu.alp3; 
+<a name="l2"><span class="ln">2    </span></a> 
+<a name="l3"><span class="ln">3    </span></a></span><span class="s0">import </span><span class="s1">java.io.BufferedReader; 
+<a name="l4"><span class="ln">4    </span></a></span><span class="s0">import </span><span class="s1">java.io.IOException; 
+<a name="l5"><span class="ln">5    </span></a></span><span class="s0">import </span><span class="s1">java.io.InputStreamReader; 
+<a name="l6"><span class="ln">6    </span></a></span><span class="s0">import </span><span class="s1">java.util.Stack; 
+<a name="l7"><span class="ln">7    </span></a> 
+<a name="l8"><span class="ln">8    </span></a></span><span class="s0">public class </span><span class="s1">CourseStatistics { 
+<a name="l9"><span class="ln">9    </span></a> 
+<a name="l10"><span class="ln">10   </span></a>    </span><span class="s0">public static int </span><span class="s1">getInputArrayLength() { 
+<a name="l11"><span class="ln">11   </span></a> 
+<a name="l12"><span class="ln">12   </span></a>        BufferedReader reader = </span><span class="s0">new </span><span class="s1">BufferedReader(</span><span class="s0">new </span><span class="s1">InputStreamReader(System.in)); 
+<a name="l13"><span class="ln">13   </span></a>        </span><span class="s0">int </span><span class="s1">arrayLength = </span><span class="s2">0</span><span class="s1">; 
+<a name="l14"><span class="ln">14   </span></a>        </span><span class="s0">boolean </span><span class="s1">arrayLengthParsed = </span><span class="s0">false</span><span class="s1">; 
+<a name="l15"><span class="ln">15   </span></a>        String currentInputLine; 
+<a name="l16"><span class="ln">16   </span></a> 
+<a name="l17"><span class="ln">17   </span></a>        </span><span class="s0">while</span><span class="s1">(!arrayLengthParsed) { 
+<a name="l18"><span class="ln">18   </span></a>            </span><span class="s0">try </span><span class="s1">{ 
+<a name="l19"><span class="ln">19   </span></a> 
+<a name="l20"><span class="ln">20   </span></a>                System.out.print(</span><span class="s3">&quot;How many courses do you want to enter?: &quot;</span><span class="s1">); 
+<a name="l21"><span class="ln">21   </span></a>                currentInputLine = reader.readLine(); 
+<a name="l22"><span class="ln">22   </span></a>                arrayLength = Integer.parseInt(currentInputLine); 
+<a name="l23"><span class="ln">23   </span></a>                arrayLengthParsed = </span><span class="s0">true</span><span class="s1">; 
+<a name="l24"><span class="ln">24   </span></a>            } </span><span class="s0">catch </span><span class="s1">(NumberFormatException e) { 
+<a name="l25"><span class="ln">25   </span></a> 
+<a name="l26"><span class="ln">26   </span></a>                System.out.println(</span><span class="s3">&quot;Unable to parse number of courses. Please enter an integer!&quot;</span><span class="s1">); 
+<a name="l27"><span class="ln">27   </span></a>            } </span><span class="s0">catch </span><span class="s1">(IOException e) { 
+<a name="l28"><span class="ln">28   </span></a> 
+<a name="l29"><span class="ln">29   </span></a>                System.out.println(</span><span class="s3">&quot;Something went wrong during input. Please try again!&quot;</span><span class="s1">); 
+<a name="l30"><span class="ln">30   </span></a>            } 
+<a name="l31"><span class="ln">31   </span></a>        } 
+<a name="l32"><span class="ln">32   </span></a> 
+<a name="l33"><span class="ln">33   </span></a>        </span><span class="s0">return </span><span class="s1">arrayLength; 
+<a name="l34"><span class="ln">34   </span></a>    } 
+<a name="l35"><span class="ln">35   </span></a> 
+<a name="l36"><span class="ln">36   </span></a>    </span><span class="s0">public static float</span><span class="s1">[] getInputArrayFromLength(</span><span class="s0">int </span><span class="s1">inputLength) { 
+<a name="l37"><span class="ln">37   </span></a> 
+<a name="l38"><span class="ln">38   </span></a>        BufferedReader reader = </span><span class="s0">new </span><span class="s1">BufferedReader(</span><span class="s0">new </span><span class="s1">InputStreamReader(System.in)); 
+<a name="l39"><span class="ln">39   </span></a>        </span><span class="s0">float</span><span class="s1">[] inputArray = </span><span class="s0">new float</span><span class="s1">[inputLength]; 
+<a name="l40"><span class="ln">40   </span></a>        String currentInputLine; 
+<a name="l41"><span class="ln">41   </span></a>        </span><span class="s0">boolean </span><span class="s1">currentFloatParsed = </span><span class="s0">false</span><span class="s1">; 
+<a name="l42"><span class="ln">42   </span></a> 
+<a name="l43"><span class="ln">43   </span></a>        </span><span class="s4">//for all array indexes ask user for input</span><span class="s1"> 
+<a name="l44"><span class="ln">44   </span></a>        </span><span class="s0">for</span><span class="s1">(</span><span class="s0">int </span><span class="s1">i = </span><span class="s2">0</span><span class="s1">; i &lt; inputLength; i++) { 
+<a name="l45"><span class="ln">45   </span></a> 
+<a name="l46"><span class="ln">46   </span></a>            </span><span class="s4">//until successful</span><span class="s1"> 
+<a name="l47"><span class="ln">47   </span></a>            </span><span class="s0">while</span><span class="s1">(!currentFloatParsed) { 
+<a name="l48"><span class="ln">48   </span></a> 
+<a name="l49"><span class="ln">49   </span></a>                </span><span class="s4">//here there's more to go wrong, therefore also two catch blocks for the 2 most common</span><span class="s1"> 
+<a name="l50"><span class="ln">50   </span></a>                </span><span class="s4">//errors. Of course, if something goes wrong during input and this time if we are unable</span><span class="s1"> 
+<a name="l51"><span class="ln">51   </span></a>                </span><span class="s4">//to parse a float (e.g. if user enters &quot;string&quot; and no number)</span><span class="s1"> 
+<a name="l52"><span class="ln">52   </span></a>                </span><span class="s0">try </span><span class="s1">{ 
+<a name="l53"><span class="ln">53   </span></a> 
+<a name="l54"><span class="ln">54   </span></a>                    System.out.print(</span><span class="s3">&quot;Grade of course number &quot; </span><span class="s1">+ (i+</span><span class="s2">1</span><span class="s1">) + </span><span class="s3">&quot;: &quot;</span><span class="s1">); 
+<a name="l55"><span class="ln">55   </span></a>                    currentInputLine = reader.readLine(); 
+<a name="l56"><span class="ln">56   </span></a>                    inputArray[i] = Float.parseFloat(currentInputLine); 
+<a name="l57"><span class="ln">57   </span></a>                    currentFloatParsed = </span><span class="s0">true</span><span class="s1">; 
+<a name="l58"><span class="ln">58   </span></a>                } </span><span class="s0">catch </span><span class="s1">(NumberFormatException e) { 
+<a name="l59"><span class="ln">59   </span></a> 
+<a name="l60"><span class="ln">60   </span></a>                    System.out.println(</span><span class="s3">&quot;Unable to parse current course's grade. Please enter a real number!&quot;</span><span class="s1">); 
+<a name="l61"><span class="ln">61   </span></a>                } </span><span class="s0">catch </span><span class="s1">(IOException e) { 
+<a name="l62"><span class="ln">62   </span></a> 
+<a name="l63"><span class="ln">63   </span></a>                    System.out.println(</span><span class="s3">&quot;Something went wrong during input. Please try again!&quot;</span><span class="s1">); 
+<a name="l64"><span class="ln">64   </span></a>                } 
+<a name="l65"><span class="ln">65   </span></a>            } 
+<a name="l66"><span class="ln">66   </span></a> 
+<a name="l67"><span class="ln">67   </span></a>            currentFloatParsed = </span><span class="s0">false</span><span class="s1">; 
+<a name="l68"><span class="ln">68   </span></a>        } 
+<a name="l69"><span class="ln">69   </span></a> 
+<a name="l70"><span class="ln">70   </span></a>        </span><span class="s0">return </span><span class="s1">inputArray; 
+<a name="l71"><span class="ln">71   </span></a>    } 
+<a name="l72"><span class="ln">72   </span></a> 
+<a name="l73"><span class="ln">73   </span></a>    </span><span class="s0">public static void </span><span class="s1">greetUserAndExplain() { 
+<a name="l74"><span class="ln">74   </span></a> 
+<a name="l75"><span class="ln">75   </span></a>        System.out.println(</span><span class="s3">&quot;Enter all courses and their rating/grade to see for how long each course has been the best.&quot; </span><span class="s1">+ 
+<a name="l76"><span class="ln">76   </span></a>                            </span><span class="s3">&quot;We assume all courses happen one after another, one course per day. </span><span class="s0">\n \n</span><span class="s3">&quot;</span><span class="s1">); 
+<a name="l77"><span class="ln">77   </span></a>    } 
+<a name="l78"><span class="ln">78   </span></a> 
+<a name="l79"><span class="ln">79   </span></a>    </span><span class="s0">public static void </span><span class="s1">processCourse(RateEntry crntEntry, Stack&lt;RateEntry&gt; stack, </span><span class="s0">int</span><span class="s1">[] results) { 
+<a name="l80"><span class="ln">80   </span></a> 
+<a name="l81"><span class="ln">81   </span></a>        </span><span class="s4">//remove all courses from the stack, that have lower or equal grade to the currently processed course</span><span class="s1"> 
+<a name="l82"><span class="ln">82   </span></a>        </span><span class="s0">while</span><span class="s1">(stack.peek().getGrade() &lt;= crntEntry.getGrade()) stack.pop(); 
+<a name="l83"><span class="ln">83   </span></a> 
+<a name="l84"><span class="ln">84   </span></a>        </span><span class="s4">//then save the best since of the current course</span><span class="s1"> 
+<a name="l85"><span class="ln">85   </span></a>        results[crntEntry.getIndex()] = crntEntry.getIndex() - stack.peek().getIndex(); 
+<a name="l86"><span class="ln">86   </span></a>        stack.push(crntEntry); </span><span class="s4">//and push it to the stack</span><span class="s1"> 
+<a name="l87"><span class="ln">87   </span></a> 
+<a name="l88"><span class="ln">88   </span></a>        </span><span class="s4">//NOTE: it's important to calculate the course's best since right after all &lt;= courses has been popped</span><span class="s1"> 
+<a name="l89"><span class="ln">89   </span></a>        </span><span class="s4">//          and just before we pushed the current course, to make good use of stack.peek()</span><span class="s1"> 
+<a name="l90"><span class="ln">90   </span></a>    } 
+<a name="l91"><span class="ln">91   </span></a> 
+<a name="l92"><span class="ln">92   </span></a>    </span><span class="s0">public static int</span><span class="s1">[] getEachCoursesBestSince(</span><span class="s0">float</span><span class="s1">[] coursesGrades) { 
+<a name="l93"><span class="ln">93   </span></a> 
+<a name="l94"><span class="ln">94   </span></a>        Stack&lt;RateEntry&gt; coursesStack = </span><span class="s0">new </span><span class="s1">Stack&lt;&gt;(); 
+<a name="l95"><span class="ln">95   </span></a>        </span><span class="s0">int</span><span class="s1">[] bestSinceResults = </span><span class="s0">new int</span><span class="s1">[coursesGrades.length]; 
+<a name="l96"><span class="ln">96   </span></a>        RateEntry initialEntry = </span><span class="s0">new </span><span class="s1">RateEntry(-</span><span class="s2">1</span><span class="s1">, Float.MAX_VALUE); 
+<a name="l97"><span class="ln">97   </span></a>        RateEntry currentEntry; 
+<a name="l98"><span class="ln">98   </span></a> 
+<a name="l99"><span class="ln">99   </span></a>        coursesStack.push(initialEntry); 
+<a name="l100"><span class="ln">100  </span></a> 
+<a name="l101"><span class="ln">101  </span></a>        </span><span class="s0">for</span><span class="s1">(</span><span class="s0">int </span><span class="s1">i = </span><span class="s2">0</span><span class="s1">; i &lt; coursesGrades.length; i++) { 
+<a name="l102"><span class="ln">102  </span></a> 
+<a name="l103"><span class="ln">103  </span></a>            currentEntry = </span><span class="s0">new </span><span class="s1">RateEntry(i, coursesGrades[i]); 
+<a name="l104"><span class="ln">104  </span></a>            processCourse(currentEntry, coursesStack, bestSinceResults); 
+<a name="l105"><span class="ln">105  </span></a> 
+<a name="l106"><span class="ln">106  </span></a>            </span><span class="s4">//Here we make good use of non-primitive data types. As we know, they are passed to functions</span><span class="s1"> 
+<a name="l107"><span class="ln">107  </span></a>            </span><span class="s4">//by reference, so changes made in processCourse will be made in getEachCoursesBestSince</span><span class="s1"> 
+<a name="l108"><span class="ln">108  </span></a>            </span><span class="s4">//as they both keep the same reference to bestSinceResults and coursesStack</span><span class="s1"> 
+<a name="l109"><span class="ln">109  </span></a>        } 
+<a name="l110"><span class="ln">110  </span></a> 
+<a name="l111"><span class="ln">111  </span></a>        </span><span class="s0">return </span><span class="s1">bestSinceResults; 
+<a name="l112"><span class="ln">112  </span></a>    } 
+<a name="l113"><span class="ln">113  </span></a> 
+<a name="l114"><span class="ln">114  </span></a>    </span><span class="s0">public static void </span><span class="s1">printResults(</span><span class="s0">int</span><span class="s1">[] results) { 
+<a name="l115"><span class="ln">115  </span></a> 
+<a name="l116"><span class="ln">116  </span></a>        System.out.println(</span><span class="s3">&quot;</span><span class="s0">\n\n</span><span class="s3">Results: </span><span class="s0">\n</span><span class="s3">&quot;</span><span class="s1">); 
+<a name="l117"><span class="ln">117  </span></a> 
+<a name="l118"><span class="ln">118  </span></a>        </span><span class="s0">for</span><span class="s1">(</span><span class="s0">int </span><span class="s1">i = </span><span class="s2">0</span><span class="s1">; i &lt; results.length; i ++) { 
+<a name="l119"><span class="ln">119  </span></a> 
+<a name="l120"><span class="ln">120  </span></a>            </span><span class="s4">//Print each courses best since, add 1 to i to have more human-readable indexes</span><span class="s1"> 
+<a name="l121"><span class="ln">121  </span></a>            </span><span class="s4">//as not everyone starts counting from 0</span><span class="s1"> 
+<a name="l122"><span class="ln">122  </span></a>            System.out.println((i+</span><span class="s2">1</span><span class="s1">) + </span><span class="s3">&quot;. course has been the best course for the last &quot; </span><span class="s1">+ results[i] + </span><span class="s3">&quot; days&quot;</span><span class="s1">); 
+<a name="l123"><span class="ln">123  </span></a>        } 
+<a name="l124"><span class="ln">124  </span></a>    } 
+<a name="l125"><span class="ln">125  </span></a> 
+<a name="l126"><span class="ln">126  </span></a>    </span><span class="s0">public static void </span><span class="s1">main(String[] args) { 
+<a name="l127"><span class="ln">127  </span></a> 
+<a name="l128"><span class="ln">128  </span></a>        greetUserAndExplain(); 
+<a name="l129"><span class="ln">129  </span></a> 
+<a name="l130"><span class="ln">130  </span></a>        </span><span class="s0">int </span><span class="s1">inputArrayLength = getInputArrayLength(); 
+<a name="l131"><span class="ln">131  </span></a>        </span><span class="s0">float</span><span class="s1">[] inputArray = getInputArrayFromLength(inputArrayLength); 
+<a name="l132"><span class="ln">132  </span></a>        </span><span class="s0">int</span><span class="s1">[] coursesBestSinceResults = getEachCoursesBestSince(inputArray); 
+<a name="l133"><span class="ln">133  </span></a> 
+<a name="l134"><span class="ln">134  </span></a>        printResults(coursesBestSinceResults); 
+<a name="l135"><span class="ln">135  </span></a>    } 
+<a name="l136"><span class="ln">136  </span></a>} 
+<a name="l137"><span class="ln">137  </span></a></span></pre>
+</body>
+</html>
