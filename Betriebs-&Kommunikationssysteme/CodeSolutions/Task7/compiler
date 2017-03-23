@@ -1,0 +1,4 @@
+gcc -std=c11 -o client -Wall -Wextra -pedantic client.c
+echo "Cleint compiled."
+gcc -std=c11 -o server -Wall -Wextra -pedantic server.c
+echo "Server compiled."
