@@ -1,0 +1,44 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>Eine Webseite</title>
+</head>
+
+<body>
+    <label for="eingabe">
+        Ihr Name:
+        <input id="feld" name="eingabe" />
+    </label>
+    <button id="knopf" type="button">
+        Klick mich!
+    </button>
+    <div id="bereich"></div>
+
+    <script type="text/javascript">
+
+    	'use strict';
+
+    	(function() {
+
+    		function greet() {
+
+    			var defaultValue = 'Unbekannter',
+    				inputField = document.getElementById('feld'),
+    				outputNode = document.getElementById('bereich'),
+    				greetPrefix = 'Hallo ',
+    				givenName 	= inputField.value || defaultValue;
+
+    			outputNode.innerHTML = greetPrefix + givenName;
+    		}
+
+    		document.getElementById('knopf').addEventListener('click', greet);
+
+    	})();
+
+    </script>
+
+</body>
+
+</html>

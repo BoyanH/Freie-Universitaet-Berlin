@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.0//EN" "http://www.w3.org/TR/2001/PR-SVG-20010719/DTD/svg10.dtd">
+<svg width="48cm" height="35cm" viewBox="19 76 945 695" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+  <g>
+    <rect style="fill: #ffffff" x="608" y="163" width="89.2" height="41.1667"/>
+    <rect style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x="608" y="163" width="89.2" height="41.1667"/>
+    <text font-size="16.9331" style="fill: #000000;text-anchor:middle;font-family:monospace;font-style:normal;font-weight:normal" x="652.6" y="188.875">Person</text>
+  </g>
+  <g>
+    <ellipse style="fill: #ffffff" cx="652.31" cy="95" rx="35.4" ry="18"/>
+    <ellipse style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" cx="652.31" cy="95" rx="35.4" ry="18"/>
+    <text font-size="12.7998" style="fill: #000000;text-anchor:middle;font-family:monospace;font-style:normal;font-weight:normal" x="652.31" y="99">Name</text>
+  </g>
+  <polyline style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" points="652.6,163 652.6,138 652.31,138 652.31,113 "/>
+  <polyline style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" points="608,183.583 608,139 392.7,139 392.7,140.42 "/>
+  <g>
+    <rect style="fill: #ffffff" x="709.818" y="358.727" width="89.2" height="41.1667"/>
+    <rect style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x="709.818" y="358.727" width="89.2" height="41.1667"/>
+    <text font-size="16.9331" style="fill: #000000;text-anchor:middle;font-family:monospace;font-style:normal;font-weight:normal" x="754.418" y="384.602">Doctor</text>
+  </g>
+  <g>
+    <ellipse style="fill: #ffffff" cx="898.65" cy="379.176" rx="54.65" ry="18"/>
+    <ellipse style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" cx="898.65" cy="379.176" rx="54.65" ry="18"/>
+    <text font-size="12.7998" style="fill: #000000;text-anchor:middle;font-family:monospace;font-style:normal;font-weight:normal" x="898.65" y="383.176">Specialty</text>
+  </g>
+  <g>
+    <rect style="fill: #ffffff" x="238" y="318" width="99.4" height="41.1667"/>
+    <rect style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x="238" y="318" width="99.4" height="41.1667"/>
+    <text font-size="16.9331" style="fill: #000000;text-anchor:middle;font-family:monospace;font-style:normal;font-weight:normal" x="287.7" y="343.875">Address</text>
+  </g>
+  <g>
+    <ellipse style="fill: #ffffff" cx="174" cy="268" rx="97" ry="18"/>
+    <ellipse style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" cx="174" cy="268" rx="97" ry="18"/>
+    <text font-size="12.7998" style="fill: #000000;text-anchor:middle;font-family:monospace;font-style:normal;font-weight:normal" x="174" y="272">PrivateAddressStreet</text>
+  </g>
+  <g>
+    <ellipse style="fill: #ffffff" cx="174" cy="406" rx="97" ry="18"/>
+    <ellipse style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" cx="174" cy="406" rx="97" ry="18"/>
+    <text font-size="12.7998" style="fill: #000000;text-anchor:middle;font-family:monospace;font-style:normal;font-weight:normal" x="174" y="410">ServiceAddressStreet</text>
+  </g>
+  <g>
+    <ellipse style="fill: #ffffff" cx="115.926" cy="338.54" rx="35.4" ry="18"/>
+    <ellipse style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" cx="115.926" cy="338.54" rx="35.4" ry="18"/>
+    <text font-size="12.7998" style="fill: #000000;text-anchor:middle;font-family:monospace;font-style:normal;font-weight:normal" x="115.926" y="342.54">City</text>
+  </g>
+  <polyline style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" points="238,318 174,318 174,286 "/>
+  <polyline style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" points="174,388 174,359.167 238,359.167 "/>
+  <polyline style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" points="238,338.583 194.663,338.583 194.663,338.54 151.326,338.54 "/>
+  <g>
+    <polygon style="fill: #ffffff" points="337,140.42 392.7,107 448.4,140.42 392.7,173.84 "/>
+    <polygon style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" points="337,140.42 392.7,107 448.4,140.42 392.7,173.84 "/>
+    <text font-size="16.9331" style="fill: #000000;text-anchor:end;font-family:monospace;font-style:normal;font-weight:normal" x="331" y="134.42">(1, N)</text>
+    <text font-size="16.9331" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="454.4" y="134.42">(1, 1)</text>
+    <text font-size="16.9331" style="fill: #000000;text-anchor:middle;font-family:monospace;font-style:normal;font-weight:normal" x="392.7" y="145.712">LivesIn</text>
+  </g>
+  <polyline style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" points="337.4,318 337.4,230 337,230 337,140.42 "/>
+  <g>
+    <polygon style="fill: #ffffff" points="719,276.24 754.4,255 789.8,276.24 754.4,297.48 "/>
+    <polygon style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" points="719,276.24 754.4,255 789.8,276.24 754.4,297.48 "/>
+    <polygon style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" points="727,276.24 754.4,259.8 781.8,276.24 754.4,292.68 "/>
+    <text font-size="12.7998" style="fill: #000000;text-anchor:end;font-family:monospace;font-style:normal;font-weight:normal" x="713" y="270.24"/>
+    <text font-size="12.7998" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="795.8" y="270.24"/>
+    <text font-size="12.7998" style="fill: #000000;text-anchor:middle;font-family:monospace;font-style:normal;font-weight:normal" x="754.4" y="280.24">IS-A</text>
+  </g>
+  <g>
+    <polygon style="fill: #ffffff" points="537.307,278.043 572.707,256.803 608.107,278.043 572.707,299.283 "/>
+    <polygon style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" points="537.307,278.043 572.707,256.803 608.107,278.043 572.707,299.283 "/>
+    <polygon style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" points="545.307,278.043 572.707,261.603 600.107,278.043 572.707,294.483 "/>
+    <text font-size="12.7998" style="fill: #000000;text-anchor:end;font-family:monospace;font-style:normal;font-weight:normal" x="531.307" y="272.043"/>
+    <text font-size="12.7998" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="614.107" y="272.043"/>
+    <text font-size="12.7998" style="fill: #000000;text-anchor:middle;font-family:monospace;font-style:normal;font-weight:normal" x="572.707" y="282.043">IS-A</text>
+  </g>
+  <polyline style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" points="754.4,253.995 754.4,229.081 697.2,229.081 697.2,204.167 "/>
+  <polyline style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" points="608,204.167 608,230.485 572.707,230.485 572.707,256.803 "/>
+  <polyline style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" points="754.418,358.727 754.418,328.104 754.4,328.104 754.4,297.48 "/>
+  <polyline style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" points="799.018,379.311 821.509,379.311 821.509,379.176 844,379.176 "/>
+  <g>
+    <rect style="fill: #ffffff" x="523" y="360" width="99.4" height="41.1667"/>
+    <rect style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x="523" y="360" width="99.4" height="41.1667"/>
+    <text font-size="16.9331" style="fill: #000000;text-anchor:middle;font-family:monospace;font-style:normal;font-weight:normal" x="572.7" y="385.875">Patient</text>
+  </g>
+  <polyline style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" points="572.707,299.283 572.707,329.641 572.7,329.641 572.7,360 "/>
+  <g>
+    <polygon style="fill: #ffffff" points="531.597,473.81 572.947,449 614.297,473.81 572.947,498.62 "/>
+    <polygon style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" points="531.597,473.81 572.947,449 614.297,473.81 572.947,498.62 "/>
+    <text font-size="10.1598" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="576.947" y="443">(0, N)</text>
+    <text font-size="10.1598" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="576.947" y="517.32">(1,1)</text>
+    <text font-size="10.1598" style="fill: #000000;text-anchor:middle;font-family:monospace;font-style:normal;font-weight:normal" x="572.947" y="476.985">Attends</text>
+  </g>
+  <polyline style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" points="572.7,401.167 572.7,425.083 572.947,425.083 572.947,449 "/>
+  <g>
+    <path style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" d="M 333.491,305.39 A 208.564,208.564 0 0 0 206,149"/>
+    <polygon style="fill: #000000" points="334.705,312.784 328.428,303.531 333.715,305.349 338.341,302.211 "/>
+    <polygon style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" points="334.705,312.784 328.428,303.531 333.715,305.349 338.341,302.211 "/>
+  </g>
+  <g>
+    <rect style="fill: #ffffff" x="88" y="104.1" width="0" height="14.9"/>
+    <text font-size="12.7998" style="fill: #000000;text-anchor:start;font-family:sans-serif;font-style:normal;font-weight:normal" x="88" y="116">
+      <tspan x="88" y="116"></tspan>
+    </text>
+  </g>
+  <g>
+    <rect style="fill: #ffffff" x="19" y="97.1" width="237.85" height="62.9"/>
+    <text font-size="12.7998" style="fill: #000000;text-anchor:start;font-family:sans-serif;font-style:normal;font-weight:normal" x="19" y="109">
+      <tspan x="19" y="109">This way private and service address</tspan>
+      <tspan x="19" y="125">must always be withing the same</tspan>
+      <tspan x="19" y="141">city. Patients' ServiceAddressStreet</tspan>
+      <tspan x="19" y="157">can be left Null.</tspan>
+    </text>
+  </g>
+  <g>
+    <rect style="fill: #ffffff" x="467" y="576" width="211.6" height="41.1667"/>
+    <rect style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x="467" y="576" width="211.6" height="41.1667"/>
+    <text font-size="16.9331" style="fill: #000000;text-anchor:middle;font-family:monospace;font-style:normal;font-weight:normal" x="572.8" y="601.875">DoctorsAppointment</text>
+  </g>
+  <polyline style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" points="572.947,498.62 572.947,537.31 572.8,537.31 572.8,576 "/>
+  <g>
+    <ellipse style="fill: #ffffff" cx="381.4" cy="596.614" rx="35.4" ry="18"/>
+    <ellipse style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" cx="381.4" cy="596.614" rx="35.4" ry="18"/>
+    <text font-size="12.7998" style="fill: #000000;text-anchor:middle;font-family:monospace;font-style:normal;font-weight:normal" x="381.4" y="600.614">Date</text>
+  </g>
+  <polyline style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" points="416.8,596.614 441.9,596.614 441.9,596.583 467,596.583 "/>
+  <g>
+    <polygon style="fill: #ffffff" points="710,470.64 754.4,444 798.8,470.64 754.4,497.28 "/>
+    <polygon style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" points="710,470.64 754.4,444 798.8,470.64 754.4,497.28 "/>
+    <text font-size="10.1598" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="758.4" y="438">(0, N)</text>
+    <text font-size="10.1598" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="758.4" y="515.98">(1, 1)</text>
+    <text font-size="10.1598" style="fill: #000000;text-anchor:middle;font-family:monospace;font-style:normal;font-weight:normal" x="754.4" y="473.815">Services</text>
+  </g>
+  <polyline style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" points="754.4,444 754.4,421.947 754.418,421.947 754.418,399.894 "/>
+  <polyline style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" points="678.6,596.583 753,596.583 753,497.28 754.4,497.28 "/>
+  <g>
+    <ellipse style="fill: #ffffff" cx="421.202" cy="381.111" rx="70.05" ry="18"/>
+    <ellipse style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" cx="421.202" cy="381.111" rx="70.05" ry="18"/>
+    <ellipse style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" cx="421.202" cy="381.111" rx="62.05" ry="14"/>
+    <text font-size="12.7998" style="fill: #000000;text-anchor:middle;font-family:monospace;font-style:normal;font-weight:normal" x="421.202" y="385.111">HealthHistory</text>
+  </g>
+  <polyline style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" points="523,380.583 507.126,380.583 507.126,381.111 491.252,381.111 "/>
+  <g>
+    <rect style="fill: #ffffff" x="490.09" y="674.892" width="473.4" height="94.9"/>
+    <text font-size="12.7998" style="fill: #000000;text-anchor:start;font-family:sans-serif;font-style:normal;font-weight:normal" x="490.09" y="686.792">
+      <tspan x="490.09" y="686.792">Patients and doctors are stored in separate tables in the DBS. As</tspan>
+      <tspan x="490.09" y="702.792">a doctor need medical help, his patient's profile is used. The server-side</tspan>
+      <tspan x="490.09" y="718.792">logic (or buisness logic, whatever type of application this should be) must</tspan>
+      <tspan x="490.09" y="734.792">make sure a doctor never receives an appointment for a doctor with</tspan>
+      <tspan x="490.09" y="750.792">the same address as his owns (here again we benefit from the creation</tspan>
+      <tspan x="490.09" y="766.792">of address as an entity type and not a composite attribute)</tspan>
+    </text>
+  </g>
+  <g>
+    <path style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" d="M 696.188,676.977 A 124.15,124.15 0 0 0 623.907,475.226"/>
+    <polygon style="fill: #000000" points="616.52,474.049 626.998,470.147 623.977,474.851 625.928,480.09 "/>
+    <polygon style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" points="616.52,474.049 626.998,470.147 623.977,474.851 625.928,480.09 "/>
+  </g>
+</svg>
