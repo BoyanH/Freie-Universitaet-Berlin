@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.14159265-2.6-0.99996 (TeX Live 2016/Arch Linux) (preloaded format=xelatex 2017.5.11)  16 MAY 2017 01:10
+This is XeTeX, Version 3.14159265-2.6-0.99996 (TeX Live 2016/Arch Linux) (preloaded format=xelatex 2017.5.11)  16 MAY 2017 02:16
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1426,10 +1426,16 @@ Underfull \hbox (badness 10000) in paragraph at lines 18--16
 
  []
 
+Package microtype Info: Loading generic settings for font family
+(microtype)             `lmtt' (encoding: TU).
+(microtype)             For optimal results, create family-specific settings.
+(microtype)             See the microtype manual for details.
+LaTeX Font Info:    External font `lmex10' loaded for size
+(Font)              <5> on input line 18.
 Package babel Info: Redefining ngerman shorthand "|
-(babel)             in language  on input line 19.
+(babel)             in language  on input line 21.
 Package babel Info: Redefining ngerman shorthand "~
-(babel)             in language  on input line 19.
+(babel)             in language  on input line 21.
 (/usr/share/texmf-dist/tex/generic/oberdiek/se-ascii-print.def
 File: se-ascii-print.def 2016/05/16 v1.11 stringenc: Printable ASCII characters
 
@@ -1440,35 +1446,35 @@ File: ./exercise1/diagramm-1-A.png Graphic file (type QTm)
 File: ./exercise1/diagramm-1-B.png Graphic file (type QTm)
  <use  "./exercise1/diagramm-1-B.png" >
 Package babel Info: Redefining ngerman shorthand "|
-(babel)             in language  on input line 27.
+(babel)             in language  on input line 29.
 Package babel Info: Redefining ngerman shorthand "~
-(babel)             in language  on input line 27.
+(babel)             in language  on input line 29.
 Package babel Info: Redefining ngerman shorthand "|
-(babel)             in language  on input line 27.
+(babel)             in language  on input line 29.
 Package babel Info: Redefining ngerman shorthand "~
-(babel)             in language  on input line 27.
+(babel)             in language  on input line 29.
 
 [1
 
 
 ]
 Package babel Info: Redefining ngerman shorthand "|
-(babel)             in language  on input line 27.
+(babel)             in language  on input line 29.
 Package babel Info: Redefining ngerman shorthand "~
-(babel)             in language  on input line 27.
+(babel)             in language  on input line 29.
 
-Underfull \hbox (badness 10000) in paragraph at lines 29--30
+Underfull \hbox (badness 10000) in paragraph at lines 31--32
 
  []
 
 Package babel Info: Redefining ngerman shorthand "|
-(babel)             in language  on input line 30.
+(babel)             in language  on input line 32.
 Package babel Info: Redefining ngerman shorthand "~
-(babel)             in language  on input line 30.
+(babel)             in language  on input line 32.
 Package babel Info: Redefining ngerman shorthand "|
-(babel)             in language  on input line 30.
+(babel)             in language  on input line 32.
 Package babel Info: Redefining ngerman shorthand "~
-(babel)             in language  on input line 30.
+(babel)             in language  on input line 32.
 [2]
 File: ./exercise2/exercise2.png Graphic file (type QTm)
  <use  "./exercise2/exercise2.png" >
@@ -1476,25 +1482,58 @@ Package babel Info: Redefining ngerman shorthand "|
 (babel)             in language  on input line 39.
 Package babel Info: Redefining ngerman shorthand "~
 (babel)             in language  on input line 39.
+
+Underfull \hbox (badness 10000) in paragraph at lines 44--46
+
+ []
+
+File: ./exercise3/exercise3.png Graphic file (type QTm)
+<use  "./exercise3/exercise3.png" >
+Overfull \hbox (25.0pt too wide) in paragraph at lines 47--48
+[][] 
+ []
+
 Package babel Info: Redefining ngerman shorthand "|
-(babel)             in language  on input line 39.
+(babel)             in language  on input line 49.
 Package babel Info: Redefining ngerman shorthand "~
-(babel)             in language  on input line 39.
- [3]
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 39.
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 39.
+(babel)             in language  on input line 49.
+Package babel Info: Redefining ngerman shorthand "|
+(babel)             in language  on input line 49.
+Package babel Info: Redefining ngerman shorthand "~
+(babel)             in language  on input line 49.
+[3]
+Underfull \hbox (badness 10000) in paragraph at lines 62--64
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 62--64
+
+ []
+
+Package babel Info: Redefining ngerman shorthand "|
+(babel)             in language  on input line 73.
+Package babel Info: Redefining ngerman shorthand "~
+(babel)             in language  on input line 73.
+Package babel Info: Redefining ngerman shorthand "|
+(babel)             in language  on input line 73.
+Package babel Info: Redefining ngerman shorthand "~
+(babel)             in language  on input line 73.
+[4]
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 73.
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 73.
  (./homework2.aux)
-Package atveryend Info: Empty hook `AtVeryEndDocument' on input line 39.
-Package atveryend Info: Empty hook `AtEndAfterFileList' on input line 39.
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 39.
+Package atveryend Info: Empty hook `AtVeryEndDocument' on input line 73.
+Package atveryend Info: Empty hook `AtEndAfterFileList' on input line 73.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 73.
  ) 
 Here is how much of TeX's memory you used:
- 38373 strings out of 493068
- 771632 string characters out of 6141028
- 976591 words of memory out of 5000000
- 41681 multiletter control sequences out of 15000+600000
- 17143 words of font info for 44 fonts, out of 8000000 for 9000
+ 38445 strings out of 493068
+ 773579 string characters out of 6141028
+ 977591 words of memory out of 5000000
+ 41737 multiletter control sequences out of 15000+600000
+ 21436 words of font info for 54 fonts, out of 8000000 for 9000
  1347 hyphenation exceptions out of 8191
- 66i,7n,67p,10459b,358s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 66i,11n,67p,10459b,426s stack positions out of 5000i,500n,10000p,200000b,80000s
 
-Output written on homework2.pdf (3 pages).
+Output written on homework2.pdf (4 pages).
