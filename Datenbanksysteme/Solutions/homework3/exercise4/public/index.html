@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8"></meta>
+	<title>Apple Aktie</title>
+	<style type="text/css">
+
+		#linechart, #barchart {
+
+			width: 600px;
+			height: 400px;
+		}
+
+	</style>
+	<script type="text/javascript" language="javascript" src="./bower_components/jquery/dist/jquery.min.js"></script>
+	<script type="text/javascript" language="javascript" src="./bower_components/Flot/jquery.flot.js"></script>
+</head>
+<body>
+	<div id="linechart"></div>
+	<div id="barchart"></div>
+	<script type="text/javascript">
+
+		function parseDataToObject(data) {
+
+			var rows = data.split('\r\n').map(function (item) {
+				return item.replace(';', '').split(',');
+			});
+			var attributes = rows[0];
+			var parsedObject = {};
+
+			rows = rows.slice(1);
+			attributes.forEach(function (attr, idx) {
+
+				parsedObject[attr] = rows.map(function (row) {
+					
+					if(attr === 'Datum') {
+				
+						var crntDate = new Date(),
+							crntDecade = crntDate.getFullYear().toString().slice(0,2);
+							valueArr = row[idx].split('.'),
+							day = valueArr[0]*1,
+							month = valueArr[1]*1 - 1,
+							year = (crntDecade + valueArr[2])*1,
+							date = new Date(year, month, day);
+
+						return date.getDate()*1;
+					}
+					return row[idx]*1;
+				});
+			});
+
+			return parsedObject;
+		}
+
+		function mergeArrayEntities(arrA, arrB) {
+
+			var copyA = arrA.slice(0),
+				copyB = arrB.slice(0);
+
+			if(copyA.length !== copyB.length) {
+
+				throw new Error('Only arrays with equal length can be merged!');
+			}
+
+			return copyA.map(function (item, idx) {
+
+				return [item, copyB[idx]];
+			});
+		}
+
+		$.get('./data/apple.csv', function(data) {
+
+			var parsedData = parseDataToObject(data);
+			
+			$.plot($('#linechart'), 
+				[
+
+					{color: '#f00', data: mergeArrayEntities(parsedData.Datum, parsedData.Tief)},
+					{color: '#0f0', data: mergeArrayEntities(parsedData.Datum, parsedData.Hoch)},
+					{color: '#ff0', data: mergeArrayEntities(parsedData.Datum, parsedData.Tagesendwert)}
+
+			]);
+
+			$.plot($('#barchart'), 
+				[
+
+					{color: '#f00', data: mergeArrayEntities(parsedData.Datum, parsedData.Handelsvolumen)}
+
+				], 
+				{
+		            series: {
+		                bars: {
+		                    show: true
+		                }
+		            },
+		            bars: {
+		                align: "center",
+		                barWidth: 0.5
+		            }
+			});
+
+		});
+
+	</script>
+</body>
+</html>

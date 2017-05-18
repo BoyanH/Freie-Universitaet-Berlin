@@ -1,0 +1,15 @@
+{
+  "name": "dbs-homework2-exercise4",
+  "version": "1.0.0",
+  "description": "Simple node server, which always returns a single page with base functionality",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "author": "Boyan Hristov, Julian Habib",
+  "license": "ISC",
+  "devDependencies": {
+    "server-static": "^2.0.0"
+  }
+}
