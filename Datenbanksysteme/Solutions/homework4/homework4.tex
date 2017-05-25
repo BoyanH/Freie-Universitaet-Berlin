@@ -1,0 +1,187 @@
+\input{src/header}											% bindet Header ein (WICHTIG)
+\usepackage{graphicx}
+\usepackage{fancyvrb}
+
+\newcommand{\dozent}{Prof. Dr. Agn`es Voisard, Nicolas Lehmann}					% <-- Names des Dozenten eintragen
+\newcommand{\tutor}{Nicolas Lehmann}						% <-- Name eurer Tutoriun eintragen
+\newcommand{\tutoriumNo}{10}				% <-- Nummer im KVV nachschauen
+\newcommand{\projectNo}{4}									% <-- Nummer des Übungszettels
+\newcommand{\veranstaltung}{Datenbanksysteme}	% <-- Name der Lehrveranstaltung eintragen
+\newcommand{\semester}{SoSe 2017}						% <-- z.B. SoSe 17, WiSe 17/18
+\newcommand{\studenten}{Boyan Hristov, Julian Habib}			% <-- Hier eure Namen eintragen
+% /////////////////////// BEGIN DOKUMENT /////////////////////////
+
+
+\begin{document}
+\input{src/titlepage}										% erstellt die Titelseite
+
+
+Link zum Git Repository: \url{https://github.com/BoyanH/Freie-Universitaet-Berlin/tree/master/Datenbanksysteme/Solutions/homework3}
+
+% /////////////////////// Aufgabe 1 /////////////////////////
+\section{Aufgabe}
+
+
+\begin{itemize}
+	\item[a)]
+
+	\begin{lstlisting}[style=Bash]
+	[hristov@Edgy ~]$ sudo su // als Root Nutzer sich einmelden (Root rechte für die folgende Operationen notwendig, man kann auch jedes mal sudo schreiben)
+	[root@Edgy hristov]# systemctl start postgresql.service // starte den service für postgresql, damit wir postgresql benutzen können
+	[root@Edgy hristov]# su -l postgres // zu postgres nutzer wächseln 
+	[postgres@Edgy ~]$ exit // wieder zu root Nutzer wechseln, da postgres keine Root Rechte hat und wir den Password dafür nicht mehr kennen (oops)
+	[root@Edgy hristov]# passwd postgres -d // lösche den Password für Nutzer postgres
+	[root@Edgy hristov]# passwd postgres // verändere den password. Zwei Console Prompts folgen
+	New password: postgres
+	Retype new password: postgres
+	[root@Edgy hristov]# su -l postgres
+	[postgres@Edgy ~]$ createdb testdb // erstelle Datenbank 'testdb'
+	[postgres@Edgy ~]$ dropdb testdb // lösche Datenbank 'testdb'
+	[postgres@Edgy ~]$ createdb dbs // erstelle Datenbank 'testdb'	
+	\end{lstlisting}
+
+	\item[b)]
+
+	\begin{lstlisting}[style=Bash]
+		[hristov@Edgy homework4]$ sudo su -l postgres // als postgres Nutzer sich anmelden
+		[postgres@Edgy ~]$ createuser testuser --password --interactive
+		Shall the new role be a superuser? (y/n) n
+		Shall the new role be allowed to create databases? (y/n) y
+		Shall the new role be allowed to create more new roles? (y/n) y
+		Password: testpassword // Erstelle Nutzer 'testuser' mit Password 'testpassword', der Datenbanken und Rollen erstellen kann, aber keine Superrechte hat	
+		[postgres@Edgy ~]$ psql // in PostgreSQL Shell wächseln
+		postgres=# ALTER USER "testuser" WITH PASSWORD 'testpass'; // Password von 'testuser' ändern
+		postgres=# \q
+		[postgres@Edgy ~]$ exit
+		logout
+		[hristov@Edgy homework4]$ // wieder zu eigenen Nutzer wächseln 
+
+	\end{lstlisting}
+
+	\item[c)]
+
+	\begin{lstlisting}[style=Bash]
+		[hristov@Edgy homework4]$ sudo su -l postgres
+		[postgres@Edgy ~]$ psql -d dbs -U testuser
+		dbs=> CREATE TABLE Student ( // erstelle Tabelle wie in der Übungsaufgabe beschrieben
+		matrikelnummer integer NOT NULL,
+		vorname character varying(20) NOT NULL,
+		nachname character varying(20) NOT NULL     
+		);                                                     
+		CREATE TABLE // output
+		dbs=> \dt
+		          List of relations
+		 Schema |  Name   | Type  |  Owner   
+		--------+---------+-------+----------
+		 public | student | table | testuser
+		(1 row)
+
+	\end{lstlisting}
+
+	\item[d)]
+
+	\begin{lstlisting}[style=Bash]
+		dbs=> ALTER TABLE Student
+		ADD PRIMARY KEY (matrikelnummer)
+		;
+		ALTER TABLE
+	\end{lstlisting}
+
+\end{itemize}
+
+\section{Aufgabe}
+
+\begin{itemize}
+
+\item[a)]
+\begin{Verbatim}
+SELECT Vorname, Nachname
+FROM Passagier
+WHERE Alter > 42
+\end{Verbatim}
+
+\item[b)]
+\begin{Verbatim}
+SELECT P.Kreditkarennummer
+FROM Passagier P, Fluggesellschaft G, Flug F
+WHERE P.ID = F.Passagier-ID AND
+	F.Fluggesellschaft-ID = G.ID AND
+	Datum > 18.01.2014 AND Datum < 27.09.2014
+\end{Verbatim}
+
+\item[c)]
+\begin{Verbatim}
+SELECT G.Name
+FROM Flug F, Wetter W, Fluggesellschaft G 
+WHERE F.Datum = W.Datum AND
+	F.Fluggesellschaft-ID = G.ID AND
+	W.Sonnenscheindauer > 8
+\end{Verbatim}
+
+\item[d)]
+\begin{Verbatim}
+SELECT P.Vorname, P.Nachname
+FROM Passagier P, Flug F, Wetter W 
+WHERE F.Passagier-ID = P.ID AND
+	F.Datum = W.Datum AND
+	NOT (Temperatur > 20 AND Regenmenge < 10 AND Sonnenscheindauer > 6)
+\end{Verbatim}
+
+\end{itemize}
+
+\section{Aufgabe}
+
+\begin{itemize}
+
+\item[а)]
+\begin{Verbatim}
+SELECT DISTINCT TOP 3 Name
+FROM (
+	SELECT F.Fluggesellschaft-ID, F.Datum, Count(*), G.Name
+	FROM FLuggesellschaft G, Flug F
+	WHERE G.ID = F.Fluggesellschaft-ID
+	GROUP BY F.Fluggesellschaft-ID, F.Datum
+	ORDER BY Count(*)
+	)
+\end{Verbatim}
+
+\item[b)]
+\begin{Verbatim}
+SELECT DISTINCT TOP 10 Vorname, Nachname
+FROM (
+	SELECT P.Vorname, P.Nachname, F.Passagier-ID, Count(*)
+	FROM Passagier P, Flug F
+	WHERE P.ID = F.Passagier-ID
+	GROUP BY F.Passagier-ID
+	ORDER BY Count(*) ASC
+	)
+WHERE
+\end{Verbatim}
+
+\item[c)]
+
+Da am meisten und am wenigsten mit verschieden zwei separate Aussagen sind gibt es zwei Möglichkeiten die Aufgabe zu bearbeiten. Entweder zu sehen wie oft jedes Passagier mit je Fluggesellschaft geflogen ist und dann nach den Flüge die Resultate zu ordnen, oder als 2 separate stabile Sortierungen - erstmal nach Flüge absteigend, danach nach verschiedene Fluggesellschaften aufsteigend und am Ende die Top 5 selektieren. Wir haben uns für die 2. Variante geeinigt (klingt sinnvoller). Wir gehen hier davon aus, dass ORDER BY in SQL stabil ist.
+
+\begin{Verbatim}
+SELECT DISTINCT TOP 5 
+FROM (
+	SELECT Fluggesellschaft-ID, Count(*), Vorname, Nachname
+	FROM (
+		SELECT P.Vorname, P.Nachname, F.Passagier-ID, F.Fluggesellschaft-ID
+		FROM Passagier P, Flug F
+		WHERE P.ID = F.Passagier-ID
+		GROUP BY F.Passagier-ID
+		ORDER BY Count(*) DESC
+		)
+	WHERE
+	GROUP BY Fluggesellschaft-ID
+	ORDER BY Count(*) ASC
+	)
+WHERE
+\end{Verbatim}
+
+
+\end{itemize}
+
+% /////////////////////// END DOKUMENT /////////////////////////
+\end{document}
