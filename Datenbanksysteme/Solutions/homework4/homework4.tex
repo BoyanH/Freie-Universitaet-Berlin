@@ -163,7 +163,7 @@ WHERE
 Da am meisten und am wenigsten mit verschieden zwei separate Aussagen sind gibt es zwei Möglichkeiten die Aufgabe zu bearbeiten. Entweder zu sehen wie oft jedes Passagier mit je Fluggesellschaft geflogen ist und dann nach den Flüge die Resultate zu ordnen, oder als 2 separate stabile Sortierungen - erstmal nach Flüge absteigend, danach nach verschiedene Fluggesellschaften aufsteigend und am Ende die Top 5 selektieren. Wir haben uns für die 2. Variante geeinigt (klingt sinnvoller). Wir gehen hier davon aus, dass ORDER BY in SQL stabil ist.
 
 \begin{Verbatim}
-SELECT DISTINCT TOP 5 
+SELECT DISTINCT TOP 5 Vorname, Nachname
 FROM (
 	SELECT Fluggesellschaft-ID, Count(*), Vorname, Nachname
 	FROM (
