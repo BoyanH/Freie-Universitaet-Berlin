@@ -16,7 +16,7 @@
 \input{src/titlepage}										% erstellt die Titelseite
 
 
-Link zum Git Repository: \url{https://github.com/BoyanH/Freie-Universitaet-Berlin/tree/master/Datenbanksysteme/Solutions/homework3}
+Link zum Git Repository: \url{https://github.com/BoyanH/Freie-Universitaet-Berlin/tree/master/Datenbanksysteme/Solutions/homework4}
 
 % /////////////////////// Aufgabe 1 /////////////////////////
 \section{Aufgabe}
@@ -180,6 +180,184 @@ FROM (
 WHERE
 \end{Verbatim}
 
+
+\end{itemize}
+
+\section{Aufgabe}
+
+\begin{itemize}
+
+\item[a)]
+
+Den cabal-install tool installieren
+\begin{lstlisting}[style=Bash]
+	[hristov@Edgy exercise4]$ sudo pacman -S cabal-install
+\end{lstlisting}
+Letzten cabal Package List von hackage.haskell.org herunterladen
+\begin{lstlisting}[style=Bash]
+	[hristov@Edgy exercise4]$ cabal update
+\end{lstlisting}
+Und postgresql-simple Haskell Module herunterladen
+\begin{lstlisting}[style=Bash]
+	[hristov@Edgy exercise4]$ cabal install postgresql-simple
+\end{lstlisting}
+
+\begin{lstlisting}[style=hs]
+{-# LANGUAGE OverloadedStrings #-}
+
+import Control.Monad
+import Control.Applicative
+import Database.PostgreSQL.Simple
+import qualified Data.Text as Text
+
+
+main = do
+	conn <- connectPostgreSQL "dbname='dbs' user='testuser' host='localhost' password='testpass'"
+	putStrLn "Connected to DB! Querying all students"
+	xs <- (query_ conn "SELECT vorname, nachname, matrikelnummer FROM Student")
+	forM_ xs $ \(fname, lname, matrikelnummer) ->
+  		putStrLn $ Text.unpack "Matrikelnummer: " ++ show (matrikelnummer :: Int) ++ "; Vorname: " ++ fname ++ "; Nachname: " ++ lname
+\end{lstlisting}
+
+
+\item[b)]
+
+Erstmal die Bibliothek für Arbeit mit PostgreSQL installieren.
+
+\begin{lstlisting}[style=Bash]
+	[hristov@Edgy exercise4]$ sudo pacman -S python-psycopg2
+\end{lstlisting}
+
+PostgreSQL Service starten
+
+\begin{lstlisting}[style=Bash]
+	[hristov@Edgy exercise4]$ sudo systemctl start postgresql.service
+\end{lstlisting}
+
+\begin{lstlisting}[style=py]
+	import psycopg2
+import uuid
+
+class Student:
+	
+	def __init__(self, fname, lname):
+		self.firstName = fname
+		self.lastName = lname
+		self.id = uuid.uuid4().int & (1<<16)-1 # turn into a 16 bit integer with mask
+
+	def addToDB(self, connection):
+		c = connection.cursor()
+
+		c.execute("SELECT * FROM Student")
+		students = c.fetchall()
+		print("Students in Student table: ")
+		for student in students:
+			print(student)
+
+		insertStudentSql = "INSERT INTO Student (vorname, nachname, matrikelnummer) VALUES ('{0}', '{1}', '{2}')"
+		sqlCommand = insertStudentSql.format(self.firstName, self.lastName, self.id)
+		c.execute(sqlCommand)
+		connection.commit()
+
+dbUser = "testuser"
+dbName = "dbs"
+host = "localhost"
+dbUserPassword = "testpass"
+
+connectionStringTemplate = "dbname='{0}' user='{1}' host='{2}' password='{3}'"
+connectionString = connectionStringTemplate.format(dbName, dbUser, host, dbUserPassword)
+
+try:
+	connection = psycopg2.connect(connectionString)
+	print("Connected to DB!")
+	randomStudent = Student("Will", "Smith")
+	randomStudent.addToDB(connection)
+	print("Successfully addded Student to DB!")
+	   
+	connection.close()   
+except Exception as er:
+	print("Failed connecting to DB!")
+	print(er)
+\end{lstlisting}
+
+\item[c)]
+
+Erstmal den Postgresql JDBC Driver für Java herunterladen
+
+\begin{lstlisting}[style=Bash]
+	[hristov@Edgy ~]$ yaourt postgresql-jdbc
+\end{lstlisting}
+
+Füge das .jar zu den Classpath von dem DBTest.java
+
+z.B javac -classpath postgresql-42.1.1.jre6.jar DBTetst.java
+
+\begin{lstlisting}[style=java]
+package fu.alp4;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+
+public class DBTest {
+
+    public static void main(String[] args) {
+
+        try {
+
+            Class.forName("org.postgresql.Driver");
+
+        } catch (ClassNotFoundException e) {
+
+            System.out.println("PostgreSQL JDBC Driver not included in class path!");
+            return;
+
+        }
+
+        System.out.println("JDBC registered succesffully :)");
+
+        Connection connection = null;
+        Statement statement = null;
+        ResultSet rs = null;
+
+        try {
+            connection = DriverManager.getConnection("jdbc:postgresql://localhost/dbs", "testuser", "testpass");
+            statement = connection.createStatement();
+        } catch (SQLException e) {
+
+            System.out.println("Failed connecting to DB!");
+            return;
+
+        }
+
+        System.out.println("Successfully connected to DB!");
+
+
+        try {
+            System.out.println("Students in DB: ");
+            rs = statement.executeQuery("SELECT matrikelnummer, vorname, nachname FROM Student");
+            while (rs.next()) {
+                int matrikelnummer = rs.getInt("matrikelnummer");
+                String firstName = rs.getString("vorname");
+                String lastName = rs.getString("nachname");
+                System.out.println(String.format("Matrikelnummer: %s; Vorname: %s; Nachname: %s",
+                        matrikelnummer, firstName, lastName));
+            }
+            connection.close();
+        }
+        catch(SQLException e) {
+            System.out.println("Error while executing sql query!");
+        }
+
+    }
+}
+
+\end{lstlisting}
 
 \end{itemize}
 

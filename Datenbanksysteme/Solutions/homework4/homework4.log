@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.14159265-2.6-0.99996 (TeX Live 2016/Arch Linux) (preloaded format=xelatex 2017.5.11)  25 MAY 2017 21:14
+This is XeTeX, Version 3.14159265-2.6-0.99996 (TeX Live 2016/Arch Linux) (preloaded format=xelatex 2017.5.11)  26 MAY 2017 04:00
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1489,29 +1489,62 @@ Package babel Info: Redefining ngerman shorthand "~
 (babel)             in language  on input line 132.
 Missing character: There is no а in font [lmroman10-regular]:mapping=tex-text;!
 Package babel Info: Redefining ngerman shorthand "|
-(babel)             in language  on input line 187.
+(babel)             in language  on input line 186.
 Package babel Info: Redefining ngerman shorthand "~
-(babel)             in language  on input line 187.
+(babel)             in language  on input line 186.
 Package babel Info: Redefining ngerman shorthand "|
-(babel)             in language  on input line 187.
+(babel)             in language  on input line 193.
 Package babel Info: Redefining ngerman shorthand "~
-(babel)             in language  on input line 187.
+(babel)             in language  on input line 193.
+Package babel Info: Redefining ngerman shorthand "|
+(babel)             in language  on input line 193.
+Package babel Info: Redefining ngerman shorthand "~
+(babel)             in language  on input line 193.
  [3]
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 187.
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 187.
+LaTeX Font Info:    Font shape `TU/lmtt/bx/n' in size <8> not available
+(Font)              Font shape `TU/lmtt/b/n' tried instead on input line 208.
+Package babel Info: Redefining ngerman shorthand "|
+(babel)             in language  on input line 262.
+Package babel Info: Redefining ngerman shorthand "~
+(babel)             in language  on input line 262.
+Package babel Info: Redefining ngerman shorthand "|
+(babel)             in language  on input line 262.
+Package babel Info: Redefining ngerman shorthand "~
+(babel)             in language  on input line 262.
+ [4]
+Package babel Info: Redefining ngerman shorthand "|
+(babel)             in language  on input line 331.
+Package babel Info: Redefining ngerman shorthand "~
+(babel)             in language  on input line 331.
+Package babel Info: Redefining ngerman shorthand "|
+(babel)             in language  on input line 331.
+Package babel Info: Redefining ngerman shorthand "~
+(babel)             in language  on input line 331.
 
-(./homework4.aux)
-Package atveryend Info: Empty hook `AtVeryEndDocument' on input line 187.
-Package atveryend Info: Empty hook `AtEndAfterFileList' on input line 187.
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 187.
+[5]
+Package babel Info: Redefining ngerman shorthand "|
+(babel)             in language  on input line 365.
+Package babel Info: Redefining ngerman shorthand "~
+(babel)             in language  on input line 365.
+Package babel Info: Redefining ngerman shorthand "|
+(babel)             in language  on input line 365.
+Package babel Info: Redefining ngerman shorthand "~
+(babel)             in language  on input line 365.
+ [6]
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 365.
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 365.
+ (./homework4.aux)
+Package atveryend Info: Empty hook `AtVeryEndDocument' on input line 365.
+Package atveryend Info: Empty hook `AtEndAfterFileList' on input line 365.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 365.
  ) 
 Here is how much of TeX's memory you used:
- 39030 strings out of 493068
- 781686 string characters out of 6141028
- 1146594 words of memory out of 5000000
- 42325 multiletter control sequences out of 15000+600000
- 21428 words of font info for 53 fonts, out of 8000000 for 9000
+ 39719 strings out of 493068
+ 789942 string characters out of 6141028
+ 1173578 words of memory out of 5000000
+ 43008 multiletter control sequences out of 15000+600000
+ 21452 words of font info for 56 fonts, out of 8000000 for 9000
  1347 hyphenation exceptions out of 8191
- 66i,7n,67p,10459b,1812s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 66i,8n,67p,10459b,1948s stack positions out of 5000i,500n,10000p,200000b,80000s
 
-Output written on homework4.pdf (3 pages).
+Output written on homework4.pdf (6 pages).
