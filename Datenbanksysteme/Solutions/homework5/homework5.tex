@@ -27,13 +27,16 @@ Link zum Git Repository: \url{https://github.com/BoyanH/Freie-Universitaet-Berli
 
 \begin{align*}
 \text{Minimal F} = \{ & \\
-& \{B\} \rightarrow \{CD\} \\
+& \{B\} \rightarrow \{C\} \\
+& \{B\} \rightarrow \{D\} \\
 & \{C\} \rightarrow \{E\} \\
 & \{D\} \rightarrow \{E\} \\
 & \{AE\} \rightarrow \{D\} \\
 \} & \\ \\
 & \Rightarrow \\
 F+ = \{ & \\
+& \{B\} \rightarrow \{C\} \\
+& \{B\} \rightarrow \{D\} \\
 & \{B\} \rightarrow \{CD\} \\
 & \{C\} \rightarrow \{E\} \\
 & \{D\} \rightarrow \{E\} \\
@@ -97,7 +100,11 @@ Attributhülle von \{B\}
 %
 & \{B\} \rightarrow \{ABCDEF\}
 \end{align*}
-Attributhülle von \{B\} = \{ABCDEF\}. Deswegen ist B ein Schlüssel. Wegen $\{D\} \rightarrow \{BC\}$ ist D ein weiteres Schlüssel. Wegen $\{F\} \rightarrow \{ABD\}$ ist F auch ein Schlüssel. Von $\{E\} \rightarrow \{CD\}$ ist E auch Schlüssel. Weitere Kandidaten gibt es nicht, da per Definition ein Schlüssel das kleinste Superkey ist und alle andere Superkeys haben mindestens 2 Attributen.
+Attributhülle von \{B\} = $B^{+}$ = \{ABCDEF\}. Deswegen ist B ein Schlüssel. 
+
+\item[b)]
+Wie wir bei Aufgabenteil a) gesehen haben ist B ein Schlüsel.
+Wegen $\{D\} \rightarrow \{BC\}$ ist D ein weiteres Schlüssel. Wegen $\{F\} \rightarrow \{ABD\}$ ist F auch ein Schlüssel. Von $\{E\} \rightarrow \{CD\}$ ist E auch Schlüssel. Weitere Kandidaten gibt es nicht, da per Definition ein Schlüssel das kleinste Superkey ist und alle andere Superkeys haben mindestens 2 Attributen.
 
 Kandidaten für Schlüssel: B, D, E, F
 
@@ -107,9 +114,32 @@ Wir haben aus allen Kandidaten B für Schlüssel gewählt, da dieser am trivials
 
 \section*{3. Aufgabe}
 
-\item[b)]
-Wie wir bei Aufgabenteil a) gesehen haben ist B ein Schlüsel.
-
+\begin{align*}
+FD(R_2) = \{ & \\
+& \{A\} \rightarrow \{D, E\} \\
+& \{B\} \rightarrow \{C, D\} \\
+& \{C\} \rightarrow \{A\} \\
+& \{D, E\} \rightarrow \{A, C\} \\
+\} & \\ \\
+%
+& \{B\} \rightarrow \{CD\} \Rightarrow \{B\} \rightarrow \{C\} \text{(Reflexivity)} \\
+\Rightarrow & \{B\} \rightarrow \{C\} \land \{C\} \rightarrow \{A\} \\
+\Rightarrow & \{B\} \rightarrow \{A\} \text{(Transitivity)} \\
+\Rightarrow & \{B\} \rightarrow \{A\} \land \{A\} \rightarrow \{DE\} \\
+\Rightarrow & \{B\} \rightarrow \{DE\} \text{(Transitivity)} \\
+\Rightarrow & \{B\} \rightarrow \{D\} \text{(Reflexivity)} \\
+\Rightarrow & \text{Dependency } \{B\} \rightarrow \{CD\} \text{ kann ducrh } \{B\} \rightarrow \{C\} \text{ substituiert werden} \\
+%
+\Leftrightarrow & \text{(Decomposition)}\\
+FD(R_2) = \{ & \\
+& \{A\} \rightarrow \{D\} \\
+& \{A\} \rightarrow \{E\} \\
+& \{B\} \rightarrow \{C\} \\
+& \{C\} \rightarrow \{A\} \\
+& \{D, E\} \rightarrow \{A\} \\
+& \{D, E\} \rightarrow \{C\} \\
+\} & \\ \\ \\
+\end{align*}
 
 \end{itemize}
 
