@@ -1,0 +1,87 @@
+\input{src/header}											% bindet Header ein (WICHTIG)
+\usepackage{graphicx}
+\usepackage{fancyvrb}
+
+\newcommand{\dozent}{Prof. Dr. Agn`es Voisard, Nicolas Lehmann}					% <-- Names des Dozenten eintragen
+\newcommand{\tutor}{Nicolas Lehmann}						% <-- Name eurer Tutoriun eintragen
+\newcommand{\tutoriumNo}{10}				% <-- Nummer im KVV nachschauen
+\newcommand{\projectNo}{5}									% <-- Nummer des Übungszettels
+\newcommand{\veranstaltung}{Datenbanksysteme}	% <-- Name der Lehrveranstaltung eintragen
+\newcommand{\semester}{SoSe 2017}						% <-- z.B. SoSe 17, WiSe 17/18
+\newcommand{\studenten}{Boyan Hristov, Julian Habib}			% <-- Hier eure Namen eintragen
+% /////////////////////// BEGIN DOKUMENT /////////////////////////
+
+
+\begin{document}
+\input{src/titlepage}										% erstellt die Titelseite
+
+
+Link zum Git Repository: \url{https://github.com/BoyanH/Freie-Universitaet-Berlin/tree/master/Datenbanksysteme/Solutions/homework5}
+
+% /////////////////////// Aufgabe 1 /////////////////////////
+\section*{1. Aufgabe}
+
+\begin{itemize}
+
+\item[a)]
+
+\begin{align*}
+\text{Minimal F} = \{ & \\
+& \{B\} \rightarrow \{CD\} \\
+& \{C\} \rightarrow \{E\} \\
+& \{D\} \rightarrow \{E\} \\
+& \{AE\} \rightarrow \{D\} \\
+\} & \\ \\
+& \Rightarrow \\
+F+ = \{ & \\
+& \{B\} \rightarrow \{CD\} \\
+& \{C\} \rightarrow \{E\} \\
+& \{D\} \rightarrow \{E\} \\
+& \{AE\} \rightarrow \{D\} \\
+& \{B\} \rightarrow \{C\} \\
+& \{B\} \rightarrow \{D\} \\
+& \{BC\} \rightarrow \{CDE\} \\
+& \{BD\} \rightarrow \{CDE\} \\
+& \{CD\} \rightarrow \{E\} \\
+& \{AB\} \rightarrow \{CDE\} \\
+& ... \\
+\} &
+\end{align*}
+
+Damit ist AB ein Key / Schlüssel.
+
+\item[b)]
+Pseudotransitivität wäre hier
+\begin{align*}
+& \{C\} \rightarrow \{E\} \land \{AE\} \rightarrow D \\
+\Rightarrow & \{AC\} \rightarrow \{D\}
+\end{align*}
+
+\item[c)]
+\begin{align*}
+& \{BE\} \rightarrow \{B\} \text{(Reflexivity)} \\
+\Rightarrow & \{A\} \rightarrow \{BE\} \land \{BE\} \rightarrow \{B\} \\
+\Rightarrow & \{A\} \rightarrow \{B\} (Transitivity) \\
+\Rightarrow & \{A\} \rightarrow \{B\} \land \{A\} \rightarrow \{A\} \text{(Reflexivity)} \\
+\Rightarrow & \{A\} \rightarrow \{AB\} \text{(Union)} \land \{AB\} \rightarrow \{C\} \\
+\Rightarrow & \{A\} \rightarrow \{C\} \text{(Transitivity)} \\
+\Rightarrow & \{A\} \rightarrow \{C\} \land \{C\} \rightarrow \{D\} \\
+\Rightarrow & \{A\} \rightarrow \{D\} \text{(Transitivity)}
+\end{align*}
+
+\end{itemize}
+
+\section*{2. Aufgabe}
+
+\begin{itemize}
+
+\item[a)]
+
+
+
+\end{itemize}
+
+
+
+% /////////////////////// END DOKUMENT /////////////////////////
+\end{document}
