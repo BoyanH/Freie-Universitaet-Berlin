@@ -1,0 +1,975 @@
+\input{src/header}											% bindet Header ein (WICHTIG)
+\usepackage{graphicx}
+\usepackage{amsmath}
+\usepackage{amssymb}
+
+\newcommand{\dozent}{Prof. Dr. Margarita Esponda}					% <-- Names des Dozenten eintragen
+\newcommand{\tutor}{Lilli Walter}						% <-- Name eurer Tutoriun eintragen
+\newcommand{\tutoriumNo}{6}				% <-- Nummer im KVV nachschauen
+\newcommand{\projectNo}{4}									% <-- Nummer des Übungszettels
+\newcommand{\veranstaltung}{Nichtsequentielle Programmierung}	% <-- Name der Lehrveranstaltung eintragen
+\newcommand{\semester}{SoeSe 2017}						% <-- z.B. SoSo 17, WiSe 17/18
+\newcommand{\studenten}{Boyan Hristov, Sergelen Gongor}			% <-- Hier eure Namen eintragen
+% /////////////////////// BEGIN DOKUMENT /////////////////////////
+
+
+\begin{document}
+\input{src/titlepage}										% erstellt die Titelseite
+
+
+Link zum Git Repository: \url{https://github.com/BoyanH/FU-Berlin-ALP4/tree/master/Solutions/Homework4}
+
+% /////////////////////// Aufgabe 1 /////////////////////////
+
+\section*{Aufgabe 1}
+
+Es ist wichtig, dass das playing state von dem Bank ihr Gehalt entspricht, sonst können gleichzeitig zwei Spieler spielen und ein negatives Gehalt von dem Bank kriegen. Weiter ist es wichtig, dass keiner spielen kann, wenn das Casino nicht mehr spielz bzw. wenn es kein Geld mehr hat. 
+
+Wir haben das relevante Teil von CasinoBank::playAGame() synchronisiert, damit das Verlieren/Gewinnen von Geld, die Veränderung des isPlaying und das Erlaubnis dem Spieler ein weiteres Spiel zu spielen alle richtig behandelt werden.
+
+\begin{lstlisting}[style=java]
+package fu.alp4;
+
+import javax.swing.*;
+
+public class CasinoBank {
+
+    private int money;
+    private boolean playing;
+    private JTextArea textArea;
+    private Object moneyLock;
+
+    public CasinoBank() {
+        this.money = 20;
+        this.textArea = new JTextArea();
+        this.moneyLock = new Object();
+        this.playing = true;
+    }
+
+
+    public boolean getAvailable() {
+        return this.playing;
+    }
+
+    public boolean playAGame() throws Exception {
+
+        boolean playerWon;
+
+
+        double random = Math.round(Math.random());
+        playerWon = random <= 0.4;
+
+        synchronized (moneyLock) {
+
+            if (!this.playing) {
+                throw new Exception("Can't play further games. Casino closed!");
+            }
+
+            if (playerWon) {
+                this.money--;
+                this.playing = this.money > 0;
+            } else {
+                this.money++;
+            }
+        }
+
+        this.textArea.setText(String.format("Casino has %s dollars. Casino playing: %s", this.money, this.playing));
+
+        return playerWon;
+    }
+
+    JTextArea getTextArea() {
+
+        return this.textArea;
+    }
+}
+
+
+package fu.alp4;
+
+import javax.swing.*;
+
+/**
+ * Created by hristov on 5/8/17.
+ */
+
+public class Gambler extends Nap {
+
+    private CasinoBank playingInCasino;
+    private int budget;
+    private final int initialBudget;
+    private boolean playing;
+    private String name;
+    private JTextArea textArea;
+
+    public Gambler(String givenName, CasinoBank casino) {
+
+        this.initialBudget = 5;
+        this.budget = this.initialBudget;
+        this.playing = true;
+        this.name = givenName;
+        this.textArea = new JTextArea();
+        this.playingInCasino = casino;
+    }
+
+    public void run() {
+
+        while(this.isPlaying()) {
+
+            this.think();
+            this.bet();
+        }
+    }
+
+    public void think() {
+
+        randomNap(500, 1500);
+    }
+
+    public void bet() {
+
+        boolean justWon;
+
+        try {
+            justWon = this.playingInCasino.playAGame();
+
+            if(justWon) {
+                this.budget++;
+
+            }
+            else {
+                this.budget--;
+            }
+
+            if(this.budget == 0 || this.budget == this.initialBudget*2 || !this.playingInCasino.getAvailable()) {
+
+                this.playing = false;
+            }
+
+            this.textArea.setText(this.name + " just " +
+                    (justWon ? "won" : "lost") +
+                    " 1 dollar. Current budget: " + this.budget + " ; still playing: " +
+                    this.isPlaying());
+        }
+        catch (Exception e) {
+            // casino closed
+            this.playing = false;
+            this.textArea.setText(this.name + " is no longer playing, because the casino closed!");
+        }
+    }
+
+    public boolean isPlaying() {
+
+        return this.playing;
+    }
+
+    JTextArea getTextArea() {
+
+        return this.textArea;
+    }
+}
+
+
+package fu.alp4;
+
+import javax.swing.*;
+
+public class Main extends JPanel{
+
+    public static void main(String[] args) {
+
+        CasinoBank casino = new CasinoBank();
+
+        Gambler[] gamblers = new Gambler[3];
+        gamblers[0] = new Gambler("Pesho", casino);
+        gamblers[1] = new Gambler("Stamat", casino);
+        gamblers[2] = new Gambler("Gosho", casino);
+
+        JFrame f = new JFrame();
+        f.setContentPane(new Main());
+        f.setSize(400,400);
+        f.setVisible(true);
+
+        f.add(casino.getTextArea());
+        for(int i = 0; i < gamblers.length; i++) {
+
+            gamblers[i].start();
+            f.add(gamblers[i].getTextArea());
+        }
+
+    }
+}
+
+
+
+\end{lstlisting}
+
+\section*{Aufgabe 2}
+
+Für diese Aufgabe haben wir für die Synchronation ein Semaphor freeBabySlots benutzt. Wenn neue Babies kommen / bzw. Eltern, wird ein acquire auf dem Semaphor gemacht. Eine neue Nurse gibt 5 Slots frei wenn sie zur Arbeit kommt, und acquired dann wieder 5 Slots wenn sie nach Hause geht.
+
+\begin{lstlisting}[style=java]
+package fu.alp4;
+
+import java.util.LinkedList;
+import java.util.List;
+import java.util.concurrent.Semaphore;
+
+public class Kita {
+
+    private int babies;
+    private List<Parent> parents;
+    private List<Nurse> nurses;
+
+    private Semaphore freeBabySlots;
+
+    public Kita() {
+        this.parents = new LinkedList<>();
+        this.nurses = new LinkedList<>();
+        this.babies = 0;
+        this.freeBabySlots = new Semaphore(0, true);
+    }
+
+    public void giveBabyToNursery(Parent parent) {
+
+        System.out.println("New baby on the horizon!");
+        try {
+            this.freeBabySlots.acquire();
+            this.babies++;
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        this.parents.add(parent);
+        System.out.printf("New baby accepted!");
+        this.printState();
+    }
+
+    public void takeBabyFromNursery(Parent parent) {
+        this.freeBabySlots.release();
+        this.parents.add(parent);
+        this.babies--;
+        System.out.println("Baby taken from nursery!");
+        this.printState();
+    }
+
+    public void requestNewNurse(Nurse nurse) {
+        this.freeBabySlots.release(5);
+        nurses.add(nurse);
+        System.out.println("A new nurse came. Things are going well.");
+        this.printState();
+    }
+
+    public void requestSendNurseHome(Nurse nurse) {
+        System.out.println("A nurse want to abandon ship!");
+        try {
+            this.freeBabySlots.acquire(5);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        nurses.remove(nurse);
+        System.out.println("The nurse left the vessel.");
+        this.printState();
+    }
+
+    public void printState() {
+        System.out.printf("#Nurses: %s; #Babies: %s; Babies capacity left: %s\n\n",
+                this.nurses.size(), this.babies, this.freeBabySlots.availablePermits());
+    }
+}
+
+
+
+package fu.alp4;
+
+public class Nurse extends Nap {
+
+    private Kita kita;
+
+    public Nurse(String name, Kita kita) {
+        this.kita = kita;
+    }
+
+    public void run() {
+
+        while(true) {
+            Nurse.randomNap(5000, 15000);
+            this.goToWork();
+            Nurse.randomNap(30000, 70000);
+            this.goHome();
+        }
+    }
+
+    public void goHome() {
+        kita.requestSendNurseHome(this);
+    }
+
+    public void goToWork() {
+        this.kita.requestNewNurse(this);
+    }
+}
+package fu.alp4;
+
+
+
+
+public class Parent extends Nap {
+
+    private Kita kita;
+
+    public Parent(String name, Kita kita) {
+        this.kita = kita;
+    }
+
+    public void run() {
+
+        while(true) {
+            Parent.randomNap(5000, 15000);
+            this.sendBabyToNursery();
+            Parent.randomNap(20000, 50000);
+            this.takeBabyFromNursery();
+        }
+    }
+
+    public void sendBabyToNursery() {
+        this.kita.giveBabyToNursery(this);
+    }
+
+    public void takeBabyFromNursery() {
+        this.kita.takeBabyFromNursery(this);
+    }
+}
+
+
+
+
+package fu.alp4;
+
+public class Main {
+
+    public static void main(String[] args) {
+    // write your code here
+
+        Kita kita = new Kita();
+
+        for (int j = 0; j < 15; j++) {
+            String crntParentName = "Parent #" + (j+1);
+            Parent crntParent = new Parent(crntParentName, kita);
+            crntParent.start();
+        }
+
+        for (int i = 0; i < 3; i++) {
+            String crntNurseName = "Nurse #" + (i+1);
+            Nurse crntNurse = new Nurse(crntNurseName, kita );
+            crntNurse.start();
+        }
+    }
+}
+
+
+
+
+
+
+package fu.alp4;
+
+/**
+ * Created by hristov on 5/8/17.
+ */
+public class Nap extends Thread{
+
+    public static void nap(int milliSeconds) {
+
+        try {
+            Thread.sleep(milliSeconds);
+        }
+        catch (InterruptedException e) {
+            System.out.println("Sleep was interrupted. " + e.getMessage());
+        }
+    }
+
+    public static void randomNap(int minMilliSeconds, int maxMilliSeconds) {
+
+        int randomMilliSeconds = (int) Math.round(Math.random()*(maxMilliSeconds-minMilliSeconds) + minMilliSeconds);
+        nap(randomMilliSeconds);
+    }
+}
+
+
+\end{lstlisting}
+
+\section*{Aufgabe 3}
+
+\begin{itemize}
+
+\item[a)] Done
+
+\item[b)]
+
+Mit ReentrantLock
+\begin{lstlisting}[style=java]
+
+package control;
+
+import vehicle.Vehicle;
+
+import java.util.concurrent.locks.ReentrantLock;
+
+public class OneAtATimeBCReentrantLock implements BridgeControl {
+    double maxLoad;
+    final ReentrantLock lock = new ReentrantLock();
+
+    @Override
+    public void init(Double maxLoad) {
+        this.maxLoad = maxLoad;
+    }
+
+    @Override
+    public void requestCrossing(Vehicle v) {
+        if (v.getWeight() <= maxLoad) {
+            lock.lock(); // acquire the lock, no one else can pass in the same time
+        }
+        else {
+            try {
+                if (v.getWeight() > maxLoad) {
+                    Thread.sleep(Long.MAX_VALUE);
+                }
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    @Override
+    public void leaveBridge(Vehicle v) {
+        lock.unlock(); // release the lock once the auto has passed the bridge
+    }
+}
+
+
+\end{lstlisting}
+
+Mit Monitorkonzept
+\begin{lstlisting}[style=java]
+package control;
+
+import vehicle.Vehicle;
+
+public class OneAtATimeBCMonitor implements BridgeControl {
+    double maxLoad;
+    boolean bridgeFree = true;
+
+    @Override
+    public void init(Double maxLoad) {
+        this.maxLoad = maxLoad;
+    }
+
+    @Override
+    public synchronized void requestCrossing(Vehicle v) {
+        // this method is synchronized, so only
+        try {
+
+            while (!bridgeFree || v.getWeight() > maxLoad) {
+                wait();
+            }
+
+            bridgeFree = false;
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public synchronized void leaveBridge(Vehicle v) {
+        bridgeFree = true;
+    }
+}
+
+\end{lstlisting}
+
+Mit Semaphoren
+\begin{lstlisting}[style=java]
+package control;
+
+import vehicle.Vehicle;
+import vehicle.Vehicle.VOrigin;
+
+import java.util.concurrent.Semaphore;
+
+public class OneAtATimeBCSemaphore implements BridgeControl {
+
+    double maxLoad;
+    final Semaphore bridgeCrossingSlot = new Semaphore(1, true); // one car can pass at a time, fair queue
+
+    @Override
+    public void init(Double maxLoad) {
+        this.maxLoad = maxLoad;
+    }
+
+    @Override
+    public void requestCrossing(Vehicle v) {
+
+        try {
+            if (v.getWeight() > maxLoad) {
+                Thread.sleep(Long.MAX_VALUE);
+            }
+
+            bridgeCrossingSlot.acquire();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void leaveBridge(Vehicle v) {
+        bridgeCrossingSlot.release();
+    }
+
+}
+
+\end{lstlisting}
+
+\item[c)]
+
+Hier haben wir eine Ampel simuliert, deswegen haben wir auch dafür gesorgt, dass man dann später noch weitere Straßen (nicht nur West und Öst) leicht einfügen kann und auch dafür gesorgt, 
+dass wenn 5 Autos vor andere 5 auf je Seite angekommen sind, dann werden diese auch früher über die Brücke fahren.
+
+\begin{lstlisting}[style=java]
+package control;
+
+import vehicle.Vehicle;
+import vehicle.Vehicle.VOrigin;
+
+import java.util.concurrent.Semaphore;
+
+public class FivePerDirectionBC implements BridgeControl {
+
+    static final int autosPerWave = 5;
+    static VOrigin currentWaveOrigin;
+    static int autosPassedFromCurrentWave;
+
+    Semaphore[] slotsByOrigin;
+    Semaphore weight;
+
+    Semaphore leaveBridgeMutex;
+    Semaphore initializeMutex;
+    Semaphore weightHandlerMutex;
+
+    double maxLoad;
+
+    /**
+     * Initialize all variables and semaphores, set currentLoad and autosPassedFromCurrentWave to 0,
+     * set currentWave to West and add 5 available slots for cars on the west side
+     *
+     * @param maxLoad	Max load (depending on users input)
+     */
+
+    @Override
+    public synchronized void init(Double maxLoad) {
+
+        this.maxLoad = maxLoad;
+        weight = new Semaphore((int) Math.floor(maxLoad*100), true);
+        leaveBridgeMutex = new Semaphore(1, true);
+        initializeMutex = new Semaphore(1, true);
+        weightHandlerMutex = new Semaphore(1, true);
+        autosPassedFromCurrentWave = 0;
+
+        slotsByOrigin = new Semaphore[VOrigin.values().length];
+        for (int i = 0; i < slotsByOrigin.length; i++) {
+            slotsByOrigin[i] = new Semaphore(0, true);
+        }
+
+        try {
+            initializeMutex.acquire();
+            setWave(VOrigin.WEST);
+            initializeMutex.release();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     *
+     * Each vehicle that wants to pass the bridge acquires from the semaphore for it's side.
+     * If it does indeed get a slot, it checks if the bridge can sustain it.
+     * If not, the thread goes to sleep for a looong time.
+     *
+     * Further each vehicle with a slot checks if the bridge can sustain it and all vehicle on the bridge and
+     * waits until the condition is met.
+     *
+     * @param v		Vehicle asking for the permission to cross the bridge.
+     */
+
+    @Override
+    public void requestCrossing(Vehicle v) {
+
+        try {
+            getSlotsByOrigin(v.getOrigin()).acquire();
+
+            weightHandlerMutex.acquire();
+
+            if (v.getWeight() > maxLoad) {
+                getSlotsByOrigin(v.getOrigin()).release();
+                weightHandlerMutex.release();
+                Thread.sleep(Long.MAX_VALUE);
+            }
+
+            weightHandlerMutex.release();
+
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        try {
+            weight.acquire(getWeightFromVehicle(v));
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+
+    /**
+     *
+     * When leaving the bridge each auto adds to the count of total vehicles passed. That way, we are able to change
+     * the current wave (west or east at the time) exactly when the last vehicle has left the bridge.
+     *
+     * Further we remove its weight from the calculation.
+     *
+     * @param v		Vehicle finished the crossing
+     */
+
+    @Override
+    public void leaveBridge(Vehicle v) {
+
+        try {
+            leaveBridgeMutex.acquire();
+            autosPassedFromCurrentWave++;
+            weight.release(getWeightFromVehicle(v));
+
+            if (autosPassedFromCurrentWave == autosPerWave) {
+                autosPassedFromCurrentWave = 0;
+                setWave(getNextOrigin(currentWaveOrigin));
+            }
+            leaveBridgeMutex.release();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    /**
+     *
+     * Gets the next origin from the sorted VOrigin.values() array. We treat this array as a circular array.
+     *
+     * @param origin VOrigin
+     * @return VOrigin
+     */
+    private VOrigin getNextOrigin(VOrigin origin) {
+
+        VOrigin[] vOrigins = VOrigin.values();
+        int currentOriginIndex = java.util.Arrays.binarySearch(vOrigins, origin);
+
+        if (currentOriginIndex != vOrigins.length - 1) {
+            return vOrigins[currentOriginIndex + 1];
+        }
+
+        return vOrigins[0];
+    }
+
+    /**
+     * Gets all the origins but the current one from VOrigin.values() array
+     *
+     * @param origin
+     * @return
+     */
+    private static VOrigin[] getNonCurrentOrigins(VOrigin origin) {
+
+        VOrigin[] vOrigins = VOrigin.values();
+        VOrigin[] nonCurrentOrigins = new VOrigin[vOrigins.length - 1];
+        int ncoCounter = 0;
+
+        for (int i = 0; i < vOrigins.length; i++) {
+
+            if (vOrigins[i] != origin) {
+                nonCurrentOrigins[ncoCounter] = vOrigins[i];
+                ncoCounter++;
+            }
+        }
+
+        return nonCurrentOrigins;
+    }
+
+    /**
+     * Maps each item's index in VOrigins.values() to a Semaphore in slotsByOrigin
+     *
+     * @param origin
+     * @return
+     */
+    private Semaphore getSlotsByOrigin(VOrigin origin) {
+
+        VOrigin[] vOrigins = VOrigin.values();
+
+        return slotsByOrigin[java.util.Arrays.binarySearch(vOrigins, origin)];
+    }
+
+    /**
+     * Removes all available slots for other waves (not really used at the moment as available slots for current wave
+     * are already 0 but could be useful in the future)
+     *
+     * Adds autosPerWave amount of slots to the current wave
+     *
+     * @param wave
+     */
+    private void setWave(VOrigin wave) {
+
+        currentWaveOrigin = wave;
+        VOrigin[] nonCurrentOrigins = getNonCurrentOrigins(currentWaveOrigin);
+
+        for (int i = 0; i < nonCurrentOrigins.length; i++) {
+            getSlotsByOrigin(nonCurrentOrigins[i]).drainPermits();
+        }
+
+        getSlotsByOrigin(currentWaveOrigin).release(autosPerWave);
+    }
+
+    /**
+     * Used to make acquiring and releasing of weight easier. Weight of vehicle is multiplied by 100 and ceiled to
+     * make a precise enough integer way of measuring weight
+     * @param v Vehicle
+     * @return
+     */
+    private int getWeightFromVehicle(Vehicle v) {
+        return (int) Math.ceil(v.getWeight() * 100);
+    }
+
+}
+
+\end{lstlisting}
+
+\item[d)]
+
+Hier haben wir ganz simpel das Gewicht als ein Semaphor deklariert. Da aber die Semaphoren Integers sind, haben wir das Gewicht mit 100 multipliziert und dann für die Deklaration
+des Semaphors abgerundet und später bei recquire aufgerundet. So erreichen wir ziemlich nah die Tragbarkeit der Brücke. Wir haben als letzten Parameter zu dem Semaphor true übergeben, dass heißt eine Semaphor mit faire Warteschlange hergestellt. Deswegen müssen wir uns nicht mehr um Fairnisskeit kümmern, da es eine faire Warteschlange ist - sobald die Brücke mehr tragen kann, kommt das nächste Auto, dass seit längstens wartet. \\ \\
+
+Bei allen Tests haben wir die gewünschte Fairness und Effizienz erreicht, in dem letzten Test sogar viel drüber - Efficiency: 14168 Fairness: 7978
+
+\begin{lstlisting}[style=java]
+package control;
+
+import vehicle.Vehicle;
+import vehicle.Vehicle.VOrigin;
+
+import java.util.concurrent.Semaphore;
+
+public class FairBC implements BridgeControl {
+
+    double maxLoad;
+    Semaphore weight;
+
+    @Override
+    public void init(Double maxLoad) {
+
+        this.maxLoad = maxLoad;
+        weight = new Semaphore(transformWeight(maxLoad, false), true);
+    }
+
+    @Override
+    public void requestCrossing(Vehicle v) {
+
+        try {
+            weight.acquire(transformWeight(v.getWeight(), true));
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void leaveBridge(Vehicle v) {
+
+        weight.release(transformWeight(v.getWeight(), true));
+    }
+
+    private int transformWeight(double weight, boolean roundUp) {
+
+        double multipliedWeight = weight * 100;
+
+        if (roundUp) {
+            return (int) Math.ceil(multipliedWeight);
+        }
+
+        return (int) Math.floor(multipliedWeight);
+    }
+
+}
+
+\end{lstlisting}
+
+\item[e)]
+
+Wir haben hier zu der vorigen Aufgaben noch ein lowriderHandlerLock mit Monitorkonzept eingefügt. Dieser sorgt dafür, dass beim requestCrossing und leaveBridge nur ein Thread unsere Logik auf einmal ausführen kann. Wenn es noch Lowriders unterwegs gibt und ihr Origin anders ist, dann wartet das Thread, bis es keine mehr gibt oder das LowriderDirection geändert wurde. Beim Verlassen der Brücke wird überprüft ob es noch Lowriders darauf gibt - falls nein, dann werden alle Threads, die auf dem Lock warten, notified.
+
+\begin{lstlisting}[style=java]
+package control;
+
+import vehicle.Vehicle;
+import vehicle.Vehicle.VOrigin;
+
+import java.util.concurrent.Semaphore;
+
+public class FairBCHandleLowriders implements BridgeControl {
+
+    static VOrigin lowridersOrigin;
+    static int lowridersInDirection;
+
+    double maxLoad;
+    Semaphore weight;
+    Object lowriderHandlerLock;
+    Object lowriderReleaserLock;
+    Object changeLowriderDirectionLock;
+
+    @Override
+    public void init(Double maxLoad) {
+
+        lowridersInDirection = 0;
+        this.maxLoad = maxLoad;
+        weight = new Semaphore(transformWeight(maxLoad, false), true);
+        lowriderHandlerLock = new Object();
+    }
+
+    @Override
+    public void requestCrossing(Vehicle v) {
+
+        try {
+            weight.acquire(transformWeight(v.getWeight(), true));
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        if (v.isLowrider()) {
+
+            synchronized (lowriderHandlerLock) {
+
+                try {
+                    if (lowridersOrigin == null) {
+                        lowridersOrigin = v.getOrigin();
+                    } else {
+                        while (lowridersOrigin != v.getOrigin() && lowridersInDirection != 0) {
+                            lowriderHandlerLock.wait();
+                        }
+                        lowridersOrigin = v.getOrigin();
+                    }
+
+                    lowridersInDirection++;
+
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+
+    @Override
+    public void leaveBridge(Vehicle v) {
+
+        weight.release(transformWeight(v.getWeight(), true));
+
+        if (v.isLowrider()) {
+
+            synchronized (lowriderHandlerLock) {
+
+                lowridersInDirection--;
+
+                if (lowridersInDirection == 0) {
+                    lowriderHandlerLock.notifyAll();
+                }
+            }
+
+        }
+    }
+
+    private int transformWeight(double weight, boolean roundUp) {
+
+        double multipliedWeight = weight * 100;
+
+        if (roundUp) {
+            return (int) Math.ceil(multipliedWeight);
+        }
+
+        return (int) Math.floor(multipliedWeight);
+    }
+
+}
+
+\end{lstlisting}
+
+\item[f)]
+
+Da gerade Zahlen langweilig sind, müssen Fahrzeuge mit geraden Nummern zwei mal so viel warten wie diese mit ungeraden. Dafür haben wir nach dem acquire wieder ein release gemacht und nochmal acquire, da es eigentlich nicht so leicht ist, eine Prioritätswarteschlange in dem Semaphore zu ingegrieren.
+
+\begin{lstlisting}[style=java]
+package control;
+
+import vehicle.Vehicle;
+import vehicle.Vehicle.VOrigin;
+
+import java.util.concurrent.Semaphore;
+
+/**
+ * Simple example. Only light vehicles coming from west will be able to pass the Bridge.
+ */
+public class OddNumbersProBC implements BridgeControl {
+
+    double maxLoad;
+    Semaphore weight;
+
+    @Override
+    public void init(Double maxLoad) {
+
+        this.maxLoad = maxLoad;
+        weight = new Semaphore(transformWeight(maxLoad, false), true);
+    }
+
+    @Override
+    public void requestCrossing(Vehicle v) {
+
+
+        try {
+            weight.acquire(transformWeight(v.getWeight(), true));
+
+            // If the vehicle has an even id, it has to wait two times more
+            if (v.getVehicleId() % 2 == 0) {
+                weight.release(transformWeight(v.getWeight(), true));
+                weight.acquire(transformWeight(v.getWeight(), true));
+            }
+
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    @Override
+    public void leaveBridge(Vehicle v) {
+
+        weight.release(transformWeight(v.getWeight(), true));
+    }
+
+    private int transformWeight(double weight, boolean roundUp) {
+
+        double multipliedWeight = weight * 100;
+
+        if (roundUp) {
+            return (int) Math.ceil(multipliedWeight);
+        }
+
+        return (int) Math.floor(multipliedWeight);
+    }
+
+}
+
+\end{lstlisting}
+
+\end{itemize}
+
+% /////////////////////// END DOKUMENT /////////////////////////
+\end{document}
