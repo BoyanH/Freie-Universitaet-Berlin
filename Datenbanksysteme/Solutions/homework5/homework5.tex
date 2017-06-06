@@ -128,15 +128,23 @@ FD(R_2) = \{ & \\
 \Rightarrow & \{B\} \rightarrow \{A\} \land \{A\} \rightarrow \{DE\} \\
 \Rightarrow & \{B\} \rightarrow \{DE\} \text{(Transitivity)} \\
 \Rightarrow & \{B\} \rightarrow \{D\} \text{(Reflexivity)} \\
-\Rightarrow & \text{Dependency } \{B\} \rightarrow \{CD\} \text{ kann ducrh } \{B\} \rightarrow \{C\} \text{ substituiert werden} \\
+\Rightarrow & \text{Dependency } \{B\} \rightarrow \{CD\} \text{ kann ducrh } \{B\} \rightarrow \{C\} \text{ substituiert werden} \\ \\
 %
-\Leftrightarrow & \text{(Decomposition)}\\
+& \{C\} \rightarrow \{A\} \Rightarrow \text{ Dependency } \{DE\} \rightarrow \{A\} \text{ ist wegen dependency} \{DE\} \rightarrow \{C\} \text{ nicht notwendig} \\ \\
+%
+\Leftrightarrow \\
+FD(R_2) = \{ & \\
+& \{A\} \rightarrow \{D, E\} \\
+& \{B\} \rightarrow \{C\} \\
+& \{C\} \rightarrow \{A\} \\
+& \{D, E\} \rightarrow \{C\} \\
+\} & \\ \\ \\
+\Leftrightarrow & \text{(Decomposition)} \\ \\
 FD(R_2) = \{ & \\
 & \{A\} \rightarrow \{D\} \\
 & \{A\} \rightarrow \{E\} \\
 & \{B\} \rightarrow \{C\} \\
 & \{C\} \rightarrow \{A\} \\
-& \{D, E\} \rightarrow \{A\} \\
 & \{D, E\} \rightarrow \{C\} \\
 \} & \\ \\ \\
 \end{align*}
