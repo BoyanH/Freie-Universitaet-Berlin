@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.14159265-2.6-0.99996 (TeX Live 2016/Debian) (preloaded format=xelatex 2017.4.3)  6 JUN 2017 17:38
+This is XeTeX, Version 3.14159265-2.6-0.99996 (TeX Live 2016/Debian) (preloaded format=xelatex 2017.4.3)  6 JUN 2017 18:23
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1496,28 +1496,37 @@ Package babel Info: Redefining ngerman shorthand "~
 
 ]
 Package babel Info: Redefining ngerman shorthand "|
-(babel)             in language  on input line 77.
+(babel)             in language  on input line 107.
 Package babel Info: Redefining ngerman shorthand "~
-(babel)             in language  on input line 77.
+(babel)             in language  on input line 107.
 Package babel Info: Redefining ngerman shorthand "|
-(babel)             in language  on input line 77.
+(babel)             in language  on input line 107.
 Package babel Info: Redefining ngerman shorthand "~
-(babel)             in language  on input line 77.
+(babel)             in language  on input line 107.
  [2]
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 77.
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 77.
+Package babel Info: Redefining ngerman shorthand "|
+(babel)             in language  on input line 119.
+Package babel Info: Redefining ngerman shorthand "~
+(babel)             in language  on input line 119.
+Package babel Info: Redefining ngerman shorthand "|
+(babel)             in language  on input line 119.
+Package babel Info: Redefining ngerman shorthand "~
+(babel)             in language  on input line 119.
+ [3]
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 119.
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 119.
  (./homework5.aux)
-Package atveryend Info: Empty hook `AtVeryEndDocument' on input line 77.
-Package atveryend Info: Empty hook `AtEndAfterFileList' on input line 77.
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 77.
+Package atveryend Info: Empty hook `AtVeryEndDocument' on input line 119.
+Package atveryend Info: Empty hook `AtEndAfterFileList' on input line 119.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 119.
  ) 
 Here is how much of TeX's memory you used:
  39307 strings out of 493068
  814194 string characters out of 6137721
- 968406 words of memory out of 5000000
+ 969406 words of memory out of 5000000
  42604 multiletter control sequences out of 15000+600000
  21436 words of font info for 54 fonts, out of 8000000 for 9000
  1347 hyphenation exceptions out of 8191
- 66i,11n,67p,10459b,415s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 66i,11n,67p,10459b,422s stack positions out of 5000i,500n,10000p,200000b,80000s
 
-Output written on homework5.pdf (2 pages).
+Output written on homework5.pdf (3 pages).

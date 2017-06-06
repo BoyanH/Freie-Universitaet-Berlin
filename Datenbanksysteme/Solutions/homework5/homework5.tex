@@ -77,6 +77,38 @@ Pseudotransitivität wäre hier
 
 \item[a)]
 
+Attributhülle von \{A\}
+
+Es gibt keine funktionale Abhängigkeiten für den Attribut A, deswegen ist seine Attributhülle \{A\} den Attribut selbst. 
+
+Attributhülle von \{B\}
+
+\begin{align*}
+& \{B\} \rightarrow \{AD\} \Rightarrow \{B\} \rightarrow \{D\} \text{(Reflexivity)} \\
+\Rightarrow & \{B\} \rightarrow \{D\} \land \{D\} \rightarrow \{BC\} \\
+\Rightarrow & \{B\} \rightarrow \{C\} \text{(Transitivity)} \\ \\ \\
+%
+\Rightarrow & \{B\} \rightarrow \{C\} \land \{B\} \rightarrow \{D\} \\
+\Rightarrow & \{B\} \rightarrow \{CD\} \text{(Union)} \\
+\Rightarrow & \{B\} \rightarrow \{CD\} \land \{CD\} \{AEF\} \\
+\Rightarrow & \{B\} \rightarrow \{AEF\} \text{(Transitivity)} \\ \\ \\
+%
+& \{B\} \rightarrow \{B\} \text{(Reflexivity)} \\ \\ \\
+%
+& \{B\} \rightarrow \{ABCDEF\}
+\end{align*}
+Attributhülle von \{B\} = \{ABCDEF\}. Deswegen ist B ein Schlüssel. Wegen $\{D\} \rightarrow \{BC\}$ ist D ein weiteres Schlüssel. Wegen $\{F\} \rightarrow \{ABD\}$ ist F auch ein Schlüssel. Von $\{E\} \rightarrow \{CD\}$ ist E auch Schlüssel. Weitere Kandidaten gibt es nicht, da per Definition ein Schlüssel das kleinste Superkey ist und alle andere Superkeys haben mindestens 2 Attributen.
+
+Kandidaten für Schlüssel: B, D, E, F
+
+\item[c)]
+
+Wir haben aus allen Kandidaten B für Schlüssel gewählt, da dieser am trivialsten zu sehen ist und auch alphabetisch der ersten Attribut ist. Da es keine feste Regeln gibt, welcher von den Kandidaten zu einem Schlüssel wird, war unsere Entscheidung nicht so schwer zu treffen.
+
+\section*{3. Aufgabe}
+
+\item[b)]
+Wie wir bei Aufgabenteil a) gesehen haben ist B ein Schlüsel.
 
 
 \end{itemize}
