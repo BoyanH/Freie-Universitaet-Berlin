@@ -11,17 +11,17 @@
 \newcommand{\studenten}{Boyan Hristov, Julian Habib}			% <-- Hier eure Namen eintragen
 % /////////////////////// BEGIN DOKUMENT /////////////////////////
 
-
 \begin{document}
-\input{src/titlepage}										% erstellt die Titelseite
 
+\input{src/titlepage}										% erstellt die Titelseite
 
 Link zum Git Repository: \url{https://github.com/BoyanH/Freie-Universitaet-Berlin/tree/master/Datenbanksysteme/Solutions/homework5}
 
 % /////////////////////// Aufgabe 1 /////////////////////////
+
 \section*{1. Aufgabe}
 
-\begin{itemize}
+\begin{enumerate}
 
 \item[a)]
 
@@ -72,11 +72,11 @@ Pseudotransitivität wäre hier
 \Rightarrow & \{A\} \rightarrow \{D\} \text{(Transitivity)}
 \end{align*}
 
-\end{itemize}
+\end{enumerate}
 
 \section*{2. Aufgabe}
 
-\begin{itemize}
+\begin{enumerate}
 
 \item[a)]
 
@@ -111,6 +111,8 @@ Kandidaten für Schlüssel: B, D, E, F
 \item[c)]
 
 Wir haben aus allen Kandidaten B für Schlüssel gewählt, da dieser am trivialsten zu sehen ist und auch alphabetisch der ersten Attribut ist. Da es keine feste Regeln gibt, welcher von den Kandidaten zu einem Schlüssel wird, war unsere Entscheidung nicht so schwer zu treffen.
+
+\end{enumerate}
 
 \section*{3. Aufgabe}
 
@@ -149,7 +151,14 @@ FD(R_2) = \{ & \\
 \} & \\ \\ \\
 \end{align*}
 
-\end{itemize}
+Damit sind alle Anforderungen aus der Vorlesung erfüllt $\rightarrow$ 
+
+1. Every right side of a dependency in F is a single attribute.
+(apply decomposition) \\
+2. For no $ X \rightarrow A $ in F is the set $F - \{ X \rightarrow A \}$
+equivalent to F. \\
+3. For no $ X \rightarrow A $ in F and subset Z of X is
+$F - \{ X \rightarrow A \} \cup \{ Z \rightarrow A \}$ equivalent to F.
 
 
 
