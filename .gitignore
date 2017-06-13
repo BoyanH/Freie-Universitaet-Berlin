@@ -1,0 +1,8 @@
+*.aux
+*.out
+*.log
+*.synctex.gz
+*.backup
+*.~lock*
+*.swp
+programs/__pycache__
