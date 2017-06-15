@@ -1,0 +1,134 @@
+\input{src/header}											% bindet Header ein (WICHTIG)
+\usepackage{graphicx}
+\usepackage{fancyvrb}
+
+\newcommand{\dozent}{Prof. Dr. Agn`es Voisard, Nicolas Lehmann}					% <-- Names des Dozenten eintragen
+\newcommand{\tutor}{Nicolas Lehmann}						% <-- Name eurer Tutoriun eintragen
+\newcommand{\tutoriumNo}{10}				% <-- Nummer im KVV nachschauen
+\newcommand{\projectNo}{6}									% <-- Nummer des Übungszettels
+\newcommand{\veranstaltung}{Datenbanksysteme}	% <-- Name der Lehrveranstaltung eintragen
+\newcommand{\semester}{SoSe 2017}						% <-- z.B. SoSe 17, WiSe 17/18
+\newcommand{\studenten}{Boyan Hristov, Julian Habib}			% <-- Hier eure Namen eintragen
+% /////////////////////// BEGIN DOKUMENT /////////////////////////
+
+\begin{document}
+
+\input{src/titlepage}										% erstellt die Titelseite
+
+Link zum Git Repository: \url{https://github.com/BoyanH/Freie-Universitaet-Berlin/tree/master/Datenbanksysteme/Solutions/homework\projectNo}
+
+% /////////////////////// Aufgabe 1 /////////////////////////
+
+\section*{1. Aufgabe}
+
+\begin{enumerate}
+
+\item[a)]
+Alle Attributen in $R_1$ haben atomäre Domäne, sind also keine Relationen. Z.B. alle Einträge haben für den Attribut A die Werte $a_1, a_2, a_3$ und keine Werte wie z.B. $(a_1, a_2)$.
+
+\item[b)]
+
+\begin{align*}
+    FD(R_1) = \{ & \\
+    & A \rightarrow B \\
+    & A \rightarrow C \\
+    & D \rightarrow C \\
+    & BD \rightarrow A \\
+    \} & \\
+    \Rightarrow & \text{ AD und BD sind Superschlüssel und auch beide Kandidatschlüsseln.} \\
+    & \text{Primäre Attributen sind A, B und D. }
+\end{align*}
+
+Da C kein Primärattribut ist, von A abhängig ist und da A eine Untermenge eines Schlüssels ist (AD), ist $R_1$ nicht in 2NF.
+
+\item[c)]
+
+\begin{align*}
+    FD(R_2) = \{ & \\
+    & E \rightarrow F \\
+    & E \rightarrow G \\
+    & FG \rightarrow E \\
+    \} & \\
+    \Rightarrow & \text{ E und FG sind Superschlüssel, Primärattributen sind E, F und G. }
+\end{align*}
+
+In den ersten zwei funktionalen Abhängigkeiten ist die linke Seite ein Superschlüssel, in der 3. Abhängigkeit ist die rechte Seite ein Primärattribut.
+$\Rightarrow R_2$ ist in 3NF.
+
+\item[d)]
+
+\begin{align*}
+    FD^{+}(R_2) = \{ & \\
+    & E \rightarrow F \\
+    & E \rightarrow G \\
+    & E \rightarrow FG \\
+    & FG \rightarrow E \\
+    \} &
+\end{align*}
+
+Da wir schon aus c) kennen, dass E und FG Superschlüssel sind und da diese alle mögliche linke Seiten von einer funktionalen Abhängigkeit sind, ist $R_2$ in Boyce-Codd Normalform (BCNF).
+
+\end{enumerate}
+
+\section*{2. Aufgabe}
+
+\begin{enumerate}
+
+\item[a)]
+
+\begin{align*}
+    FD(R_3) = \{ & \\
+    & H \rightarrow JK \\
+    & I \rightarrow HJ \\
+    & K \rightarrow L \\
+    \} & \\ \\
+    & I \rightarrow H \land H \rightarrow JK \Rightarrow I \rightarrow HJK \\
+    \Rightarrow & \text{I $\rightarrow$ HJ kann durch I $\rightarrow$ H erstetzt werden} \\ \\
+    \text{Minimal }FD(R_3) = \{ & \\
+    & H \rightarrow JK \\
+    & I \rightarrow H \\
+    & K \rightarrow L \\
+    \} &
+\end{align*}
+
+Gute Zerlegung: $R_{31}(H,J,K)$ und $R_{32}(H,I,K,L)$
+
+\item[b)]
+
+\begin{align*}
+    & R_{31} \cap R_{32} \equiv HK \\
+    & R_{31} - R_{32} \equiv J
+    & R_{32} - R_{31} \equiv IL \\ \\
+    & R_{31} \cap R_{32} \rightarrow HJK \text{ (wegen H $\rightarrow$ JK) }
+        \rightarrow J \rightarrow R_{31} - R_{32} \\
+    \Rightarrow & \text{ Unsere Zerlegung ist verlustlos} 
+\end{align*}
+
+\item[c)]
+
+\begin{align*}
+    & FD(R_{31}) = \{ H \rightarrow JK \} \\
+    & FD(R_{32}) = \{ H \rightarrow K, I \rightarrow H, K \rightarrow L \} \\
+    & FD(R_{31}) \cup FD(R_{32}) \equiv \{ H \rightarrow JK, I \rightarrow H, K \rightarrow L \} \equiv FD(R_3) \\
+    \Rightarrow & \text{ Unsere Zerlegung ist abhängigkeitserhaltend}
+\end{align*}
+
+
+\end{enumerate}
+
+\section*{3. Aufgabe}
+
+\begin{enumerate}
+
+    \item[a)]
+    Aus jedem Item kann man durch eine Hash-Funktion ein Hash erzeugen durch mathematische Umformungen aus allen Suchschlüssel. Mehrere Items werden in dem selben Bucket gespeichert (nacheinandere folgende Blöcke im Speicher) wenn die Hashfunktion das gleiche Hash aus ihren Suchschlüssel erzeugt. Danach, beim Suchen von Lösch / Einfüge / Lese Position müssen alle Einträge in dem entsprechenden Bucket nach einander geprüft werden. Deswegen erzeugen gute Hashfunktione randomisierte Hashes, damit es ungefähr genau so viele Items pro Bucket gibt.
+
+    \item[b)]
+    In einem Dense-Index gibt es Indizes für alle Suchschlüsselwerte. Z.b. wenn das Attribut A ein Primärindex ist, gibt es für alle mögliche Werte von A ein Index, die Einträge mit dem gleichen Wert von A stehen nach einander im Speicher.
+
+    Der Sparse-Index hat nur für gewählte Werte von den Suchschlüssel Indizes. Dabei müssen aber immer die Einträge im Speicher nach dem Primärindex sortiert werden. Damit sucht man nach dem Index des alphabetisch größten kleineren Wert und muss dann alle weitere Einträge durchsuchen, um den Item zu finden. Dabei haben wir viel speicher für den Index gespart, die Suchzeiten haben sich aber vergrößert. Ein gutes Balance zwischen den beiden ist zu finden.
+
+\end{enumerate}
+
+% /////////////////////// END DOKUMENT /////////////////////////
+\end{document}
