@@ -1,0 +1,66 @@
+.label {
+    -fx-font-size: 10pt;
+    -fx-font-family: "Helvetica";
+    -fx-text-fill: #141618;
+    -fx-opacity: 0.6;
+}
+
+.combo-box .list-cell 
+{
+    -fx-background: white;
+    -fx-background-color: transparent;
+    -fx-font-family: "Verdana";
+    -fx-font-size: 11pt;
+    -fx-font-weight: bold;
+    -fx-padding: 3 0 2 7;
+    -fx-cell-size: 1.66667em; 
+    -fx-text-fill: #141618;
+}
+
+.combo-box  {
+  /* -fx-background-color: #CCDCF9; works */
+  -fx-font-size: 20;
+}
+
+
+
+#animationPane  {
+    -fx-background-image: url('../../background2.PNG');
+}
+
+.check-box {
+    -fx-font-size: 10pt;
+    -fx-font-family: "Helvetica";
+    -fx-text-fill: #141618;
+}
+
+.slider .track {
+    -fx-background-color: #D6E3FA;
+}
+
+.slider .thumb {
+    -fx-background-color: #666E7C;
+    -fx-padding: 10;
+}
+
+.text-field {
+    -fx-font-size: 11pt;
+    -fx-font-family: "Verdana";
+}
+
+.button{
+    -fx-text-fill: #141618;
+    -fx-border-color: #141618;
+    -fx-border-radius: 5;
+    -fx-padding: 6 6 6 6;
+}
+
+.button:pressed{
+    -fx-background-color: rgba(180,180,180,0.7);
+}
+
+.button:hover{
+    -fx-background-color: rgba(235,235,235,0.7);
+}
+
+

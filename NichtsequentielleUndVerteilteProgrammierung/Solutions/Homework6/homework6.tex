@@ -225,5 +225,222 @@ $\Rightarrow$ soll nicht bedient werden.
 
 \end{enumerate}
 
+\section{Aufgabe 4}
+
+\begin{enumerate}
+
+\item[a)] Done
+
+\item[b)] 
+Der Algorithmus bearbeitet alle Requests nach einander, wobei er immer Ressourcen gibt, wenn solche vorhanden sind. Dafür speichert diese Lösung initial die freie Ressourcen, die von der Methode getFreeRes() in der Klasse Resources zurückgegeben werden und verändert immer die freie Ressources entsprechend. Da es ein Array ist werden die entsprechend auch in dem Objekt resources gesetzt.
+
+Der Algorithmus funktioniert nur unter der Annahme, dass die gegebene Reihenfolge von Requests von links nach rechts abgearbeitet werden kann, ohne dass das System in einem Deadlock geht. Es ist praktisch kein Algorithmus, egal was die Threads wollen, wird es zu denen gleich gegeben, falls es genug Resourcen gibt, sonst nicht.
+
+\item[c)]
+\begin{enumerate}
+
+\item[1.]
+
+ExampleAlgo2 benutzt eine Warteschlange, wo neue Prozesse immer eingefügt werden, als diese kommen, und dann wieder entfernt werden, als diese fertig sind. So gibt der Algorithmus Ressources nur zu den Prozessen, die auf den ersten zwei Positionen in der Warteschlange sind und zwar nur wenn es genug freie Ressource gibt. Weiter wenn der 1 Prozess in der Warteschlange nie fertig wird, wird er auch nicht entfernt.
+
+\item[2.]
+
+Der Algorithmus funktioniert nur unter der Annahme richtig, dass zwei (oder bzw. auch 1) Prozess nicht so Ressourcen erfordern kann, dass es zu einem Deadlock kommt. Falls aber z.B es nicht genug Ressourcen für die erste zwei Prozessen in der Warteschlange gibt, dann kriegt man ein schönes Deadlock.
+
+\item[3.]
+Man kann immer schauen, ob die maximal erforderten Ressourcen von dem konkreten Prozess und dem letzten in der Warteschlange weniger als den freien Ressourcen sind. Da immer nur der erste Prozess in der Warteschlange entfernt wird ist man sicher, dass Prozesse, die nicht nebeneinander in der Warteschlange stehen, zusammen die Ressourcen sich teilen werden.
+
+Eine konkrete Implementierung die in allen Fällen richtig funktioniert (nur die IF-Anweisung):
+
+\begin{lstlisting}[style=java]
+if(!q.contains(id) &&
+                    (
+                            (q.isEmpty() && CUtil.greaterEqual(free, req.getProcess().getPendingRes())) ||
+                            (q.size() >= 1 && CUtil.greaterEqual(free, CUtil.add(processes[q.get(q.size() - 1)].getPendingRes(), req.getProcess().getPendingRes())))
+                    )
+              ) {
+
+                q.add(id);
+            }
+\end{lstlisting}
+
+\item[4.]
+
+Erstmall die SafeChecker Klasse, das gehört auch zum Teils zur nächsten Aufgabe. 
+
+\begin{lstlisting}[style=java]
+package allocationAlgorithm;
+
+import calculationUtil.CUtil;
+import process.Process;
+import resources.Resources;
+
+public class SafeChecker {
+
+    public static boolean checkIfSafeState(Resources resources, Process[] processes) {
+        return checkIfSafeState(processes, getAvailableResources(resources, processes));
+    }
+
+    public static boolean checkIfSafeState(Process[] processes, int[] availableResources) {
+        int[][] pendingResources = getPendingResources(processes);
+        int[][] acquiredResources = getAcquiredResources(processes);
+
+        return checkIfSafeState(pendingResources, acquiredResources, availableResources);
+    }
+
+    public static boolean checkIfSafeState(int[][] pendingResources, int[][] acquiredRes, int[] availableResources) {
+        assert pendingResources.length == acquiredRes.length;
+
+        boolean[] ready = new boolean[acquiredRes.length];
+        boolean changed = true;
+        int counter = 0;
+        int[] localAvailableRes = availableResources.clone();
+
+        // until there are changes and not all processes are servived
+        while (changed && counter < pendingResources.length) {
+            changed = false; // a new cycle began, see if there are changes this time
+
+            for (int i = 0; i < pendingResources.length; i++) {
+                // check if the current process can be serviced, if so mark it as ready and acquire resources
+                if (CUtil.greaterEqual(localAvailableRes, pendingResources[i]) && !ready[i]) {
+                    localAvailableRes = CUtil.add(localAvailableRes, acquiredRes[i]);
+                    ready[i] = true;
+                    changed = true;
+                    counter++;
+                }
+            }
+        }
+
+        return counter == pendingResources.length; // are all processes marked as serviced?
+    }
+
+    public static int[] getAvailableResources(Resources resources, Process[] processes) {
+        int[] totalResources = resources.getTotalRes();
+        int[] availableResources = totalResources.clone();
+
+        for (int i = 0; i < processes.length; i++) {
+            availableResources = CUtil.sub(availableResources, processes[i].getAcquiredRes());
+        }
+
+        return availableResources;
+    }
+
+    public static int[][] getPendingResources(Process[] processes) {
+        int[][] pendingResources = new int[processes.length][];
+
+        for (int i = 0; i < processes.length; i++) {
+            pendingResources[i] = processes[i].getPendingRes().clone();
+        }
+
+        return pendingResources;
+    }
+
+    public static int[][] getAcquiredResources(Process[] processes) {
+        int[][] acquiredResources = new int[processes.length][];
+
+        for (int i = 0; i < processes.length; i++) {
+            acquiredResources[i] = processes[i].getAcquiredRes().clone();
+        }
+
+        return acquiredResources;
+    }
+
+    public static void updateAcquired(int[][] acquiredResources, Process[] processes) {
+        for (int i = 0; i < acquiredResources.length; i++) {
+            if (processes[i].isFinished()) {
+                acquiredResources[i] = CUtil.sub(acquiredResources[i], acquiredResources[i]);
+            }
+        }
+    }
+}
+
+\end{lstlisting}
+
+So kann man es danach verwenden (die ganze Klasse ist hier nicht relevant, das ganze Code ist im GitHub):
+
+\begin{lstlisting}[style=java]
+return String.format("Safe state: %s", SafeChecker.checkIfSafeState(processes, resources.getFreeRes()));
+\end{lstlisting}
+
+
+\end{enumerate}
+
+\item[e)]
+Klasse für Bankieralgorithmus
+
+\begin{lstlisting}[style=java]
+package allocationAlgorithm;
+
+import calculationUtil.CUtil;
+import process.Process;
+import process.Process.AllocationRequest;
+import resources.Resources;
+
+public class BankersAlgo implements Algorithm {
+
+    Resources resources;
+    Process[] processes;
+
+    int[][] acquiredRes;
+    int[][] pendingRes;
+
+    @Override
+    public void init(Resources resources, Process[] processes) {
+        this.resources = resources;
+        this.processes = processes;
+        this.pendingRes = SafeChecker.getPendingResources(processes);
+        this.acquiredRes = SafeChecker.getAcquiredResources(processes);
+    }
+
+    @Override
+    public String nextStep(AllocationRequest[] requests) {
+
+        int[] freeRes = resources.getFreeRes();
+        SafeChecker.updateAcquired(acquiredRes, processes);
+
+        for (AllocationRequest req : requests) {
+
+            int[] freeResSimulation = freeRes.clone();
+            int[][] pendingResSimulation = pendingRes.clone();
+            int[][] acquiredResSimulation = acquiredRes.clone();
+            int processIdx = this.getProcessIndex(req);
+
+            // simulate resource allocation
+            pendingResSimulation[processIdx] = CUtil.sub(pendingResSimulation[processIdx], req.getRequestedRes());
+            acquiredResSimulation[processIdx] = CUtil.add(acquiredResSimulation[processIdx], req.getRequestedRes());
+            freeResSimulation = CUtil.sub(freeResSimulation, req.getRequestedRes());
+
+            // if state is safe after allocation, grant permission
+            if (SafeChecker.checkIfSafeState(pendingResSimulation, acquiredResSimulation, freeResSimulation)) {
+                freeRes = CUtil.sub(freeRes, req.getRequestedRes());
+                this.pendingRes[processIdx] = CUtil.sub(this.pendingRes[processIdx], req.getRequestedRes());
+                this.acquiredRes[processIdx] = CUtil.add(this.acquiredRes[processIdx], req.getRequestedRes());
+                req.grant();
+            }
+        }
+
+        return String.format("safe: %s", SafeChecker.checkIfSafeState(resources, processes));
+    }
+
+    public int getProcessIndex(AllocationRequest req) throws IllegalArgumentException {
+        for (int i = 0; i < processes.length; i++) {
+            if (req.getProcess().getId() == processes[i].getId()) {
+                return i;
+            }
+        }
+
+        throw new IllegalArgumentException("Invalid request!");
+    }
+
+}
+
+\end{lstlisting}
+
+\end{enumerate}
+
+\section*{Aufgabe 5}
+
+
+
 % /////////////////////// END DOKUMENT /////////////////////////
 \end{document}

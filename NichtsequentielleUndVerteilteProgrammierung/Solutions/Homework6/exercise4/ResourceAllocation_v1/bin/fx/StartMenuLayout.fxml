@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.text.*?>
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fx.StartMenuController">
+   <children>
+      <Slider fx:id="pCountSL" blockIncrement="1.0" layoutX="173.0" layoutY="147.0" majorTickUnit="5.0" max="16.0" min="1.0" prefHeight="14.0" prefWidth="279.0" showTickLabels="true" showTickMarks="true" snapToTicks="true" value="16.0" />
+      <Slider fx:id="pGreedSL" blockIncrement="0.1" layoutX="173.0" layoutY="185.0" max="1.0" min="0.2" prefHeight="14.0" prefWidth="279.0" value="1.0" />
+      <ComboBox fx:id="algoCB" layoutX="177.0" layoutY="44.0" prefHeight="25.0" prefWidth="370.0" />
+      <Label layoutX="42.0" layoutY="139.0" prefHeight="17.0" prefWidth="86.0" text="Process count" />
+      <Label layoutX="42.0" layoutY="183.0" text="Process greed" />
+      <CheckBox fx:id="pCountCB" layoutX="472.0" layoutY="139.0" mnemonicParsing="false" text="Random" />
+      <CheckBox fx:id="pGreedCB" layoutX="472.0" layoutY="183.0" mnemonicParsing="false" text="Random" />
+      <Slider fx:id="rCountSL" blockIncrement="1.0" layoutX="173.0" layoutY="260.0" majorTickUnit="1.0" max="5.0" min="1.0" minorTickCount="0" prefHeight="14.0" prefWidth="279.0" showTickLabels="true" showTickMarks="true" snapToTicks="true" value="5.0" />
+      <Slider fx:id="rSupplySL" blockIncrement="0.1" layoutX="173.0" layoutY="299.0" max="1.0" min="0.2" prefHeight="14.0" prefWidth="279.0" value="0.9" />
+      <Label layoutX="42.0" layoutY="252.0" text="Ressource count" />
+      <Label layoutX="42.0" layoutY="297.0" text="Ressource supply" />
+      <CheckBox fx:id="rCountCB" layoutX="472.0" layoutY="252.0" mnemonicParsing="false" text="Random" />
+      <CheckBox fx:id="rSupplyCB" layoutX="472.0" layoutY="298.0" mnemonicParsing="false" text="Random" />
+      <Button fx:id="startBTN" layoutX="41.0" layoutY="373.0" mnemonicParsing="false" onAction="#startRun" prefHeight="25.0" prefWidth="509.0" text="Start" />
+      <Label layoutX="44.0" layoutY="48.0" text="Allocation Algo." />
+   </children>
+</AnchorPane>
