@@ -1,7 +1,5 @@
 package fu.alp4;
 
-import java.util.concurrent.Semaphore;
-
 public class Task {
 
     static int idCounter;
@@ -16,8 +14,6 @@ public class Task {
 
     private int priority;
     private int id;
-
-    final static Semaphore idLock = new Semaphore(1, true);
 
     /**
      * A Task manages itself in terms of setting its own deadlineAfter and executionLeft.
