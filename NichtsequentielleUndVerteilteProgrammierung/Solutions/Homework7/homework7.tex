@@ -311,5 +311,81 @@ public class Task {
 
 \end{lstlisting}
 
+\section*{6. Aufgabe}
+
+\begin{enumerate}
+
+\item[e)]
+Yeah, I read the docummentation, I promise! :)
+
+\item[f)]
+Auf Zeile 40 kriegen wir ein byte[] von dem MD5 Hash als einen Byte Array. Das wollen wir aber gerne als String[] haben, damit wir es leichter speichern können (als Klartext) oder mit andere Hashes vergleichen können. Da aber der byte[] ein Array von signed Bytes ist (also negative auch) und Java hardkodierte hexadecimal Nummer immer als positiv annimmt können wir so festdefinieren, dass wir da positive 16bit Nummer haben (mit array[i] \& 0xFF). Da aber in MD5 definiert ist, dass jedes byte 2 Positionen nimmt (2 Digits in Hexadezimalsystem) verodern wir das Ergebniss mit 0x100, oder (0001 0000 0000$)_2$ damit wir für 0x01 entsprechend "01" bekommen und nicht "1". Alle 2-Digit Hexadezimalzahlen, die von je ein Byte konvertiert werden, werden zu dem Endergebniss appended, was am Ende zurückgegeben wird.
+
+\item[g)]
+
+\begin{lstlisting}[style=java]
+package hashCracker;
+
+
+import fx.ResultPool;
+
+public class SimpleCracker implements HashCracker {
+
+    ResultPool resPool;
+    boolean stopped;
+
+    @Override
+    public void start(String[] wordList, String[] hashList, ResultPool resPool) {
+
+        this.stopped = false;
+
+        for (int i = 0; i < wordList.length; i++) {
+            for (int j = i; j < wordList.length; j++) {
+                String wordA = wordList[i];
+                String wordB = wordList[j];
+                String variantA = wordA + wordB;
+                String variantB = wordB + wordA;
+
+                for (int k = 0; k < hashList.length; k++) {
+                    if (MD5(variantA).equals(hashList[k])) {
+                        resPool.pushPassword(variantA);
+                    } else if (MD5(variantB).equals(hashList[k])) {
+                        resPool.pushPassword(variantB);
+                    }
+
+                    if (this.stopped) {
+                        return;
+                    }
+                }
+            }
+        }
+    }
+
+    @Override
+    public void stop() {
+        this.stopped = true;
+    }
+
+    public static String MD5(String md5) {
+        try {
+            java.security.MessageDigest md = java.security.MessageDigest.getInstance("MD5");
+            byte[] array = md.digest(md5.getBytes());
+            StringBuffer sb = new StringBuffer();
+            for (int i = 0; i < array.length; ++i) {
+                sb.append(Integer.toHexString((array[i] & 0xFF) | 0x100).substring(1, 3));
+            }
+            return sb.toString();
+        } catch (java.security.NoSuchAlgorithmException e) {
+        }
+        return null;
+    }
+
+
+}
+
+\end{lstlisting}
+
+\end{enumerate}
+
 % /////////////////////// END DOKUMENT /////////////////////////
 \end{document}
