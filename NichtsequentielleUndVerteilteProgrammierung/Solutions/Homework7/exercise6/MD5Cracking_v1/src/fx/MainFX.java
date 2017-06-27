@@ -16,7 +16,7 @@ public class MainFX extends Application{
 	 * reflection api. Default is "hashCracker.SimpleCracker" and will load a 
 	 * class called SimpleCracker in package hashCracker.
 	 */
-	final static private String crackerClass = "hashCracker.SimpleCracker";
+	final static private String crackerClass = "hashCracker.BetterCracker";
 	//final static private String crackerClass = "hashCracker.OptimizedCracker";
 	
 	/**

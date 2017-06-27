@@ -385,6 +385,153 @@ public class SimpleCracker implements HashCracker {
 
 \end{lstlisting}
 
+\item[h)]
+Wir haben die einfache Lösung genommen und versucht, diese so gut wie möglich auf 4 Prozessoren skalieren zu lassen, da wir davon ausgegangen sind, dass die meiste Laptops heutzutage genau so viele CPU Cores haben bzw. so viele simulieren durch Hyperthreading.
+
+Dabei haben wir gesehen, dass wenn wir die Äußere Schleife durch 4 teilen und das separat rechnen lassen, die Threads die ein größeres Anfagsindex haben wenigere Werte ausrechnen (da die innere Schleife von i anfängt) und nämlich genau $\frac{n}{4}$ bei n mögliche Wörter. Da wir aber keine perfekte aufteilung finden könnten, haben wir gemeint, dass es relativ ok ist, dass der 1 Thread $\frac{n}{8}$ wenigere Elemente in der äußere Schleife ausrechnen soll und der letzten entsprechend so viel mehrere. \\ \\
+
+\item[Code]
+Nice try, klappte aber eigentlich nicht so gut.
+
+\begin{lstlisting}[style=java]
+package hashCracker;
+
+import fx.ResultPool;
+
+public class CrackerThread extends Thread {
+
+    String[] wordList;
+    String[] hashList;
+    ResultPool resPool;
+    int startIndex;
+    int endIndex;
+    boolean stopped;
+
+    public CrackerThread(String[] wordList, String[] hashList, ResultPool resPool, int i) {
+        this.wordList = wordList;
+        this.hashList = hashList;
+        this.resPool = resPool;
+        this.startIndex = (int) Math.floor(i*wordList.length/4);
+        this.endIndex = (int) Math.ceil(startIndex + wordList.length/4);
+        this.stopped = false;
+
+        // spaghetti part here, just wanted to try this prototype solution
+        // could be fixed at some point
+
+        if (i == 3) {
+            this.startIndex -= (int) Math.ceil(wordList.length / 8);
+        } else if (i != 0) {
+            this.startIndex -= (int) Math.ceil(wordList.length / 8);
+            this.endIndex -= (int) Math.ceil(wordList.length / 8);
+        } else {
+            this.endIndex -= (int) Math.ceil(wordList.length / 8);
+        }
+
+        if (this.startIndex < 0) {
+            this.startIndex = 0;
+        }
+
+        if (this.endIndex > this.wordList.length) {
+            this.endIndex = this.wordList.length;
+        }
+    }
+
+    public void stopCalc() {
+        this.stopped = true;
+    }
+
+    @Override
+    public void run() {
+
+        int count = 0;
+        int gausNumber = this.endIndex - 1 - startIndex;
+        String[] pairs = new String[gausNumber*(gausNumber+1)];
+
+        for (int i = this.startIndex; i < this.endIndex; i++) {
+            for (int j = i; j < wordList.length; j++) {
+
+                String[] variants = {
+                        wordList[i] + wordList[j],
+                        wordList[j] + wordList[i],
+                        wordList[i],
+                        wordList[j]
+                };
+
+                for (String hash : hashList) {
+                    for (String variant : variants) {
+                        if (MD5(variant).equals(hash)) {
+                            resPool.pushPassword(variant);
+                        }
+                    }
+
+                    if (this.stopped) {
+                        return;
+                    }
+                }
+            }
+        }
+
+    }
+
+    public static String MD5(String md5) {
+        try {
+            java.security.MessageDigest md = java.security.MessageDigest.getInstance("MD5");
+            byte[] array = md.digest(md5.getBytes());
+            StringBuffer sb = new StringBuffer();
+            for (int i = 0; i < array.length; ++i) {
+                sb.append(Integer.toHexString((array[i] & 0xFF) | 0x100).substring(1, 3));
+            }
+            return sb.toString();
+        } catch (java.security.NoSuchAlgorithmException e) {
+        }
+        return null;
+    }
+}
+
+\end{lstlisting}
+
+\begin{lstlisting}[style=java]
+package hashCracker;
+
+
+import fx.ResultPool;
+
+public class BetterCracker implements HashCracker {
+
+    ResultPool resPool;
+    CrackerThread[] crackerThreads;
+
+    @Override
+    public void start(String[] wordList, String[] hashList, ResultPool resPool) {
+
+        this.crackerThreads = new CrackerThread[4];
+
+        for (int i = 0; i < 4; i++) {
+            this.crackerThreads[i] = new CrackerThread(wordList, hashList, resPool, i);
+            this.crackerThreads[i].start();
+        }
+
+        for (int t = 0; t < this.crackerThreads.length; t++) {
+            try {
+                this.crackerThreads[t].join();
+                this.stop();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    @Override
+    public void stop() {
+
+        for (CrackerThread thread : this.crackerThreads) {
+            thread.stopCalc();
+        }
+    }
+}
+
+\end{lstlisting}
+
 \end{enumerate}
 
 % /////////////////////// END DOKUMENT /////////////////////////
