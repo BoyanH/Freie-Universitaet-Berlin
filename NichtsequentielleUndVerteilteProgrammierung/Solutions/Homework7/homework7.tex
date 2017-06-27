@@ -109,6 +109,8 @@ Quelle $\rightarrow$ \url{https://stackoverflow.com/questions/39725102}
 
 \section*{3. Aufgabe}
 
+Die Bilder kann man in GitHub besser anschauen
+
 \begin{enumerate}
 
 \item[a)] RMS \\
@@ -121,6 +123,11 @@ Quelle $\rightarrow$ \url{https://stackoverflow.com/questions/39725102}
 \includegraphics[width=\textwidth]{./exercise3/LLF.jpg} 
 
 \end{enumerate}
+
+\section*{4. Aufgabe}
+Ja, das System ist realisierbar. In einer Sekunde gibt es 1000 Millisekunden, deswegen müssen wir ein Bild je $\frac{1000}{25} = 40$ Millisekunden fertig kriegen. Wir könne mit dem LLF Algorithmus das Problem leicht lösen. Wenn man die Zeit in 5-Millisekunden-Abschnitte zerteilt, wird in der ersten Millisekunde die Sprachverbindung bearbeitet und in den restlichen 4 die Bildbearbeitung. So schafft man die ganze Bildbearbeitung in 5 solche Abschnitte (20ms Bearbeitung) und verpasst dadurch keine Sprachverbindung. Das ganze ist aber nur unter der Annahme möglich, dass LLF kleines Overhead hat, was leider nicht der Fall ist. Da es aber um ein weiches Echtzeitsystem geht, können wir es immer realisieren, in dem die Qualität vermindert wird.
+
+\section*{5. Aufgabe}
 
 % /////////////////////// END DOKUMENT /////////////////////////
 \end{document}
