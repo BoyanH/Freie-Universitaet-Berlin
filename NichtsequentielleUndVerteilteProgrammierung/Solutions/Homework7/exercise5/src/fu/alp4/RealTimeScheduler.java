@@ -52,6 +52,8 @@ public class RealTimeScheduler {
         Arrays.sort(this.managedTasks, (a, b) -> a.getPeriod() < b.getPeriod() ? -1 :
             a.getPeriod() == b.getPeriod() ? 0 : 1);
 
+        // and assign priorities equal to reverse sorting number (e.g. the task with lowest period will be first and
+        // will receive highes priority equal to the number of managed tasks)
         for (int i = 0; i < this.managedTasks.length; i++) {
             Task currentTask = this.managedTasks[i];
             currentTask.setPriority(this.managedTasks.length - i);

@@ -7,7 +7,7 @@
 \newcommand{\dozent}{Prof. Dr. Margarita Esponda}					% <-- Names des Dozenten eintragen
 \newcommand{\tutor}{Lilli Walter}						% <-- Name eurer Tutoriun eintragen
 \newcommand{\tutoriumNo}{6}				% <-- Nummer im KVV nachschauen
-\newcommand{\projectNo}{5}									% <-- Nummer des Übungszettels
+\newcommand{\projectNo}{7}									% <-- Nummer des Übungszettels
 \newcommand{\veranstaltung}{Nichtsequentielle Programmierung}	% <-- Name der Lehrveranstaltung eintragen
 \newcommand{\semester}{SoeSe 2017}						% <-- z.B. SoSo 17, WiSe 17/18
 \newcommand{\studenten}{Boyan Hristov, Sergelen Gongor}			% <-- Hier eure Namen eintragen
@@ -18,7 +18,7 @@
 \input{src/titlepage}										% erstellt die Titelseite
 
 
-Link zum Git Repository: \url{https://github.com/BoyanH/FU-Berlin-ALP4/tree/master/Solutions/Homework5}
+Link zum Git Repository: \url{https://github.com/BoyanH/FU-Berlin-ALP4/tree/master/Solutions/Homework\projectNo}
 
 % /////////////////////// Aufgabe 1 /////////////////////////
 
@@ -127,7 +127,193 @@ Die Bilder kann man in GitHub besser anschauen
 \section*{4. Aufgabe}
 Ja, das System ist realisierbar. In einer Sekunde gibt es 1000 Millisekunden, deswegen müssen wir ein Bild je $\frac{1000}{25} = 40$ Millisekunden fertig kriegen. Wir könne mit dem LLF Algorithmus das Problem leicht lösen. Wenn man die Zeit in 5-Millisekunden-Abschnitte zerteilt, wird in der ersten Millisekunde die Sprachverbindung bearbeitet und in den restlichen 4 die Bildbearbeitung. So schafft man die ganze Bildbearbeitung in 5 solche Abschnitte (20ms Bearbeitung) und verpasst dadurch keine Sprachverbindung. Das ganze ist aber nur unter der Annahme möglich, dass LLF kleines Overhead hat, was leider nicht der Fall ist. Da es aber um ein weiches Echtzeitsystem geht, können wir es immer realisieren, in dem die Qualität vermindert wird.
 
+\clearpage
+
 \section*{5. Aufgabe}
+
+Die Aufgabe wurde unter der Annahme gelöst, dass das System eine weiche Echtzeitsystem ist. Sonst könnte man leicht eine Fehler in dem Task Klasse werfen und diese in dem Scheduler abfangen und terminieren.
+
+\begin{lstlisting}[style=java]
+package fu.alp4;
+
+public class Main {
+
+    public static void main(String[] args) {
+
+        Task[] tasksForSimulation = {
+                new Task(0,2,7,7),
+                new Task(0,3,9,9),
+                new Task(0,1,11,11),
+                new Task(0,1,6,6)
+        };
+        RealTimeScheduler scheduler = new RealTimeScheduler(tasksForSimulation, 22);
+        scheduler.simulateRMS();
+    }
+}
+
+\end{lstlisting}
+
+
+\begin{lstlisting}[style=java]
+package fu.alp4;
+
+import java.util.Arrays;
+
+public class RealTimeScheduler {
+
+    private Task[] managedTasks;
+    private int simulationTime;
+    private Task latestExecuted;
+
+    public RealTimeScheduler(Task[] tasks, int st) {
+        this.managedTasks = tasks;
+        this.simulationTime = st;
+    }
+
+    public void simulateRMS() {
+        this.setPrioritiesRMS();
+
+        System.out.println("\nSimulation starting!\n\n");
+
+        while(this.simulationTime > 0) {
+
+            boolean taskAlreadyExecutedInCurrentLoop = false;
+
+            // managed tasks already sorted by priority
+            for(Task task : this.managedTasks) {
+                if (task.getReady() && !taskAlreadyExecutedInCurrentLoop) {
+
+                    if (this.latestExecuted == null) {
+                        this.latestExecuted = task;
+                    } else if (this.latestExecuted != task) {
+                        System.out.printf("Task with #id %s was interrupted in favour of task with #id %s\n\n",
+                                this.latestExecuted.getId(), task.getId());
+                        this.latestExecuted = task;
+                    }
+
+                    task.execute();
+                    taskAlreadyExecutedInCurrentLoop = true;
+
+                } else {
+                    task.keepBlocked();
+                }
+            }
+
+            this.simulationTime--;
+        }
+
+    }
+
+    private void setPrioritiesRMS() {
+        // Sort managedTask by period
+        Arrays.sort(this.managedTasks, (a, b) -> a.getPeriod() < b.getPeriod() ? -1 :
+            a.getPeriod() == b.getPeriod() ? 0 : 1);
+
+        // and assign priorities equal to reverse sorting number (e.g. the task with lowest period will be first and
+        // will receive highes priority equal to the number of managed tasks)
+        for (int i = 0; i < this.managedTasks.length; i++) {
+            Task currentTask = this.managedTasks[i];
+            currentTask.setPriority(this.managedTasks.length - i);
+            System.out.printf("Task id: %s; Period: %s; Priority: %s\n",
+                    currentTask.getId(), currentTask.getPeriod(), currentTask.getPriority());
+        }
+    }
+
+}
+
+\end{lstlisting}
+
+\begin{lstlisting}[style=java]
+package fu.alp4;
+
+import java.util.concurrent.Semaphore;
+
+public class Task {
+
+    static int idCounter;
+
+    private int release;
+    private int execution;
+    private int executionLeft;
+    private int timePassed;
+    private int deadline;
+    private int deadlineAfter;
+    private int period;
+
+    private int priority;
+    private int id;
+
+    final static Semaphore idLock = new Semaphore(1, true);
+
+    /**
+     * A Task manages itself in terms of setting its own deadlineAfter and executionLeft.
+     * The idea is to let the scheduler-class only implement the scheduler logic, as if it was
+     * gathering the data from the Process-Control-Block
+     */
+
+    public Task(int r, int e, int d, int p) {
+        this.release = r;
+        this.execution = e;
+        this.executionLeft = release == 0 ? e : 0;
+        this.deadline = d;
+        this.deadlineAfter = d;
+        this.period = p;
+        this.timePassed = 0;
+        this.setPriority(idCounter); // initially set priority = highest possible, will be changed later on
+
+        /**
+         * Priority can be between 1/n and n/n for n tasks in the scheduler.
+         */
+
+        this.id = ++idCounter;
+    }
+
+
+    public int getPeriod() {
+        return period;
+    }
+
+    public boolean getReady() {
+        return this.executionLeft > 0;
+    }
+
+    public int getPriority() {
+        return priority;
+    }
+
+    public int getId() {
+        return this.id;
+    }
+
+    public void setPriority(int priority) {
+        this.priority = priority;
+    }
+
+    public void execute() {
+        this.executionLeft--;
+        this.passTime();
+        System.out.printf("Task with id %s and priority %s executed. \n\t Execution left: %s; Deadline after: %s ;Time passed: %s\n\n",
+                this.id, this.getPriority(), this.executionLeft, this.deadlineAfter, this.timePassed);
+    }
+
+    public void keepBlocked() {
+        this.passTime();
+    }
+
+    private void passTime() {
+        this.timePassed++;
+        this.deadlineAfter--;
+
+        if (this.executionLeft > 0 && this.deadlineAfter == 0) {
+            System.out.printf("Task with id %s and priority %s missed it's deadline!\n\n", this.id, this.getPriority());
+        } else if (this.timePassed % this.period == 0 || this.timePassed == this.release) {
+            this.deadlineAfter = this.deadline;
+            this.executionLeft = this.execution;
+        }
+    }
+}
+
+\end{lstlisting}
 
 % /////////////////////// END DOKUMENT /////////////////////////
 \end{document}
