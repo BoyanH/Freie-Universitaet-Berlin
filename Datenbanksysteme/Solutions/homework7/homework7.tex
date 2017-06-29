@@ -1,0 +1,91 @@
+\input{src/header}											% bindet Header ein (WICHTIG)
+\usepackage{graphicx}
+\usepackage{fancyvrb}
+
+\newcommand{\dozent}{Prof. Dr. Agn`es Voisard, Nicolas Lehmann}					% <-- Names des Dozenten eintragen
+\newcommand{\tutor}{Nicolas Lehmann}						% <-- Name eurer Tutoriun eintragen
+\newcommand{\tutoriumNo}{10}				% <-- Nummer im KVV nachschauen
+\newcommand{\projectNo}{6}									% <-- Nummer des Übungszettels
+\newcommand{\veranstaltung}{Datenbanksysteme}	% <-- Name der Lehrveranstaltung eintragen
+\newcommand{\semester}{SoSe 2017}						% <-- z.B. SoSe 17, WiSe 17/18
+\newcommand{\studenten}{Boyan Hristov, Julian Habib}			% <-- Hier eure Namen eintragen
+% /////////////////////// BEGIN DOKUMENT /////////////////////////
+
+\begin{document}
+
+\input{src/titlepage}										% erstellt die Titelseite
+
+Link zum Git Repository: \url{https://github.com/BoyanH/Freie-Universitaet-Berlin/tree/master/Datenbanksysteme/Solutions/homework\projectNo}
+
+% /////////////////////// Aufgabe 1 /////////////////////////
+
+\section*{1. Aufgabe}
+
+\begin{enumerate}
+\item[a)] 
+Dimensionstabellen \\
+
+Sparte \\
+\begin{tabular}{|l|l|}
+\hline
+(PK) ID:Integer & Name:Character varying(255) \\
+... & ... \\
+\hline
+\end{tabular}
+
+Region \\
+\begin{tabular}{|l|l|}
+\hline
+(PK) ID:Integer & Name:Character varying(255) \\
+... & ... \\
+\hline
+\end{tabular}
+
+Quartal \\
+\begin{tabular}{|l|l|}
+\hline
+(PK) ID:Integer & Name:Character varying(255) \\
+... & ... \\
+\hline
+\end{tabular} \\ \\ \\
+
+Fakttabelle \\
+
+Fakt \\
+\begin{tabular}{|l|l|l|l|l|l|}
+\hline
+(PK)ID:Integer & (FK)SID:Integer & (FK)RID & (FK) QID & Gewinn:Numeric(10,2) & Umsatz:Numeric(10,2)\\
+... & ... & ... & ... & ... & ...\\
+\hline
+\end{tabular}
+Das Primärschlüssel von der Tabelle Fakt ist eine Kombination von alle Foreign Keys, damit es sichergestellt wird, dass eine Kombination von Dimensionstabellen nur einmal auftritt.
+
+SQL für Tabellenerstellung:
+
+create table sparte (id integer primary key, name varchar(255) ); \\
+create table region (id integer primary key, name varchar(255) ); \\
+create table quartal (id integer primary key, name varchar(255) ); \\ \\
+%
+create table fakt (id integer primary key, sid integer references sparte (id), rid integer references region (id), qid integer references quartal (id), gewinn numeric(10,2), umsatz numeric(10,2)  ); \\
+
+\item[b)]
+
+Erstmal müssen wir uns mit dem DBS verbinden: \\
+\begin{lstlisting}[style=bash]
+[postgres@Edgy ~]\$ psql -h agdbs-edu01.imp.fu-berlin.de -p 5432 -U testuser dbs-dwh \\ \\
+\end{lstlisting}
+
+Danach können wir von allen Einträgen eine Kombination uns aussuchen und diese in der Fakttabelle speichern. Nach der Annahme, dass die erste 3 Einträge von je Dimensionstabelle als Kombination noch nicht in der Faktentabelle enthalten sind. Sonst müsste man die SQL-Befehl mit NOT IN erweitern, das macht es aber in dem Beispiel viel weniger übersichtlich. \\
+
+In der folgenden SQL Befehl haben wir definiert, dass die erste Einträge in je Dimensionstabelle zusammen als Kombination (in dem Quartal, in dem Sparte, in dem Region) gab es ein Gewinn von 20 Euro und insgesammten Umsatz von 100 Euro (hoffentlich nicht in IT :D).
+
+insert into fakt (id, sid, rid, qid, gewinn, umsatz) values (1337, (select id from Sparte limit 1), (select id from Region limit 1), (select id from Quartal limit 1), 20, 100); \\ \\
+
+Natürlich nach der Konvetion muss man SQL Befehle groß schreiben, da es aber technisch nicht relevant ist haben wir es uns hier gespart.
+
+\item[c)]
+
+\end{enumerate}
+
+% /////////////////////// END DOKUMENT /////////////////////////
+\end{document}
