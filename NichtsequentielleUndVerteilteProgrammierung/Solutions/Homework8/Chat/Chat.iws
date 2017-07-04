@@ -13,11 +13,11 @@
   <component name="ExecutionTargetManager" SELECTED_TARGET="default_target" />
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="ClientTCP.java" pinned="false" current-in-tab="true">
+      <file leaf-file-name="ClientTCP.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/../ChatFrameworks/ChatClient_v1/ChatClient_v1/src/network/ClientTCP.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="324">
-              <caret line="18" column="5" lean-forward="true" selection-start-line="18" selection-start-column="5" selection-end-line="18" selection-end-column="5" />
+            <state relative-caret-position="447">
+              <caret line="45" column="0" lean-forward="true" selection-start-line="0" selection-start-column="0" selection-end-line="127" selection-end-column="0" />
               <folding>
                 <element signature="imports" expanded="true" />
                 <element signature="e#403#404#0" expanded="true" />
@@ -32,8 +32,8 @@
       <file leaf-file-name="ConnectionAccepterTCP.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/../ChatFrameworks/ChatServer_v1/ChatServer_v1/src/network/ConnectionAccepterTCP.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="260">
-              <caret line="39" column="53" lean-forward="false" selection-start-line="39" selection-start-column="53" selection-end-line="39" selection-end-column="53" />
+            <state relative-caret-position="639">
+              <caret line="43" column="23" lean-forward="true" selection-start-line="0" selection-start-column="0" selection-end-line="52" selection-end-column="0" />
               <folding>
                 <element signature="imports" expanded="true" />
                 <element signature="e#701#702#0" expanded="true" />
@@ -46,8 +46,8 @@
       <file leaf-file-name="ServerTCP.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/../ChatFrameworks/ChatServer_v1/ChatServer_v1/src/network/ServerTCP.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="195">
-              <caret line="149" column="20" lean-forward="false" selection-start-line="149" selection-start-column="20" selection-end-line="149" selection-end-column="20" />
+            <state relative-caret-position="591">
+              <caret line="171" column="17" lean-forward="true" selection-start-line="0" selection-start-column="0" selection-end-line="182" selection-end-column="0" />
               <folding>
                 <element signature="imports" expanded="true" />
                 <element signature="e#5268#5269#0" expanded="true" />
@@ -57,11 +57,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="ClientCommunicationThread.java" pinned="false" current-in-tab="false">
+      <file leaf-file-name="ClientCommunicationThread.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/../ChatFrameworks/ChatServer_v1/ChatServer_v1/src/network/ClientCommunicationThread.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="807">
-              <caret line="136" column="66" lean-forward="false" selection-start-line="136" selection-start-column="66" selection-end-line="136" selection-end-column="66" />
+            <state relative-caret-position="501">
+              <caret line="126" column="9" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="139" selection-end-column="0" />
               <folding>
                 <element signature="imports" expanded="true" />
                 <element signature="e#1402#1403#0" expanded="true" />
@@ -78,8 +78,8 @@
       <file leaf-file-name="MessageListenerTCP.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/../ChatFrameworks/ChatClient_v1/ChatClient_v1/src/network/MessageListenerTCP.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="630">
-              <caret line="35" column="33" lean-forward="false" selection-start-line="35" selection-start-column="33" selection-end-line="35" selection-end-column="33" />
+            <state relative-caret-position="-243">
+              <caret line="24" column="0" lean-forward="true" selection-start-line="0" selection-start-column="0" selection-end-line="82" selection-end-column="0" />
               <folding>
                 <element signature="imports" expanded="true" />
                 <element signature="e#992#993#0" expanded="true" />
@@ -122,8 +122,6 @@
       <find>removeClient</find>
       <find>setU</find>
       <find>parseClientCommand</find>
-      <find>onNewMessage</find>
-      <find>setUN</find>
       <find>S</find>
       <find>Syste</find>
       <find>Systemo</find>
@@ -132,6 +130,8 @@
       <find>System.o</find>
       <find>System.ou</find>
       <find>System.out</find>
+      <find>setUN</find>
+      <find>onNewMessage</find>
     </findStrings>
   </component>
   <component name="GradleLocalSettings">
@@ -770,12 +770,12 @@
       <option name="presentableId" value="Default" />
       <updated>1499037387962</updated>
       <workItem from="1499037391502" duration="5151000" />
-      <workItem from="1499078230446" duration="21342000" />
+      <workItem from="1499078230446" duration="22068000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="26493000" />
+    <option name="totallyTimeSpent" value="27219000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="29" width="1920" height="1051" extended-state="6" />
@@ -952,10 +952,32 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/../ChatFrameworks/ChatServer_v1/ChatServer_v1/src/fx/ServerController.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-216">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../ChatFrameworks/ChatClient_v1/ChatClient_v1/src/network/ClientTCP.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="447">
+          <caret line="45" column="0" lean-forward="true" selection-start-line="0" selection-start-column="0" selection-end-line="127" selection-end-column="0" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#403#404#0" expanded="true" />
+            <element signature="e#429#430#0" expanded="true" />
+            <element signature="e#1528#1529#0" expanded="true" />
+            <element signature="e#1560#1561#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/../ChatFrameworks/ChatClient_v1/ChatClient_v1/src/network/MessageListenerTCP.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="630">
-          <caret line="35" column="33" lean-forward="false" selection-start-line="35" selection-start-column="33" selection-end-line="35" selection-end-column="33" />
+        <state relative-caret-position="-243">
+          <caret line="24" column="0" lean-forward="true" selection-start-line="0" selection-start-column="0" selection-end-line="82" selection-end-column="0" />
           <folding>
             <element signature="imports" expanded="true" />
             <element signature="e#992#993#0" expanded="true" />
@@ -966,46 +988,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/../ChatFrameworks/ChatServer_v1/ChatServer_v1/src/network/ConnectionAccepterTCP.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="260">
-          <caret line="39" column="53" lean-forward="false" selection-start-line="39" selection-start-column="53" selection-end-line="39" selection-end-column="53" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#701#702#0" expanded="true" />
-            <element signature="e#741#742#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../ChatFrameworks/ChatServer_v1/ChatServer_v1/src/fx/ServerController.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-216">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../ChatFrameworks/ChatServer_v1/ChatServer_v1/src/network/ClientCommunicationThread.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="807">
-          <caret line="136" column="66" lean-forward="false" selection-start-line="136" selection-start-column="66" selection-end-line="136" selection-end-column="66" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#1402#1403#0" expanded="true" />
-            <element signature="e#1442#1443#0" expanded="true" />
-            <element signature="e#1474#1475#0" expanded="true" />
-            <element signature="e#1504#1505#0" expanded="true" />
-            <element signature="e#1543#1544#0" expanded="true" />
-            <element signature="e#1581#1582#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/../ChatFrameworks/ChatServer_v1/ChatServer_v1/src/network/ServerTCP.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="195">
-          <caret line="149" column="20" lean-forward="false" selection-start-line="149" selection-start-column="20" selection-end-line="149" selection-end-column="20" />
+        <state relative-caret-position="591">
+          <caret line="171" column="17" lean-forward="true" selection-start-line="0" selection-start-column="0" selection-end-line="182" selection-end-column="0" />
           <folding>
             <element signature="imports" expanded="true" />
             <element signature="e#5268#5269#0" expanded="true" />
@@ -1014,16 +1000,30 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/../ChatFrameworks/ChatClient_v1/ChatClient_v1/src/network/ClientTCP.java">
+    <entry file="file://$PROJECT_DIR$/../ChatFrameworks/ChatServer_v1/ChatServer_v1/src/network/ConnectionAccepterTCP.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="324">
-          <caret line="18" column="5" lean-forward="true" selection-start-line="18" selection-start-column="5" selection-end-line="18" selection-end-column="5" />
+        <state relative-caret-position="639">
+          <caret line="43" column="23" lean-forward="true" selection-start-line="0" selection-start-column="0" selection-end-line="52" selection-end-column="0" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#403#404#0" expanded="true" />
-            <element signature="e#429#430#0" expanded="true" />
-            <element signature="e#1528#1529#0" expanded="true" />
-            <element signature="e#1560#1561#0" expanded="true" />
+            <element signature="e#701#702#0" expanded="true" />
+            <element signature="e#741#742#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../ChatFrameworks/ChatServer_v1/ChatServer_v1/src/network/ClientCommunicationThread.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="501">
+          <caret line="126" column="9" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="139" selection-end-column="0" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#1402#1403#0" expanded="true" />
+            <element signature="e#1442#1443#0" expanded="true" />
+            <element signature="e#1474#1475#0" expanded="true" />
+            <element signature="e#1504#1505#0" expanded="true" />
+            <element signature="e#1543#1544#0" expanded="true" />
+            <element signature="e#1581#1582#0" expanded="true" />
           </folding>
         </state>
       </provider>

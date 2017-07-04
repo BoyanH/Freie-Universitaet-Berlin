@@ -1,0 +1,843 @@
+\input{src/header}											% bindet Header ein (WICHTIG)
+\usepackage{graphicx}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{fancyvrb}
+
+\newcommand{\dozent}{Prof. Dr. Margarita Esponda}					% <-- Names des Dozenten eintragen
+\newcommand{\tutor}{Lilli Walter}						% <-- Name eurer Tutoriun eintragen
+\newcommand{\tutoriumNo}{6}				% <-- Nummer im KVV nachschauen
+\newcommand{\projectNo}{8}									% <-- Nummer des Übungszettels
+\newcommand{\veranstaltung}{Nichtsequentielle Programmierung}	% <-- Name der Lehrveranstaltung eintragen
+\newcommand{\semester}{SoeSe 2017}						% <-- z.B. SoSo 17, WiSe 17/18
+\newcommand{\studenten}{Boyan Hristov, Sergelen Gongor}			% <-- Hier eure Namen eintragen
+% /////////////////////// BEGIN DOKUMENT /////////////////////////
+
+
+\begin{document}
+\input{src/titlepage}										% erstellt die Titelseite
+
+
+Link zum Git Repository: \url{https://github.com/BoyanH/FU-Berlin-ALP4/tree/master/Solutions/Homework\projectNo}
+
+% /////////////////////// Aufgabe 1 /////////////////////////
+
+\section*{1. Aufgabe}
+
+\begin{enumerate}
+
+\item[a)] TCP Echo Server
+
+\begin{lstlisting}[style=java]
+import java.net.*;
+import java.io.*;
+
+public class TCPEchoServer {
+
+    public static void main(String[] args) {
+    
+        // not as it should be done, I hope enough for this exercise. Usually each error should be handled individually
+        try {
+
+            int port = 1337;
+            String ipAddress = "localhost";
+            SocketAddress address = new InetSocketAddress(ipAddress, port);
+            ServerSocket socket = new ServerSocket(); // create unbound server socket
+            socket.bind(address); // bind it to the given address (ip + port)
+
+            System.out.println("TCP server running on localhost:1337");
+
+            // keep accepting client connections
+            while (true) {
+                Socket connection = socket.accept(); // wait for client connections and accept them
+                DataOutputStream out = new DataOutputStream(connection.getOutputStream());
+                BufferedReader br = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+                String currentLine = br.readLine();
+
+                System.out.print("Received message \"");
+                // read each line from the client and write it back
+                while (currentLine != null) {
+                    System.out.print(currentLine);
+                    out.writeBytes(currentLine + '\n');
+                    currentLine = br.readLine();
+                }
+                System.out.println("\" and wrote it back to client!");
+
+                // close all streams and connections when finished
+                out.close();
+                br.close();
+                connection.close();
+            }
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+}
+
+\end{lstlisting}
+
+\item[b)] TCP Echo Client
+
+\begin{lstlisting}[style=java]
+import java.net.*;
+import java.io.*;
+
+public class TCPEchoClient {
+
+    public static void main(String[] args) {
+    
+        try {
+
+            int port = 1337;
+            String ipAddress = "localhost";
+            Socket socket = new Socket(ipAddress, port); // create a client socket and bind it to our ServerSocket
+
+            // Define all required IO streams and variables required for reading/writing from/to server
+            DataOutputStream out;
+            BufferedReader stdin;
+            BufferedReader serverIn;
+            String currentLine;
+            String serverResponseLine;
+
+            System.out.println("TCP client connected to localhost:1337"); // after new Socket() call has executed, client should be connected
+
+            // initialize IO buffers
+            out = new DataOutputStream(socket.getOutputStream());
+            stdin = new BufferedReader(new InputStreamReader(System.in));
+            serverIn = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+
+            System.out.print("Message to send to server: ");
+            currentLine = stdin.readLine(); // read from console (stdin)
+            out.writeBytes(currentLine + '\n'); // write to server
+            serverResponseLine = serverIn.readLine(); // read response from server
+            System.out.printf("Server response: %s\n", serverResponseLine);
+
+            // close all buffers and socket connection
+            out.close();
+            stdin.close();
+            serverIn.close();
+            socket.close();
+            
+
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+}
+
+\end{lstlisting}
+
+\item[c)] UDP Echo Server
+
+\begin{lstlisting}[style=java]
+import java.net.*;
+import java.io.*;
+
+public class UDPEchoServer {
+
+    public static void main(String[] args) {
+    
+        // not as it should be done, I hope enough for this exercise. Usually each error should be handled individually
+        try {
+
+            int port = 1337;
+            InetAddress laddr = InetAddress.getLocalHost();
+            byte[] inDataBuffer = new byte[256];
+            DatagramSocket udSocket = new DatagramSocket(1337, laddr);
+
+            DatagramPacket udClientPacket;
+            DatagramPacket udResponsePacket;
+            int clientPort;
+            InetAddress clientAddress;
+            String clientMessage;
+
+            System.out.println("Started UDP server on localhost:1337");
+
+            // keep accepting client connections
+            while (true) {
+                udClientPacket = new DatagramPacket(inDataBuffer, inDataBuffer.length);
+                udSocket.receive(udClientPacket); // wait to receive client user-datagramm-packet
+                clientMessage = new String(udClientPacket.getData()); // get String from send byte[]
+                clientAddress = udClientPacket.getAddress();
+                clientPort = udClientPacket.getPort();
+
+                udResponsePacket = new DatagramPacket(inDataBuffer, inDataBuffer.length, clientAddress, clientPort);
+                udSocket.send(udResponsePacket);
+
+                System.out.printf("Received message \"%s\" and wrote it back to client.", clientMessage);
+
+                // nothing to close with UDP (except for the server socket, in our case NEVER! ^^)
+            }
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+}
+
+\end{lstlisting}
+
+\item[d)] UDP Echo Client
+
+\begin{lstlisting}[style=java]
+import java.net.*;
+import java.io.*;
+
+public class UDPEchoClient {
+
+    public static void main(String[] args) {
+    
+        // not as it should be done, I hope enough for this exercise. Usually each error should be handled individually
+        try {
+
+            int port = 1337;
+            InetAddress laddr = InetAddress.getLocalHost();
+            byte[] responseDataBuffer = new byte[256];
+            byte[] sendBuffer;
+            DatagramSocket udSocket = new DatagramSocket(); // create new unbound datagramm socket
+
+            DatagramPacket udClientPacket;
+            DatagramPacket udResponsePacket = new DatagramPacket(responseDataBuffer, responseDataBuffer.length);
+            BufferedReader stdin = new BufferedReader(new InputStreamReader(System.in));
+
+            // read from stdin
+            System.out.print("Enter message to send to server: ");
+            sendBuffer = stdin.readLine().getBytes();
+
+            // create a DatagramPacket from the read message and send to server
+            udClientPacket = new DatagramPacket(sendBuffer, sendBuffer.length, laddr, port);
+            udSocket.send(udClientPacket);
+
+            // read server response
+            udSocket.receive(udResponsePacket);
+            System.out.printf("Server response: %s\n", new String(udResponsePacket.getData()));
+
+            udSocket.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+}
+
+\end{lstlisting}
+
+\end{enumerate}
+
+\section*{Aufgabe 2}
+Wir haben alle Aufgaben für das TCP Chat bearbeitet, alle Features sollen funktionieren.
+
+\begin{enumerate}
+
+\item Client \\
+
+\begin{lstlisting}[style=java]
+package network;
+
+import fx.ClientGUI;
+import javafx.scene.paint.Color;
+
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.net.Socket;
+
+public class ClientTCP extends AbstractChatClient {
+
+    private MessageListenerTCP messageListenerTCP;
+    private boolean clientConnected;
+    private Socket serverSocket;
+    private PrintWriter socketWriter;
+
+    public ClientTCP(ClientGUI gui) {
+        super(gui);
+    }
+
+    @Override
+    public void sendChatMessage(String msg) {
+        if (this.socketWriter != null) {
+            this.socketWriter.println(msg);
+        }
+    }
+
+    @Override
+    public void connect(String address, String port) {
+        if (this.clientConnected) {
+            return;
+        }
+
+        boolean connected = true;
+        int portNumber;
+
+        try {
+
+            portNumber = Integer.parseInt(port);
+            this.serverSocket = new Socket(address, portNumber);
+            this.socketWriter = new PrintWriter(this.serverSocket.getOutputStream(), true); // auto-flush output stream
+            this.connectToChat();
+
+            this.messageListenerTCP = new MessageListenerTCP(this.serverSocket, this);
+            this.messageListenerTCP.start();
+
+
+        } catch (NumberFormatException e) {
+            this.gui.pushChatMessage("System: Port must be a valid integer!");
+            connected = false;
+        } catch (IOException e) {
+            this.terminate();
+        }
+
+        this.clientConnected = connected;
+    }
+
+    @Override
+    public void disconnect() {
+        this.terminate();
+    }
+
+    @Override
+    public void terminate() {
+        this.setConnected(false);
+
+        if (this.messageListenerTCP != null) {
+            this.messageListenerTCP.terminate();
+        }
+        try {
+            if (this.serverSocket != null) {
+                this.serverSocket.close();
+            }
+            if (this.socketWriter != null) {
+                this.socketWriter.close();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void setUName(String name) {
+        super.setUName(name);
+
+        // notify server
+        this.socketWriter.printf("/n %s\n", this.getUName());
+    }
+
+    public void setConnected(boolean connected) {
+        this.clientConnected = connected;
+        this.gui.setSymbolColor(this.clientConnected ? Color.GREEN : Color.RED);
+    }
+
+    public void onServerMessage(String message) {
+        if (message.charAt(0) == '/') {
+            this.handleServerCommand(message);
+        } else {
+            this.gui.pushChatMessage(message);
+        }
+    }
+
+    public void connectToChat() {
+        if (this.socketWriter != null) {
+            this.socketWriter.printf("/n %s\n", this.getUName());
+            this.socketWriter.flush();
+            this.setConnected(true);
+        }
+    }
+
+    private void handleServerCommand(String command) {
+        switch(command.substring(0,2)) {
+            case "/r":
+                int firstSpaceIdx = command.indexOf(' ');
+                int secondSpaceIdx = command.indexOf(' ', firstSpaceIdx + 1);
+                this.gui.pushChatMessage(
+                        String.format("%s renamed to %s",
+                                command.substring(firstSpaceIdx + 1, secondSpaceIdx),
+                                command.substring(secondSpaceIdx + 1)
+                        )
+                );
+                break;
+            default:
+                System.out.println("Unrecognized server command!");
+        }
+    }
+}
+
+\end{lstlisting}
+
+\begin{lstlisting}[style=java]
+package network;
+
+import fx.ClientGUI;
+import javafx.scene.paint.Color;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.*;
+
+public class MessageListenerTCP extends Thread {
+
+    private final int MAX_CHAT_REFRESH_LENGTH = 4096;
+    private String serverAddress;
+    private int serverPort;
+    private Socket serverSocket;
+    private boolean running = true;
+    private ClientTCP client;
+    private BufferedReader socketBuffer;
+
+
+    public MessageListenerTCP(Socket serverSocket, ClientTCP client) throws NumberFormatException {
+        this.serverSocket = serverSocket;
+        this.client = client;
+
+        try {
+            this.socketBuffer = new BufferedReader(new InputStreamReader(this.serverSocket.getInputStream()));
+            this.socketBuffer.mark(MAX_CHAT_REFRESH_LENGTH);
+        } catch (IOException e) {
+            this.terminate();
+            return;
+        }
+    }
+
+    public BufferedReader getReader() {
+        return this.socketBuffer;
+    }
+
+    public void terminate() {
+        this.running = false;
+        this.client.setConnected(false);
+    }
+
+    public Socket getServerSocket() {
+        return this.serverSocket;
+    }
+
+    @Override
+    public void run() {
+        this.waitForMessages();
+    }
+
+    /**
+     * Waits for server to send a message. If the new message is null, then the server has close the
+     * connection and we need to notify the client. If a new message is received, call ClientTCP::onServerMessage()
+     */
+    public void waitForMessages() {
+        String inputLine;
+
+        try {
+            this.serverSocket.setSoTimeout(1000);
+        } catch (SocketException e) {
+            e.printStackTrace();
+        }
+
+        while (this.running) {
+            try {
+                inputLine = socketBuffer.readLine();
+                if (inputLine == null) {
+                    // server not available
+                    this.terminate();
+                } else {
+                    this.client.onServerMessage(inputLine);
+                }
+            } catch (SocketTimeoutException e) {
+                // timed out, server is there, has nothing to say
+            } catch (IOException e) {
+                this.terminate();
+            }
+        }
+    }
+}
+
+\end{lstlisting}
+
+\item Server \\
+
+\begin{lstlisting}[style=java]
+package network;
+
+import fx.ServerGUI;
+import javafx.scene.paint.Color;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.net.*;
+import java.util.LinkedList;
+import java.util.List;
+
+public class ServerTCP extends AbstractChatServer {
+
+    private boolean running = false;
+    private ServerSocket serverSocket;
+    private ConnectionAccepterTCP connectionAccepter;
+    private List<ClientCommunicationThread> clientMessagers;
+
+    public ServerTCP(ServerGUI gui) {
+        super(gui);
+        this.clientMessagers = new LinkedList<ClientCommunicationThread>();
+    }
+
+    @Override
+    public void receiveConsoleCommand(String command, String msg) {
+        switch(command) {
+            case "/exclude":
+                this.removeClientByName(msg);
+                break;
+            case "/mute":
+                String[] words = msg.split(" ");
+                if (words.length < 2) {
+                    this.gui.pushConsoleMessage("Invalid number of arguments for command /mute");
+                    return;
+                }
+                this.muteClientByNameForSeconds(words[0], words[1]);
+                break;
+            default:
+                this.gui.pushConsoleMessage(String.format("Unrecognized console command %s", command));
+        }
+
+    }
+
+    @Override
+    public void start(String port) {
+        SocketAddress address;
+        int portNumber;
+
+        if (this.running) {
+            return;
+        }
+
+        try {
+            portNumber = Integer.parseInt(port);
+        } catch (NumberFormatException e) {
+            System.out.println("Port must be an integer!");
+            return;
+        }
+        address = new InetSocketAddress("localhost", portNumber);
+        try {
+            this.serverSocket = new ServerSocket(); // create unbound server socket
+            this.serverSocket.bind(address);
+            this.running = true;
+            this.gui.setSymbolColor(Color.GREEN);
+            this.connectionAccepter = new ConnectionAccepterTCP(this.serverSocket, this);
+            this.connectionAccepter.start();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+            this.terminate();
+            return;
+        }
+
+    }
+
+    @Override
+    public void stop() {
+        this.running = false;
+        this.gui.setSymbolColor(Color.RED);
+
+        if (this.connectionAccepter != null) {
+            this.connectionAccepter.terminate();
+        }
+
+        try {
+            this.serverSocket.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        this.removeAllClients();
+
+    }
+
+    @Override
+    public void terminate() {
+        this.stop();
+
+    }
+
+    public void addNewClient(Socket connection) {
+        ClientCommunicationThread newClientThread = new ClientCommunicationThread(connection, this);
+        newClientThread.start();
+        this.clientMessagers.add(newClientThread);
+    }
+
+    public void removeClient(ClientCommunicationThread client) {
+        this.clientMessagers.remove(client);
+        this.gui.removeClient(client.getClientId());
+        client.terminate();
+    }
+
+    public void removeAllClients() {
+        while(!this.clientMessagers.isEmpty()) {
+            ClientCommunicationThread crnt = this.clientMessagers.remove(0);
+            this.gui.removeClient(crnt.getClientId());
+            crnt.terminate();
+        }
+    }
+
+    public void onNewMessage(ClientCommunicationThread clientMessager, String message) {
+        if (clientMessager.mutedBefore > System.currentTimeMillis()) {
+            clientMessager.getWriter().println("You are muted!");
+            clientMessager.getWriter().flush();
+            return; // muted
+        }
+
+        for (ClientCommunicationThread client : this.clientMessagers) {
+            client.getWriter().printf("%s: %s\n", clientMessager.getUName(), message);
+            client.getWriter().flush();
+        }
+    }
+
+    public void addClientToGUI(int id, String uname) {
+        this.gui.addClient(id, uname);
+    }
+
+    public void clientRenamed(int id, String oldName, String newName) {
+        this.gui.removeClient(id);
+        this.gui.addClient(id, newName);
+
+        // better send not as direct message but as command, wanted to
+        // refresh all mesages, but the gui windows is not flushable ;/
+        for (ClientCommunicationThread client : this.clientMessagers) {
+            client.getWriter().printf("/r %s %s\n", oldName, newName);
+            client.getWriter().flush();
+        }
+    }
+
+    public void sendPrivateMessage(ClientCommunicationThread fromClient, String toClientName, String message) {
+        fromClient.getWriter().printf("*private* %s: %s\n", fromClient.getUName(), message);
+        fromClient.getWriter().flush();
+        this.getClientByName(toClientName).getWriter().printf("*private* %s: %s\n", fromClient.getUName(), message);
+        this.getClientByName(toClientName).getWriter().flush();
+    }
+
+    private ClientCommunicationThread getClientByName(String name) {
+        for (ClientCommunicationThread client : this.clientMessagers) {
+            if (client.getUName().equals(name)) {
+                return client;
+            }
+        }
+
+        return  null;
+    }
+
+    private void removeClientByName(String name) {
+        this.removeClient(this.getClientByName(name));
+    }
+
+    private void muteClientByNameForSeconds(String name, String seconds) {
+        int milliseconds;
+
+        try {
+            milliseconds = Integer.parseInt(seconds) * 1000;
+            this.getClientByName(name).mutedBefore = System.currentTimeMillis() + milliseconds;
+        } catch (NumberFormatException e) {
+            this.gui.pushConsoleMessage("Invalid argument for seconds to mute parsed!");
+        }
+    }
+
+}
+
+\end{lstlisting}
+
+\begin{lstlisting}[style=java]
+package network;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.ServerSocket;
+import java.net.Socket;
+import java.net.SocketException;
+import java.net.SocketTimeoutException;
+import java.util.LinkedList;
+
+public class ConnectionAccepterTCP extends Thread {
+
+    private ServerSocket serverSocket;
+    private ServerTCP server;
+    private boolean running = true;
+    private LinkedList<Socket> connections;
+
+    public ConnectionAccepterTCP(ServerSocket socket, ServerTCP server) {
+        this.serverSocket = socket;
+        this.server = server;
+        this.connections = new LinkedList<>();
+    }
+
+    @Override
+    public void run() {
+        this.waitForConections();
+    }
+
+    public void waitForConections() {
+        String inputLine;
+        BufferedReader socketBuffer = null;
+
+        while (this.running) {
+            try {
+                Socket connection = this.serverSocket.accept(); // wait for client connections and accept them
+
+                if (!this.connections.contains(connection)) {
+                    this.server.addNewClient(connection);
+                    this.connections.add(connection);
+                }
+
+            } catch (IOException e) {
+                // socket setTimeout exception, whatever
+            }
+        }
+    }
+
+    public void terminate() {
+        this.running = false;
+    }
+}
+
+\end{lstlisting}
+
+\begin{lstlisting}[style=java]
+package network;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
+import java.net.Socket;
+import java.net.SocketException;
+import java.net.SocketTimeoutException;
+
+public class ClientCommunicationThread extends Thread {
+
+    static int clientsCount = 0;
+
+    private int id;
+    private Socket clientConnection;
+    private String clientName;
+    private boolean running = true;
+    private ServerTCP server;
+    private PrintWriter socketWriter;
+    public long mutedBefore = System.currentTimeMillis();
+
+    public ClientCommunicationThread(Socket connection, ServerTCP server) {
+        this.id = ++clientsCount;
+        this.clientConnection = connection;
+        this.server = server;
+        try {
+            this.socketWriter = new PrintWriter(this.clientConnection.getOutputStream(), true); // auto-flush output stream
+        } catch (IOException e) {
+            e.printStackTrace();
+            this.terminate();
+        }
+    }
+
+    public String getUName() {
+        return this.clientName;
+    }
+
+    public void setUName(String name) {
+        if (this.clientName == null) {
+            this.server.addClientToGUI(this.id, name);
+        } else {
+            this.server.clientRenamed(this.getClientId(), this.clientName, name);
+        }
+        this.clientName = name;
+    }
+
+    public PrintWriter getWriter() {
+        return this.socketWriter;
+    }
+
+    public int getClientId() {
+        return this.id;
+    }
+
+    @Override
+    public void run() {
+        this.waitForMessages();
+    }
+
+    public void terminate() {
+        this.running = false;
+        try {
+            this.clientConnection.close();
+            this.socketWriter.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    public void waitForMessages() {
+        String inputLine;
+        BufferedReader socketBuffer;
+
+        try {
+            socketBuffer = new BufferedReader(new InputStreamReader(this.clientConnection.getInputStream()));
+            socketBuffer.mark(4096);
+        } catch (IOException e) {
+            e.printStackTrace();
+            this.terminate();
+            return;
+        }
+
+        try {
+            this.clientConnection.setSoTimeout(1000);
+        } catch (SocketException e) {
+            e.printStackTrace();
+        }
+
+        while (this.running) {
+            try {
+                inputLine = socketBuffer.readLine();
+                if (inputLine == null) {
+                    // client disconnected
+                    this.server.removeClient(this);
+                } else if (inputLine.charAt(0) == '/') {
+                    this.parseClientCommand(inputLine);
+                } else {
+                    this.server.onNewMessage(this, inputLine);
+                }
+            } catch (SocketTimeoutException e) {
+                // timed out, client is there, has nothing to say
+            } catch (IOException e) {
+                this.server.removeClient(this);
+            }
+        }
+
+        try {
+            socketBuffer.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void parseClientCommand(String clientMessage) {;
+        int firstSpaceIndex = clientMessage.indexOf(' ');
+        String command = clientMessage.substring(0, firstSpaceIndex);
+        String rest = clientMessage.substring(firstSpaceIndex+1);
+
+        switch(command) {
+            case "/n":
+                this.setUName(rest);
+                break;
+            case "/private":
+                this.handlePrivateMessage(rest);
+            default:
+                // unrecognized command
+                break;
+        }
+    }
+
+    private void handlePrivateMessage(String message) {
+        int firstSpaceIdx = message.indexOf(' ');
+        String uName = message.substring(0, firstSpaceIdx);
+        String privateMessage = message.substring(firstSpaceIdx+1);
+        this.server.sendPrivateMessage(this, uName, privateMessage);
+    }
+}
+
+\end{lstlisting}
+
+\end{enumerate}
+
+
+% /////////////////////// END DOKUMENT /////////////////////////
+\end{document}
