@@ -3,10 +3,16 @@ package network;
 import fx.ClientGUI;
 import javafx.scene.paint.Color;
 
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.net.Socket;
+
 public class ClientTCP extends AbstractChatClient {
 
-    private ConnectionThreadTCP connectionThread;
+    private MessageListenerTCP messageListenerTCP;
     private boolean clientConnected;
+    private Socket serverSocket;
+    private PrintWriter socketWriter;
 
     public ClientTCP(ClientGUI gui) {
         super(gui);
@@ -14,23 +20,36 @@ public class ClientTCP extends AbstractChatClient {
 
     @Override
     public void sendChatMessage(String msg) {
-
+        if (this.socketWriter != null) {
+            this.socketWriter.println(msg);
+        }
     }
 
     @Override
     public void connect(String address, String port) {
-        if (this.clientConnected)
+        if (this.clientConnected) {
             return;
+        }
 
         boolean connected = true;
+        int portNumber;
 
         try {
-            this.connectionThread = new ConnectionThreadTCP(address, port, this);
-            this.connectionThread.start();
-            this.gui.setSymbolColor(Color.GREEN);
+
+            portNumber = Integer.parseInt(port);
+            this.serverSocket = new Socket(address, portNumber);
+            this.socketWriter = new PrintWriter(this.serverSocket.getOutputStream(), true); // auto-flush output stream
+            this.connectToChat();
+
+            this.messageListenerTCP = new MessageListenerTCP(this.serverSocket, this);
+            this.messageListenerTCP.start();
+
+
         } catch (NumberFormatException e) {
             this.gui.pushChatMessage("System: Port must be a valid integer!");
             connected = false;
+        } catch (IOException e) {
+            this.terminate();
         }
 
         this.clientConnected = connected;
@@ -38,7 +57,30 @@ public class ClientTCP extends AbstractChatClient {
 
     @Override
     public void disconnect() {
+        this.terminate();
+    }
 
+    @Override
+    public void terminate() {
+        this.setConnected(false);
+
+        if (this.messageListenerTCP != null) {
+            this.messageListenerTCP.terminate();
+        }
+        try {
+            this.serverSocket.close();
+            this.socketWriter.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void setUName(String name) {
+        super.setUName(name);
+
+        // notify server
+        this.socketWriter.printf("/n %s\n", this.getUName());
     }
 
     public void setConnected(boolean connected) {
@@ -46,16 +88,37 @@ public class ClientTCP extends AbstractChatClient {
         this.gui.setSymbolColor(this.clientConnected ? Color.GREEN : Color.RED);
     }
 
-    @Override
-    public void terminate() {
-        this.connectionThread.terminate();
-    }
-
     public void onServerMessage(String message) {
         System.out.println(message);
+        if (message.charAt(0) == '/') {
+            this.handleServerCommand(message);
+        } else {
+            this.gui.pushChatMessage(message);
+        }
     }
 
     public void connectToChat() {
+        if (this.socketWriter != null) {
+            this.socketWriter.printf("/n %s\n", this.getUName());
+            this.socketWriter.flush();
+            this.setConnected(true);
+        }
+    }
 
+    private void handleServerCommand(String command) {
+        switch(command.substring(0,2)) {
+            case "/r":
+                int firstSpaceIdx = command.indexOf(' ');
+                int secondSpaceIdx = command.indexOf(' ', firstSpaceIdx + 1);
+                this.gui.pushChatMessage(
+                        String.format("%s renamed to %s",
+                                command.substring(firstSpaceIdx + 1, secondSpaceIdx),
+                                command.substring(secondSpaceIdx + 1)
+                        )
+                );
+                break;
+            default:
+                System.out.println("Unrecognized server command!");
+        }
     }
 }

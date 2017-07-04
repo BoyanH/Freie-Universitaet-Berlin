@@ -8,19 +8,32 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.*;
 
-public class ConnectionThreadTCP extends Thread {
+public class MessageListenerTCP extends Thread {
 
+    private final int MAX_CHAT_REFRESH_LENGTH = 4096;
     private String serverAddress;
     private int serverPort;
     private Socket serverSocket;
     private boolean running = true;
     private ClientTCP client;
+    private BufferedReader socketBuffer;
 
 
-    public ConnectionThreadTCP(String address, String port, ClientTCP client) throws NumberFormatException {
-        this.serverAddress = address;
-        this.serverPort = Integer.parseInt(port);
+    public MessageListenerTCP(Socket serverSocket, ClientTCP client) throws NumberFormatException {
+        this.serverSocket = serverSocket;
         this.client = client;
+
+        try {
+            this.socketBuffer = new BufferedReader(new InputStreamReader(this.serverSocket.getInputStream()));
+            this.socketBuffer.mark(MAX_CHAT_REFRESH_LENGTH);
+        } catch (IOException e) {
+            this.terminate();
+            return;
+        }
+    }
+
+    public BufferedReader getReader() {
+        return this.socketBuffer;
     }
 
     public void terminate() {
@@ -34,15 +47,7 @@ public class ConnectionThreadTCP extends Thread {
 
     @Override
     public void run() {
-        try {
-            this.serverSocket = new Socket(this.serverAddress, this.serverPort);
-            this.client.setConnected(true);
-            this.client.connectToChat();
-            this.waitForMessages();
-        } catch (IOException e) {
-            System.out.println("Couldn't connect to server");
-            this.terminate();
-        }
+        this.waitForMessages();
     }
 
     /**
@@ -51,14 +56,6 @@ public class ConnectionThreadTCP extends Thread {
      */
     public void waitForMessages() {
         String inputLine;
-        BufferedReader socketBuffer;
-
-        try {
-            socketBuffer = new BufferedReader(new InputStreamReader(this.serverSocket.getInputStream()));
-        } catch (IOException e) {
-            this.terminate();
-            return;
-        }
 
         try {
             this.serverSocket.setSoTimeout(1000);
@@ -75,7 +72,7 @@ public class ConnectionThreadTCP extends Thread {
                 } else {
                     this.client.onServerMessage(inputLine);
                 }
-            } catch (java.net.SocketTimeoutException e) {
+            } catch (SocketTimeoutException e) {
                 // timed out, server is there, has nothing to say
             } catch (IOException e) {
                 this.terminate();

@@ -10,7 +10,7 @@ public class ServerFX extends Application {
 	 * reflection api. Default is "network.ServerUDP" and will load a class
 	 * called ServerUDP in package network.
 	 */
-	final static private String networkInterface = "network.MyServer";
+	final static private String networkInterface = "network.ServerTCP";
 
 	/**
 	 * Default port for faster testing. This port will be written to the gui
