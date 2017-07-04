@@ -1,5 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="ArtifactManager">
+    <artifact type="jar" name="ChatClient_v1:jar">
+      <output-path>$PROJECT_DIR$/out/artifacts/ChatClient_v1_jar</output-path>
+      <root id="archive" name="ChatClient_v1.jar">
+        <element id="module-output" name="ChatClient_v1" />
+      </root>
+    </artifact>
+    <artifact type="jar" name="ChatServer_v1:jar">
+      <output-path>$PROJECT_DIR$/out/artifacts/ChatServer_v1_jar</output-path>
+      <root id="archive" name="ChatServer_v1.jar">
+        <element id="module-output" name="ChatServer_v1" />
+      </root>
+    </artifact>
+  </component>
   <component name="HaskellBuildOptions">
     <ghcPath>/usr/bin/ghc</ghcPath>
     <cabalPath>/usr/bin/cabal</cabalPath>

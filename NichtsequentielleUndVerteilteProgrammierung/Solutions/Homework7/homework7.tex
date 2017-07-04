@@ -35,16 +35,16 @@ Um diese Aufgabe richtig zu beantworten, muss man Annahme über welche Threads z
 Hier machen wir die Annahme, dass der Thread mit 100 Minuten Ausführungszeit erster ankommt. So unterscheiden sich auch die erste 2 Teilaufgaben \\ \\
 Gesammte Ausführungszeit = $100 + 100 \times 1 = 200$ \\ \\
 Durchschnittliche Ausführungszeit = $ \frac{200}{101} \approx $ 1,98 Minuten \\ \\
-Gesammte Wartezeit = $0 + 99 \times 100 + \sum_{i=0}^{99} i = 990 + \frac{99(99+1)}{2} = \frac{1999}{2}$ \\ \\
-Durchschnittliche Wartezeit = $\frac{1999}{2 \times 101} = \frac{1999}{202} \approx $ 9,896 Minuten \\ \\
-Damit durchschnittliche Verarbeitungszeit = $\frac{200 + \frac{1999}{2}}{101} \approx $ 11,876 Minuten \\
+Gesammte Wartezeit = $0 + 99 \times 100 + \sum_{i=0}^{99} i = 990 + \frac{99(99+1)}{2} = 990 + \frac{990}{2}$ = 1485\\ \\
+Durchschnittliche Wartezeit = $\frac{1485}{101} \approx $ 14,7 Minuten \\ \\
+Damit durchschnittliche Verarbeitungszeit $\approx $ 16,68 Minuten \\
 
 \item[2. ] nicht-präemptive SJF \\ \\
 Gesammte Ausführungszeit = $100 \times 1 + 100 = 200$ \\ \\
 Durchschnittliche Ausführungszeit = $ \frac{200}{101} \approx $ 1,98 Minuten \\ \\
-Gesammte Wartezeit = $(\sum_{i=0}^{99} i) + 100 = \frac{199}{2} + 100 =  $ 199,5 Minuten \\ \\
-Durchschnittliche Wartezeit = $\frac{199.5}{101} \approx $ 1,975 Minuten \\ \\
-Damit durchschnittliche Verarbeitungszeit = $\frac{199,5 + 200}{101} \approx $ 3,955 Minuten \\
+Gesammte Wartezeit = $(\sum_{i=0}^{99} i) + 100 = \frac{990}{2} + 100 =  $ 595 Minuten \\ \\
+Durchschnittliche Wartezeit = $\frac{595}{101} \approx $ 5,89Minuten \\ \\
+Damit durchschnittliche Verarbeitungszeit = $\frac{199,5 + 200}{101} \approx $ 9.82 Minuten \\
 
 Unter der Annahme, dass 1. Thread mit 100 Minuten Ausführungszeit als 1. gescheduled wird bekommt man das Ergebniss von FCFS. Wir gehen aber davon aus, dass der Scheduling-Algorithmus schon alle Threads kennt.
 
@@ -53,7 +53,7 @@ Da hier alle Threads gleichzeitig gestartet werden, gehen wir auch davon aus, da
 
 Man kann hier die Annahme machen, dass 1. Thread mit Ausführungszeit von 100 Minuten als erster gescheduled wird und dann unterbrochen wird, dann kommt man bei dem Ergebniss von RR. Wie vorher, ist unsere Annahme, dass der Scheduler schon alle Threads kennt. \\
 
-Durchschnittliche Wartezeit = $\frac{199.5}{101} \approx $ 1,975 Minuten \\ \\
+Durchschnittliche Wartezeit = $\frac{5051}{101} \approx $ 50 Minuten \\ \\
 Durchschnittliche Verarbeitungszeit $\approx$ 3,96 Minuten \\ 
 
 \item[4. ] RR-Scheduling. Quantum = 1 Minute \\
@@ -63,8 +63,8 @@ Gesammte Ausführungszeit = Ausführungszeit für 1. Thread + Ausführungszeit f
 = $1 + (100 \times 1) + 99 = 200 $ \\ \\
 Durchschnittliche Ausführungszeit = $\frac{200}{101} \approx $ 1,98 Minuten \\ \\
 Gesammte Wartezeit = Initiale Wartezeit für 1. Thread (0) + Wartezeiten für einzelne Threads mit Ausführungszeit 1 + Wartezeit für 1. Thread = \\
-= $ 0 + (\sum_{i=1}^{100} i) + 100 =  \frac{201}{2} + 100 =  $ 199,5 Minuten \\ \\
-Durchschnittliche Wartezeit = $\frac{200,5}{101} \approx $ 1,985 Minuten \\ \\
+= $ 0 + (\sum_{i=1}^{100} i) + 100 =  \frac{10100}{2} + 100 =  $ 5 051 Minuten \\ \\
+Durchschnittliche Wartezeit = $\frac{5051}{101} \approx $ 50 Minuten \\ \\
 Durchschnittliche Verarbeitungszeit = $\frac{200,5 + 200}{101} \approx $ 3,965 Minuten 
 
 
