@@ -114,11 +114,26 @@ public class ClientCommunicationThread extends Thread {
     }
 
     public void parseClientCommand(String clientMessage) {;
-        String clientName;
+        int firstSpaceIndex = clientMessage.indexOf(' ');
+        String command = clientMessage.substring(0, firstSpaceIndex);
+        String rest = clientMessage.substring(firstSpaceIndex+1);
 
-        if (clientMessage != null && clientMessage.substring(0, 2).equals("/n")) {
-            clientName = clientMessage.substring(3);
-            this.setUName(clientName);
+        switch(command) {
+            case "/n":
+                this.setUName(rest);
+                break;
+            case "/private":
+                this.handlePrivateMessage(rest);
+            default:
+                // unrecognized command
+                break;
         }
+    }
+
+    private void handlePrivateMessage(String message) {
+        int firstSpaceIdx = message.indexOf(' ');
+        String uName = message.substring(0, firstSpaceIdx);
+        String privateMessage = message.substring(firstSpaceIdx+1);
+        this.server.sendPrivateMessage(this, uName, privateMessage);
     }
 }

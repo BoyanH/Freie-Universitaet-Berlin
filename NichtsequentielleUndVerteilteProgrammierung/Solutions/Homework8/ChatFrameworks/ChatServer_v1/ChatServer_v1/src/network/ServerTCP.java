@@ -121,6 +121,7 @@ public class ServerTCP extends AbstractChatServer {
     public void onNewMessage(ClientCommunicationThread clientMessager, String message) {
         if (clientMessager.mutedBefore > System.currentTimeMillis()) {
             clientMessager.getWriter().println("You are muted!");
+            clientMessager.getWriter().flush();
             return; // muted
         }
 
@@ -142,7 +143,15 @@ public class ServerTCP extends AbstractChatServer {
         // refresh all mesages, but the gui windows is not flushable ;/
         for (ClientCommunicationThread client : this.clientMessagers) {
             client.getWriter().printf("/r %s %s\n", oldName, newName);
+            client.getWriter().flush();
         }
+    }
+
+    public void sendPrivateMessage(ClientCommunicationThread fromClient, String toClientName, String message) {
+        fromClient.getWriter().printf("*private* %s: %s\n", fromClient.getUName(), message);
+        fromClient.getWriter().flush();
+        this.getClientByName(toClientName).getWriter().printf("*private* %s: %s\n", fromClient.getUName(), message);
+        this.getClientByName(toClientName).getWriter().flush();
     }
 
     private ClientCommunicationThread getClientByName(String name) {

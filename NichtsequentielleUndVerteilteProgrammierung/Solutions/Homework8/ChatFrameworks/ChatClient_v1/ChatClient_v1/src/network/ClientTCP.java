@@ -68,8 +68,12 @@ public class ClientTCP extends AbstractChatClient {
             this.messageListenerTCP.terminate();
         }
         try {
-            this.serverSocket.close();
-            this.socketWriter.close();
+            if (this.serverSocket != null) {
+                this.serverSocket.close();
+            }
+            if (this.socketWriter != null) {
+                this.socketWriter.close();
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -89,7 +93,6 @@ public class ClientTCP extends AbstractChatClient {
     }
 
     public void onServerMessage(String message) {
-        System.out.println(message);
         if (message.charAt(0) == '/') {
             this.handleServerCommand(message);
         } else {
