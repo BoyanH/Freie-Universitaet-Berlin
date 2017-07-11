@@ -1,0 +1,709 @@
+\input{src/header}											% bindet Header ein (WICHTIG)
+\usepackage{graphicx}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{fancyvrb}
+
+\newcommand{\dozent}{Prof. Dr. Margarita Esponda}					% <-- Names des Dozenten eintragen
+\newcommand{\tutor}{Lilli Walter}						% <-- Name eurer Tutoriun eintragen
+\newcommand{\tutoriumNo}{6}				% <-- Nummer im KVV nachschauen
+\newcommand{\projectNo}{9}									% <-- Nummer des Übungszettels
+\newcommand{\veranstaltung}{Nichtsequentielle Programmierung}	% <-- Name der Lehrveranstaltung eintragen
+\newcommand{\semester}{SoeSe 2017}						% <-- z.B. SoSo 17, WiSe 17/18
+\newcommand{\studenten}{Boyan Hristov, Sergelen Gongor}			% <-- Hier eure Namen eintragen
+% /////////////////////// BEGIN DOKUMENT /////////////////////////
+
+
+\begin{document}
+\input{src/titlepage}										% erstellt die Titelseite
+
+
+Link zum Git Repository: \url{https://github.com/BoyanH/Freie-Universitaet-Berlin/tree/master/NichtsequentielleUndVerteilteProgrammierung/Solutions/Homework\projectNo}
+
+% /////////////////////// Aufgabe 1 /////////////////////////
+
+\section*{Aufgabe 2}
+
+\begin{enumerate}
+
+\item Kommunikationsmodelle \\
+
+\begin{enumerate}
+
+\item Asynchrones Modell
+Prozesse sind entweder im aktiven oder passiven Zustand. Wenn ein Prozess im aktiven Zustand ist, darf er Nachrichte versenden. Prozesse können zu jeder Zeit passiv werden, aber diese können nur dann aktiv werden, wenn sie eine Nachricht bekommen.\\
+
+Das Programm terminiert, wenn alle Prozesse pasiv sind UND keine Nachrichten unterwegs sind
+
+Vorteile: \\
+- Threads müssen nicht aktiv warten, können weiter arbeiten, bevor sie Antwort bekommen\\
+
+Nachteile: \\
+- Driftrate der Uhrzeit \\
+- Verzögerung der Versendung von Nachrichten
+- Unbekannte Ausführungszeit
+
+\item Synchrones Modell
+Nachrichten haben keine Laufzeit, nur die Prozesse. Bein Senden einer Nachricht wartet das Prozess, bis er Antwort bekommt.
+
+Da Prozesse auf Antwort beim Nachrichtenversand warten, terminiert das Programm wenn alle Prozesse passiv werden.
+
+Vorteile: \\
+- Die Ausführungszeit der Aktionen ienes Prozesses ist asymptotisch bekannt. \\
+- Jeder Prozess hat eine lokale Uhr, deren Driftrate-Einschränkungen in Echtzeit bekannt sind, d.h. da der Prozess immer auf Antwort aktiv wartet, kann er die Zeit messen. \\
+- Die Nachrichte werden über Kanäle innerhalb vorgegebener Zeitschränkungen übertragen
+
+Nachteile: \\
+- Prozesse dürfen nicht weiter arbeiten, bevor diese Antwort auf einem Nachrichversand bekommen
+
+\item Atommodell 
+Die Nachrichten haben eine Laufzeit, die Prozesse aber nicht.
+
+Terminiert, wenn keine Nachrichten unterwegs sind.
+
+\end{enumerate}
+
+\item Arten von Transparenz \\
+
+\begin{enumerate}
+    
+\item Ortstransparenz
+Ressourcen werden nur über Namen identifiziert, der Ort, wo diese enthalten / gespeichert sind ist nicht relevant. Dadurch wird eine ganz tolle Abstraktionsschicht hergestellt, der Entwickler muss sich keine Sorgen machen, wo die Ressourcen zu finden sind, hauptsache die sind alle verwendbar. Kann man bei RMI betrachten, da werden Objekte in dem Registry registriert, welches Thread diese hergestellt hat und wo die gespeichert sind ist irrelevant, man kann diese aber überall benutzen.
+
+\item Zugriffstransparenz
+Zugriffsformen sind vom Betriebssystem und Ort der Ressourcen unabhängig. Wieder ein Abstraktionsschicht, man kann die selbe Logik über unterschiedliche Betriebssysteme benutzen. Diese Art von Transparenz ist eine Erweiterung von Ortstransparenz, eine Kombination aus Ortstransparenz und Transparenz der Zugriffsmethode.
+
+\item Replikationstransparenz \\
+Der Benutzer merkt nicht, ob er mit dem Original eines Objekts arbeitet oder mit einer Kopie. Weiteres Abstraktionsschicht, der Entwickler muss sich keine Sorgen machen, ob alles richtig gespeichert wird und selber die Laufzeit durch lokale Kopies optimieren. Dadurch wird Effizienz erreciht ohne die zusätzliche Komplexität.
+
+\item Relokationstransparenz \\
+Ressourcen werden zur Laufzeit auf einem anderen Ort verschoben. Das wird wieder deswegen gemacht, damit höhere Effizienz erreicht wird, oder falls es in dem Speichermedium kein Platz mehr gibt. Das ist aber Betriebssystem- und Rechner- abhängig. Durch dem Transparenz werden wieder Sorgen des Entwicklers entfernt.
+
+\item Migrationstransparenz \\
+Ressourcen werden von einem Rechner zu anderen verlagert, ohne dass der Benutzer es merkt. Vorteile sind äquivalent zu diese von Relokationstransparenz.
+
+\item Fehlertransparenz \\
+Systemfelher und dessen Behebung sind vom Benutzer verborgen. Ist wieder für die Logik der Anwendung nich relevant und muss vom Entwickler des verteilten Systems nicht behandelt werden, also ein weiteres Abstraktionsschicht.
+
+\item Nebenläufigkeitstransparenz \\
+Die Synchronisation des Zugriffs aus gemeinsame Ressourcen wird vom Benutzer verborgen. Vorteile äquivalent zu diese der Fehlertransparenz 
+
+\end{enumerate}
+
+\end{enumerate}
+
+\section*{Aufgabe 3}
+
+\begin{enumerate}
+
+\item Was ist das Middleware? Welche Dienste soll die Middleware bereitstellen? \\
+Middleware ist eine Sammlung von APIs, die ein Abstraktionsschicht für die Entwicklung von Client-/Server-Systemen, wobei die Entwicklung viel leichter wird. \\\\
+Ein Middleware bietet Abstraktion von der Netzprogrammierung, asynchronen Austausch von Nachrichten, Erweiterung der Netzverbindung (optimierung von Laufzeit, Felherbehandlungen usw., alles was bein Arten von Transparenz schon erwähnt wurde), synchrone Verbindung, einheitlichen Zugriff auf DBS.
+\item Welche Middleware Kategorien kennen Sie? \\
+Anwendugsorientierte(CORA, JEE, .NET usw.), Kommunikationsorientierte(RPC,RMI, Web Service usw.) und Nachrichtenorientierte (MOM, JMS usw.)
+
+\item Was verstehen Sie unter MOM - Message Oriented Middleware? \\
+Das ist ein Nachrichteorientiertes Middleware. Es gibt ein Vermittler (der MOM Server) und eine Warteschlange von Nachrichten, welche den Nachrichtenaustausch steuern. Serven und Empfänger sind dabei unabhängig von einander und Nachrichten können zusammengebundelt (mehrere Nachrichte) abgeholt werden. Also der MOM-Server steht zwischen Server und Client und steuert die ganze Kommunikation, wobei die feste Kopplung zwischen den Beiden entfernt wird.
+
+\item Welche sind die wichtigsten Schnittstellen einer JMS-Anwendung? \\
+\begin{enumerate}
+
+\item ConnectionFactory \\
+Baut die Verbindungen zu einem JMS-Provider auf
+
+\item Connection \\
+Wird von ConnectionFactory erstellt und erstellt ein Kommunikationskanal zu JMS-Provider
+
+\item Session \\
+Stellt den kontext, in dem Nachrichten, Sender und Empfänger erzeugt werden, dar
+
+\item Message \\
+Eine Nachricht, mit dem dazugehörigen Meta-Daten
+
+\item Destination \\
+Eine Warteschlange des JMS-Providers, wo eine Nachricht landet
+
+\item MessageProducer
+\item MessageConsumer
+
+\end{enumerate}
+
+\item Was versteht man unter SOA - Service Oriented Architectures? \\
+Das ist eine Architektur, die als Grundprinzip die Verteilung von Dienste hat. Dienste sind stark gekapselt und können auf mehrere Rechnern sich befinden. Die Architektur hat als Kommunikationsmedium MOM, führt das Client/Server Prinzip weiter und hat als Kern Stardtechnologien wie XML, SOAP, WSDL und ist von spezifischen Betriebssystem und Datenbanken entkoppelt.
+
+\item Was ist ein dynamischer Web-Server. \\
+Konkrete Definition wurde in der Vorlesung nicht erwähnt. Es gibt zwei Antwortsmöglichkeiten
+
+\begin{enumerate}
+\item Im Gegenteil vom statischen Web-Server \\
+Ein Web-Server, der Methodenaufrufe und Logik hat und nicht nur die einzelne Möglichkeit anbietet, Dateien zurückzugeben
+
+\item Schätzung im Kontext vom verteilte Systemen \\
+Ein Web-Server mit verteilten Dienste, also Dienste die sich auf mehreren Rechner befinden.
+\end{enumerate}
+
+\item Erläutern Sie die SOAP und WSDL Protokolle. \\
+
+\begin{enumerate}
+
+\item SOAP \\
+Ein von Microsoft, IBM und Lotus entwickeltes XML basiertes Kommunikationsprotokoll. Das Protokoll ist Platform unabhängig, kann mit Firewalls umgehen und ist leicht erweiterbar. Es basiert sich auf HTTP, HTTPS und XML. Eine Nachricht wird mit SOAP wie ein Briefumschlag weitergegeben, wobei es die Struktur der Nachricht und wie es bearbeitet werden soll darauf steht.
+
+\item WSDL \\
+WSDL ist kein Protokoll, sondern eine Sprache!!! (Von Englisch Web Services Description \underline{Language}). \\
+Das ist eine Sprache, die die WebDienste beschreibt, wie technische Details (Transportprotokoll, Adresse der Dienste) und Spezifikation der Funktionsschnittstellen. Das ganze wird in XML beschrieben. Die Hauptelemente von WSDL sind:
+
+\begin{enumerate}
+
+\item Types \\
+Datentypdefinitionen
+\item Message \\
+Typisierte Definition der kommunizierten Daten
+\item Operation \\
+Beschreibt was ein Dienst eigentlich macht
+\item Port Type \\
+Alle Dienste, die auf dem Port zu finden sind
+\item Binding \\
+Spezifiziert das Protokoll und Datenformat für ein Port Type
+\item Port \\
+Endpunkt
+\item Service \\
+Eine Menge zusammengehöriger Endpunkte 
+
+\end{enumerate}
+
+\end{enumerate}
+
+\end{enumerate}
+
+\section*{Aufgabe 4}
+
+\begin{enumerate}
+\item RPC \\
+
+\begin{enumerate}
+
+\item Vorlauf
+
+\begin{enumerate}
+    \item Der Client ruft den Client Stub auf (das Lokale Pointer von dem externen Dienst) 
+    \item Marshalling. Der Client Stub verpackt die Parameter für den externen Prezeduraufruf und macht ein Systemcall für den Nachritversand
+    \item Betriebssystem schickt die Nachricht vom Klientenrechner zu dem Serverrechner
+    \item Das Betriebssystem vom Server bearbeitet die Packete und übergibt die zum Server Stub
+    \item Unmarshalling. Die verpackte Parameter werden geparsed.
+    \item Die Prozedur wird auf dem Server aufgerufen. Danach werden die gleiche Schritte im Gegenrichtung ausgeführt
+\end{enumerate}
+
+\item Aus Entwicklungsschicht
+
+\begin{enumerate}
+
+\item Jede Klasse, die externe Prozeduren anbietet wird implementiert
+\item Der Server erstellt ein neuse Objekt aus der Klasse PropertyHandlerMapping, dass als ein Register dient, wo alle mögliche Dienste registriert werden müssen
+\item Alle Dienste, also Klassen mit externen Prozeduren, werden in dem Registry hinzugefügt
+\item Es wird ein WebServer auf einem bestimmten Port hergestellt
+\item Darauf wird ein XmlRpcServer hergestellt
+\item zu dem XmlRpcServer wir der Register gegeben
+\item Am Ende wird der Server gestartte
+\item Der Client erstellt ein XmlRpcClient
+\item Der Client erstellt eine XmlRpcClientConfigImpl, also eine Konfiguration, wo definiert wird, wo sich der XmlRpcServer befindet
+\item Der Client führt ein RPC aus mit XmlRpcClient(instance).execute('<registeredClass.method>', <params>)
+\item Dabei wird alles in XML verpackt und über dem Netz geschickt wie oben beschrieben
+
+\end{enumerate}
+
+\end{enumerate}
+
+\item Marshalling \\
+Das ist das Prozess, in dem ein Objekt / Parametern von dem üblichen Form (wie diese in Java zu finden ung gespeichrt sind) in einem andere Form transformiert werden, wenn diese anders gespeichert werden müssen oder transportiert werden müssen. Zum Beispiel wenn ale Parameter für ein RPC transportiert werden müssen, werden diese in XML transformiert.
+
+\item Art von Parameterübergabe in RPC \\
+Es wird Call-by-value benutzt (ist auch im XML offensichtlich). Das Problem mit call-by-reference und RPC ist, dass die unterschiedliche Rechner keinen gemeinsamen Speicherplatz haben, kann also keine richtige Referenz übergegeben werden. Call-by-reference könnte durch Copy-restore (google it) implementiert werden, dabei kann aber eine Menge von Issues entstehen, wird also nicht gemacht.
+
+\item Was muss gemacht werden, um Objekte an einen entfernten Server als Parameter einer RMI
+senden zu können? \\
+
+Diese Objekte müssen speziell bezeichnet werden, damit die konkrete RMI Implementierung wissen kann, dass eine Kopie übergeben werden soll und dass die Methodenaufrufe auf dem Objekt dann extern sein müssen. Im Java muss man von der UnicastRemoteObject Klasse erben.
+
+\item Welche sind die wichtigen Softwarekomponenten, die in einem XML-RPC teilnehmen? \\
+
+\begin{enumerate}
+
+\item Betriebssystem
+\item XMLRPCServer
+\item PropertyHandlerMapping (Der Register, wo alle mögliche Dienste registriert werden)
+
+\end{enumerate}
+
+\end{enumerate}
+
+
+\section*{Aufgabe 1}
+
+Wir haben uns für die 2. Aufgabe entschieden, also ein Kalender zu bauen. Dabei haben wir gesehen, dass die Nutzer nur Events sehen können, in denen diese teilnehmen. Wir haben davon ausgegangen, dass nur die Nutzer, die an einem Event teilnehmen, weitere Nutzer einfügen können. Diese müssen also die Events updaten. \\ \\
+
+Die Funktionalität kann man testen, in dem man die in ClientInputThread definiert Befehle benutzt (oder beim Bedarf weitere einfügt. Diese sollen aber die erforderte Funktionalität anbieten). Bein nextEvent kann man sehen, dass egal was in der Console geschrieben wird, gibt es kein Antwort bis das nächste Event angefangen ist, also der Call wird blockiert, damit der Client auch (das haben wir bewusst gemacht). \\ \\
+
+Wichtig bei der Ausführung sind die Parameter. Da das Betriebssystem und JVM einige Ports und Hosts schützen, haben wir localhost und port 8080 benutzt. Dafür muss man die zwei Programme folgendermasen starten
+
+\begin{lstlisting}
+java -jar CalenderRMI.jar client 127.0.0.1 8080
+
+java -jar CalenderRMI.jar server 8080
+\end{lstlisting}
+
+
+\begin{lstlisting}[style=java]
+package alpv.calendar;
+
+import java.lang.reflect.Array;
+import java.rmi.RemoteException;
+import java.util.*;
+
+public class CalendarServerImpl implements CalendarServer {
+
+    private Dictionary<Long, Event> eventsById;
+    private Dictionary<Long, EventWaiterThread> waiterForEvent;
+    private Object eventsLock;
+    private static long eventsCount = 0;
+    private Dictionary<String, List<EventCallback>> callbacksForUser;
+
+    public CalendarServerImpl() {
+        this.eventsById = new Hashtable<>();
+        this.waiterForEvent = new Hashtable<>();
+        this.eventsLock = new Object();
+        this.callbacksForUser = new Hashtable<>();
+    }
+
+    @Override
+    public long addEvent(Event e) throws RemoteException {
+        e.setId(++eventsCount);
+
+        synchronized (eventsLock) {
+            long id = e.getId();
+            EventWaiterThread eventWaiter = new EventWaiterThread(e, this);
+            this.eventsById.put(id, e);
+            this.waiterForEvent.put(id, eventWaiter);
+            eventWaiter.start();
+            return id;
+        }
+    }
+
+    @Override
+    public boolean removeEvent(long id) throws RemoteException {
+        synchronized (eventsLock) {
+            Event registeredEventWithId = this.eventsById.remove(id);
+            EventWaiterThread waiterForEvent = this.waiterForEvent.remove(id);
+
+            if (waiterForEvent != null) {
+                waiterForEvent.interrupt();
+            }
+
+            return registeredEventWithId != null;
+        }
+    }
+
+    @Override
+    public boolean updateEvent(long id, Event e) throws RemoteException {
+        synchronized (eventsLock) {
+            Event registeredEventWithId = this.eventsById.get(id);
+            EventWaiterThread waiterForEvent = this.waiterForEvent.get(id);
+
+            /**
+             * If the date has changed, we need to restart the waiter thread as well, so just
+             * add a new event with the same id, remove the current one
+             *
+             * Not the best implementation ever, but keeps our timeout logic clean and simple
+             */
+            if (registeredEventWithId == null) {
+                return false;
+            } else if (registeredEventWithId.getBegin().compareTo(e.getBegin()) == 0) {
+
+                registeredEventWithId.setUser(e.getUser());
+                registeredEventWithId.setName(e.getName());
+
+            } else {
+                e.setId(registeredEventWithId.getId());
+                this.removeEvent(id);
+                this.addEvent(e);
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    @Override
+    public List<Event> listEvents(String user) throws RemoteException {
+        synchronized (eventsLock) {
+            List<Event> eventsList = new LinkedList<>();
+            Enumeration<Event> events = this.eventsById.elements();
+            Event currentEvent = null;
+
+            try {
+                do {
+                    currentEvent = events.nextElement();
+
+                    if (currentEvent != null && Arrays.asList(currentEvent.getUser()).indexOf(user) > -1) {
+                        eventsList.add(currentEvent);
+                    }
+                }
+                while (currentEvent != null);
+            } catch (NoSuchElementException e) {
+                // dictionary has no further items
+            }
+
+
+            return eventsList;
+        }
+    }
+
+    @Override
+    public Event getNextEvent(String user) throws RemoteException {
+        Event closestEvent;
+        long timeBeforeNextEvent;
+        Date currentDate = new Date();
+
+        synchronized (eventsLock) {
+            List<Event> userEvents = this.listEvents(user);
+            closestEvent = userEvents.get(0);
+
+            for (Event currentEvent : userEvents) {
+                // if the event is closer in the future, but still after the current date
+                if (currentEvent.compareTo(closestEvent) < 0 && currentDate.compareTo(currentDate) < 0) {
+                    closestEvent = currentEvent;
+                }
+            }
+        }
+
+        if (closestEvent != null) {
+            timeBeforeNextEvent = closestEvent.getBegin().getTime() - new Date().getTime();
+            try {
+                Thread.sleep(timeBeforeNextEvent);
+                return closestEvent;
+            } catch (InterruptedException e) {
+                // interrupted, don't return anything
+                return null;
+            }
+        }
+
+        return null;
+    }
+
+    @Override
+    public void RegisterCallback(EventCallback ec, String user) throws RemoteException {
+        List<EventCallback> callbacksForGivenUser = this.callbacksForUser.get(user);
+
+        if (callbacksForGivenUser == null) {
+            List newList = new LinkedList<>();
+            newList.add(ec);
+            this.callbacksForUser.put(user, newList);
+        } else {
+            callbacksForGivenUser.add(ec);
+        }
+    }
+
+    /**
+     * Why the fuck is the user not given here but was given in RegisterCallback?
+     * ...consistency is for the weak...no worries, I'll find it from all callbacks...
+     */
+    @Override
+    public void UnregisterCallback(EventCallback ec) throws RemoteException {
+        Enumeration<List<EventCallback>> callbacks = this.callbacksForUser.elements();
+        List<EventCallback> currentUserCallbacks;
+
+        try {
+            do {
+                currentUserCallbacks = callbacks.nextElement();
+
+                // if the callback was found in the current list of callbacks, stop searching
+                // it was successfully removed
+                if (currentUserCallbacks != null && currentUserCallbacks.remove(ec)) {
+                    break;
+                }
+
+            } while (currentUserCallbacks != null);
+        } catch(NoSuchElementException e) {
+            // dictionary has no further elements
+        }
+
+    }
+
+    public void eventStarted(long id) {
+        Event startedEvent = this.eventsById.get(id);
+        String[] users = startedEvent.getUser();
+
+        for (String user : users) {
+
+            for (EventCallback ec : this.callbacksForUser.get(user)) {
+                try {
+                    ec.call(startedEvent);
+                } catch (RemoteException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+}
+
+\end{lstlisting}
+
+\begin{lstlisting}[style=java]
+package alpv.calendar;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.Date;
+import java.util.List;
+
+public class ClientInputThread extends Thread {
+
+    private CalendarServer stub;
+    private BufferedReader readBuffer;
+    private EventCallback ec;
+    String userName;
+
+    public ClientInputThread(CalendarServer stub) {
+        this.stub = stub;
+        this.readBuffer = new BufferedReader(new InputStreamReader(System.in));;
+    }
+
+    @Override
+    public void run () {
+
+        while(true) {
+
+            try {
+                String newLine = this.readBuffer.readLine();
+                this.parseCommand(newLine);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+    }
+
+    private void parseCommand(String line) {
+        String eventName;
+        Long milliseconds;
+
+        try {
+            if (this.userName == null && !line.equals("setName")) {
+                System.out.println("Cannot execute any commands without setting your name first. Execute \"setName\" first ");
+            }
+
+            switch (line) {
+                case "newEvent":
+                    System.out.print("Enter event name: ");
+                    eventName = this.readBuffer.readLine();
+                    System.out.print("After how many seconds is the event happening: ");
+                    milliseconds = Long.parseLong(this.readBuffer.readLine()) * 1000;
+                    String[] user = {this.userName};
+
+                    stub.addEvent(new Event(eventName, user, new Date(new Date().getTime() + milliseconds)));
+                    break;
+                case "setName":
+                    System.out.print("Enter your name: ");
+                    this.userName = this.readBuffer.readLine();
+
+                    if (this.ec != null) {
+                        stub.UnregisterCallback(this.ec);
+                        this.ec = new EventCallbackImpl(this.userName);
+                        stub.RegisterCallback(ec, this.userName);
+                    }
+
+                    break;
+                case "addUserToEvent":
+                    List<Event> eventsList = stub.listEvents(this.userName);
+                    for (Event e : eventsList) {
+                        System.out.printf("#%s \"%s\" starting on %s\n", e.getId(), e.getName(), e.getBegin());
+                    }
+                    System.out.print("Which event id? : ");
+                    long eventId = Long.parseLong(this.readBuffer.readLine());
+                    System.out.print("Which user? : ");
+                    String newUser = this.readBuffer.readLine();
+
+                    for (Event e : eventsList) {
+                        if (e.getId() == eventId) {
+                            Event newEvent = new Event(e.getName(), e.getUser(), e.getBegin());
+                            String[] newUsers = new String[newEvent.getUser().length];
+
+                            for (int i = 0; i < newEvent.getUser().length; i++) {
+                                newUsers[i] = newEvent.getUser()[i];
+                            }
+                            newUsers[newUsers.length-1] = newUser;
+                            stub.updateEvent(newEvent.getId(), newEvent);
+                            break;
+                        }
+                    }
+
+                    break;
+                case "subscribeForEvents":
+                    this.ec = new EventCallbackImpl(this.userName);
+                    stub.RegisterCallback(ec, this.userName);
+                    break;
+                case "unsubscribe":
+                    stub.UnregisterCallback(this.ec);
+                    this.ec = null;
+                    break;
+                case "removeEvent":
+                    List<Event> eventList = stub.listEvents(this.userName);
+                    for (Event e : eventList) {
+                        System.out.printf("#%s \"%s\" starting on %s\n", e.getId(), e.getName(), e.getBegin());
+                    }
+                    System.out.print("Which event id? : ");
+                    long eId = Long.parseLong(this.readBuffer.readLine());
+
+                    stub.removeEvent(eId);
+                    break;
+                case "nextEvent":
+                    Event next = stub.getNextEvent(this.userName);
+                    System.out.printf("Next event awaited, event name: %s\n", next.getName());
+                default:
+                    System.out.println("Command not recognized. Check ClientInputThread.java for more info");
+
+            }
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+}
+
+\end{lstlisting}
+
+\begin{lstlisting}[style=java]
+package alpv.calendar;
+
+import java.rmi.RemoteException;
+import java.rmi.server.UnicastRemoteObject;
+
+public class EventCallbackImpl extends UnicastRemoteObject implements  EventCallback {
+
+    public String uName;
+
+    public EventCallbackImpl(String name) throws RemoteException {
+        this.uName = name;
+    }
+
+    @Override
+    public void call(Event e) throws RemoteException {
+        System.out.printf("%s event started! Whohoo; In callback for user %s \n", e.getName(), this.uName);
+    }
+}
+
+\end{lstlisting}
+
+\begin{lstlisting}[style=java]
+package alpv.calendar;
+
+import java.util.Date;
+
+public class EventWaiterThread extends Thread {
+
+    private Event event;
+    private CalendarServerImpl server;
+
+    public EventWaiterThread(Event e, CalendarServerImpl server) {
+        this.event = e;
+        this.server = server;
+    }
+
+    @Override
+    public void run() {
+        Date currentDate = new Date();
+        System.out.println(this.event.getBegin());
+        long millisecondsToBegin = this.event.getBegin().getTime() - currentDate.getTime();
+        try {
+            EventWaiterThread.sleep(millisecondsToBegin);
+            this.server.eventStarted(this.event.getId());
+        } catch (InterruptedException e) {
+            // interrupted, just end
+            // e.printStackTrace();
+        }
+
+    }
+}
+
+\end{lstlisting}
+
+\begin{lstlisting}[style=java]
+package alpv.calendar;
+
+import java.rmi.registry.LocateRegistry;
+import java.rmi.registry.Registry;
+import java.rmi.server.UnicastRemoteObject;
+
+public class Main {
+    private static final String USAGE   = String.format("usage: java -jar UB%%X_%%NAMEN server PORT%n" +
+                                                        "         (to start a server)%n" +
+                                                        "or:    java -jar UB%%X_%%NAMEN client SERVERIPADDRESS SERVERPORT%n" +
+                                                        "         (to start a client)");
+
+    private static CalendarServer calendarServerStub;
+
+    /**
+     * Starts a server/client according to the given arguments. 
+     * @param args
+     */
+    public static void main(String[] args) {
+        try {
+            int i = 0;
+
+            if(args[i].equals("server")) {
+                try {
+
+                    /**
+                     * Set the java's rmi server's hostname to 127.0.0.1 AKA localhost, we don't want a global server
+                     */
+                    System.setProperty("java.rmi.server.hostname","127.0.0.1");
+
+                    // Bind the remote object's stub in the registry
+                    Registry registry = LocateRegistry.createRegistry(Integer.parseInt(args[1]));
+
+                    /**
+                     * It's important to always keep a reference to the class registered in the LocateRegistry,
+                     * otherwise it could get garbage-collected before it was successfully registered
+                     */
+                    CalendarServerImpl calendarServerImpl = new CalendarServerImpl();
+                    calendarServerStub = (CalendarServer) UnicastRemoteObject.exportObject(calendarServerImpl, Integer.parseInt(args[1]));
+                    registry.bind("CalendarServer", calendarServerStub);
+
+                    System.err.println("Server ready");
+                } catch (Exception e) {
+                    System.err.println("Server exception: " + e.toString());
+                    e.printStackTrace();
+                }
+            }
+            else if(args[i].equals("client")) {
+                try {
+                    Registry registry = LocateRegistry.getRegistry(args[1], Integer.parseInt(args[2])
+                    );
+                    CalendarServer stub = (CalendarServer) registry.lookup("CalendarServer");
+                    new ClientInputThread(stub).start();
+
+                } catch (Exception e) {
+                    System.err.println("Client exception: " + e.toString());
+                    e.printStackTrace();
+                }
+            }
+            else
+                throw new IllegalArgumentException();
+        }
+        catch(ArrayIndexOutOfBoundsException e) {
+            System.err.println(USAGE);
+        }
+        catch(NumberFormatException e) {
+            System.err.println(USAGE);
+        }
+        catch(IllegalArgumentException e) {
+            System.err.println(USAGE);
+        }
+    }
+}
+\end{lstlisting}
+
+
+% /////////////////////// END DOKUMENT /////////////////////////
+\end{document}
