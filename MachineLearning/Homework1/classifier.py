@@ -1,9 +1,12 @@
 import os
 import math
 
+import seaborn as sn
+import pandas as pd
+import matplotlib.pyplot as plt
+
 dir_path = os.path.dirname(os.path.realpath(__file__))
 trainingSetData = []
-K_NN_COUNT = 1
 
 def extractDataFromLine(line):
 	line = line.replace(' \n', '') # clear final space and new line chars
@@ -21,28 +24,31 @@ def train():
 
 	# TODO: maybe construct a kd-tree out of data
 
-def test():
+def test(knnCount):
 	explicitPathRead = os.path.join(dir_path, './Dataset/test')
 	f = open(explicitPathRead, 'r')
 
 	errors = 0
 	testsCount = 0
+	confusionsMatrix = [[0 for x in range(10)] for y in range(10)] # 10 by 10 matrix
 
 	for line in f:
 		currentLineData = extractDataFromLine(line)
-		result = classify(currentLineData)
+		result = classify(currentLineData, knnCount)
 		expected = str(int(currentLineData[0]))
+
+		confusionsMatrix[int(expected)][int(result)] += 1
 
 		testsCount += 1
 		if result != expected:
 			errors += 1
-		print("Tests completed: {}".format(testsCount))
 
 	errorRate = errors / testsCount
-	print("Error rate is {}%".format(errorRate * 100))
+	printConfusionsMatrix(confusionsMatrix, knnCount)
+	print("Error rate for k={0} is {1}%".format(knnCount, errorRate * 100))
 
-def classify(digitData):
-	kNN = getKNN(trainingSetData, digitData, K_NN_COUNT)
+def classify(digitData, knnCount):
+	kNN = getKNN(trainingSetData, digitData, knnCount)
 	labelsOfKNN = list(map(getLabel, kNN)) # intentionally as integers, to make mapping easier
 	digitRepetitions = [0 for x in range(10)]
 
@@ -85,6 +91,21 @@ def getDistanceBetweenPoints(a, b):
 
 	return math.sqrt(squares)
 
+def printConfusionsMatrix(matrix, k):
+	explicitImgPath = os.path.join(dir_path, './Plots/confusion_matrix_for_k_{0}.png'.format(k))
+	digits = [str(x) for x in range(10)];
+
+	df_cm = pd.DataFrame(matrix, index = digits,
+	columns = digits.reverse() )
+
+	plt.figure(figsize = (11,7))
+	heatmap = sn.heatmap(df_cm, annot=True)
+
+	heatmap.set(xlabel='Klassifiziert', ylabel='Erwartet')
+
+	plt.savefig(explicitImgPath, format='png')
 
 train()
-test()
+test(1)
+test(2)
+test(3)
