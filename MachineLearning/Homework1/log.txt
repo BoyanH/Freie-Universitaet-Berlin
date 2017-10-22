@@ -1,0 +1,3 @@
+Error rate for k=1 is 5.630293971101146%
+Error rate for k=2 is 5.879422022919781%
+Error rate for k=3 is 5.5306427503736915%
