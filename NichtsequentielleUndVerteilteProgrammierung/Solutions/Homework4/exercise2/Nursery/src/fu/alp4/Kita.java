@@ -35,7 +35,7 @@ public class Kita {
 
     public void takeBabyFromNursery(Parent parent) {
         this.freeBabySlots.release();
-        this.parents.add(parent);
+        this.parents.remove(parent);
         this.babies--;
         System.out.println("Baby taken from nursery!");
         this.printState();
