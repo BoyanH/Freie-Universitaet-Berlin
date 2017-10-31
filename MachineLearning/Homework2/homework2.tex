@@ -1,3 +1,101 @@
+\input{src/header}											% bindet Header ein (WICHTIG)
+\usepackage{graphicx}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{fancyvrb}
+
+\newcommand{\dozent}{Prof. R. Rojas}					% <-- Names des Dozenten eintragen
+\newcommand{\projectNo}{2}
+\newcommand{\veranstaltung}{Mustererkennung}
+\newcommand{\semester}{WS17/18}
+\newcommand{\studenten}{Boyan Hristov, Nedeltscho Petrov}
+% /////////////////////// BEGIN DOKUMENT /////////////////////////
+
+
+\begin{document}
+\input{src/titlepage}										% erstellt die Titelseite
+
+
+Link zum Git Repository: \url{https://github.com/BoyanH/Freie-Universitaet-Berlin/tree/master/MachineLearning/Homework\projectNo}
+
+% /////////////////////// Aufgabe 1 /////////////////////////
+
+\section*{Score}
+Das ist die Ausgabe des Programs und damit auch das Score
+\begin{lstlisting}
+Score for 3 vs 7: 100.0%
+Score for 3 vs 8: 100.0%
+Score for 5 vs 7: 100.0%
+Score for 5 vs 8: 100.0%
+Score for 7 vs 8: 100.0%
+\end{lstlisting}
+
+\section*{Lineare Regression}
+
+Wir benutzen die folgende Formel für lineare Regression mit Least Squares
+\begin{align}
+	\vec{B} = (X^TX)^{-1}X^T\vec{y}
+\end{align}
+wobei $\vec{B}$ die Lösung von der folgenden Gleichung ist: (im besten Fall, falls Matrix mit vollem Rank)
+
+\begin{align}
+	y_i = B_0 + B_iX_{11} + B_iX{12} + ... + B_nX_{in}
+\end{align}
+
+dabei ist X die Eingabematrix mit je Zeile ein Punkt im n-Dimensionalen Raum.
+Damit wir diese Gleichung lösen können, mit $B_0$ als 1. Glied, müssen wir erstmal eine Spalte mit Einsen einfügen.
+
+\begin{lstlisting}[style=py]
+	ones = np.ones((len(self.trainData), 1), dtype=float)
+	X = np.append(ones, self.trainData, axis = 1)
+\end{lstlisting}
+
+Weiter, um die 2 Klassen gleichwertig in der linearen Regression zu betrachten, dürfen wir natürlich nicht gleich die Labels benutzen, sondern
+diese erstmal normalisieren (so zu sagen). Dabei mapen wir die eine Labels zu -1 und die andere zu 1. Z.B wenn wir zwischen 3 und 5 unterscheiden wollen,
+wird das je Label 3 zu -1 und je 5 zu 1. Das passiert folgendermaßen
+
+\begin{lstlisting}[style=py]
+	def normalizeLabels(self, labels):
+		return list(map(lambda x: -1 if int(x) == self.classA else 1, labels))
+\end{lstlisting}
+
+Und damit unsere fit Methode
+
+\begin{lstlisting}[style=py]
+	def fit(self):
+		ones = np.ones((len(self.trainData), 1), dtype=float)
+		X = np.append(ones, self.trainData, axis = 1)
+		xtxInversed = LinearRegressionClassifier.pseudoInverse(X.T.dot(X))
+		normalizedLabels = self.normalizeLabels(self.trainLabels)
+		self.beta = xtxInversed.dot(X.T).dot(normalizedLabels)
+\end{lstlisting}
+
+\section*{Pseudoinverse}
+Wir benutzen die Moore-Penrose Pseudoinverse. Nach der Folmel gilt:
+
+\begin{align}
+	A^{+} = \lim_{\delta \rightarrow 0} A^{*}(AA^{*} + \delta E)^{-1}
+\end{align}
+
+Wobei $A^{*}$ die adjungierte Matrix ist. Da wir aber in dem Bereich der reelen Zahlen uns befinden, ist die adjungierte Matrix
+identisch zu der transponierten. Deswegen gilt:
+
+\begin{align}
+	A^{+} = \lim_{\delta \rightarrow 0} A^{T}(AA^{T} + \delta E)^{-1}
+\end{align}
+
+Damit unsere Implementierung
+
+\begin{lstlisting}[style=py]
+@staticmethod
+	def pseudoInverse(X):
+		delta = np.nextafter(np.float16(0), np.float16(1)) # as close as we can get to lim delta -> 0
+		pseudoInverted = X.T.dot(np.linalg.inv(X.dot(X.T) + delta * np.identity(len(X))))
+\end{lstlisting}
+
+
+\section*{Vollständige Implementierung (Ohne Classifier Klasse)}
+\begin{lstlisting}[style=py]
 import pandas as pd
 import numpy as np
 from operator import itemgetter
@@ -102,11 +200,11 @@ class LinearRegressionClassifier(Classifier):
 		# where y = (-1, 1, -1, 1, ..., -1) (for example) is a vector
 		# of the labels corresponding to the given data points
 
-		xtxInversed = LinearRegressionClassifier.pseudoInverse(X.T.dot(X))
+		xtInversed = LinearRegressionClassifier.pseudoInverse(X.T.dot(X))
 
 		# normalize y, so the two possible classes are maped to -1 or 1
 		normalizedLabels = self.normalizeLabels(self.trainLabels)
-		self.beta = xtxInversed.dot(X.T).dot(normalizedLabels)
+		self.beta = xtInversed.dot(X.T).dot(normalizedLabels)
 
 	def predictSingle(self, X):
 		X = np.append(np.array([1]), np.array(X), axis=0)
@@ -168,3 +266,9 @@ LinearRegressionClassifier(trainSet, testSet, 3, 8).test()
 LinearRegressionClassifier(trainSet, testSet, 5, 7).test()
 LinearRegressionClassifier(trainSet, testSet, 5, 8).test()
 LinearRegressionClassifier(trainSet, testSet, 7, 8).test()
+\end{lstlisting}
+
+
+
+% /////////////////////// END DOKUMENT /////////////////////////
+\end{document}
