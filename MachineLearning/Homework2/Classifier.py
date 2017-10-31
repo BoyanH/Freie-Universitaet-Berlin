@@ -12,6 +12,7 @@ class Classifier:
         results = np.zeros((size, size), dtype=np.int32)
 
         for pi, yi in zip(predicted, y):
+            assert(int(pi) == int(yi))
             results[int(pi)][int(yi)] += 1
 
         return results

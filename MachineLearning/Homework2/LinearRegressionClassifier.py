@@ -138,7 +138,7 @@ class LinearRegressionClassifier(Classifier):
 		digits = [str(x) for x in range(10)];
 
 		df_cm = pd.DataFrame(matrix, index = digits,
-		columns = digits.reverse() )
+		columns = digits )
 
 		plt.figure(figsize = (11,7))
 		heatmap = sn.heatmap(df_cm, annot=True)
