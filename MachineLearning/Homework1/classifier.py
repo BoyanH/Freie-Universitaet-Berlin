@@ -11,7 +11,6 @@ trainingSetData = []
 def extractDataFromLine(line):
 	line = line.replace(' \n', '') # clear final space and new line chars
 	
-	return list(map(float, line.split(' '))); # map line to a list of floats
 
 def train():
 	explicitPathRead = os.path.join(dir_path, './Dataset/train')
