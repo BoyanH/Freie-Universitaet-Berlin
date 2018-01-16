@@ -56,15 +56,33 @@
 \begin{document}
     \maketitle
     \begin{abstract}
-        Hier könnte noch eine Zusammenfassung stehen, muss aber nicht.
+        Wir werden einige Konzepten einführen, die man als die Grundbausteine der Kryptographie betrachtet. Wir werden
+        dabei sehen, unter welchen Annahmen sichere Kryptographie existieren kann. Weiter wird der Zusammenhang mit den
+        Klassen P und NP erleutert, als auch werden einigen interessanten Schlussfolgerungen gemacht. Am Ende werden
+        wir auch die Funktion hinter den berühmten RSA Algorithmus sehen.
     \end{abstract}
     \section{Motivation}
 
     \subsection{Secret Codes \& One-way Pads}
-    \textellipsis
+    Die naive Methode kriptierte Konversation zu haben ist, wenn Sender und Empfänger der gleiche Schlüssel benutzen,
+    um Nachrichten zu kriptieren und dekriptieren. Dabei existiert das Problem, dass Sender und Empfänger sich auf
+    einen Schlüssel einigen müssen. Das ist aber schwierig, da bevor sie das gemacht haben, können sie auch keine
+    sichere Nachrichten zwischen einander senden. Weiter ist das keine gute Lösung, da für jede Konversation ein
+    Schlüssel existieren muss, d.h. wenn jemand mit 100 Leuten kriptierte Nachrichten austauschen will, muss der auch
+    100 Schlüsseln speichern. \\ \\
+
+    Laut Theorie ist ein Schlüssel nur dann sicher, wenn es mindestens so lang ist wie alle Nachrichten, die damit
+    verschlüsselt werden sollen. Deswegen sind die sogenannte ``One-way Pads`` entstanden. Dabei wird je Nachricht mit
+    einem Teil des Schlüssels verschlüsselt und dieses Teil wird nachher gelöscht. So garantiert man, dass ein
+    Schlüssel durch ``Brute-Force`` schwierig zu finden ist. Wie wir aber später sehen werden, reicht es auch wenn der
+    Schlüssel relativ lang ist, solange es keine andere Methode außer Brute-Force gibt, den Schlüssel leichter zu
+    finden. \\ \\
+
+    So kommen wir zu den Konzepten der sicheren Hashfunktionen und der asymmetrischen Verschlüsselung,
+    wobei eine Nachricht mit einem Schlüssel verschlüsselt wird und mit einem anderen entschlüsselt.
 
     \subsection{Ziele der Public-Key Kryptosysteme}
-    Hier werden wir auch einige Notationen einführen.
+    Hier werden wir einige Notationen einführen.
 
     \begin{itemize}
         \item $E: \Sigma^* \longrightarrow \Sigma^*$ - Funktion, die eine Nachricht kriptiert
