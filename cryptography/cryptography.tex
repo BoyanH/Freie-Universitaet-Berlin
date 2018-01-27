@@ -96,8 +96,8 @@
     \begin{enumerate}
         \item Man muss die originelle von kriptierten Nachrichten generieren können. \\
         Formal: $D(E(M)) = M$
-        \item E und D sind polynomiellzeit berechenbar
-        \item Wenn ein Nutzer E veröffentlicht, veröffentlich er nicht D und auch kein Weg, D leichter (in polynomieller
+        \item E und D sind Polynomialzeit berechenbar
+        \item Wenn ein Nutzer E veröffentlicht, veröffentlich er nicht D und auch kein Weg, D leichter (in polynomialer
         Zeit) zu berechnen
         \item Mann muss eine Nachricht erstmal dekriptierten und dann kriptieren können, wobei wieder die originelle
         Nachricht entsteht. \\
@@ -124,18 +124,18 @@
     \end{definition}
 
     \subsection{Linksinvertierbarkeit}
-    Hier ist I die Identitätsfunktion und $\odot$ die Verkettung von Funktionen.
+    Hier ist I die Identitätsfunktion und $\circ$ die Verkettung von Funktionen.
     \begin{definition}
         Eine Funktion $f: X \longrightarrow Y$ ist linksinvertierbar \\
-        $\Leftrightarrow \exists g: Y \longrightarrow X: g \odot f = I_x$ \\
+        $\Leftrightarrow \exists g: Y \longrightarrow X: g \circ f = I_x$ \\
         $\Leftrightarrow f$ ist injektiv
     \end{definition}
 
     \subsection{Rechtsinvertierbarkeit}
-    Hier ist I die Identitätsfunktion und $\odot$ die Verkettung von Funktionen.
+    Hier ist I die Identitätsfunktion und $\circ$ die Verkettung von Funktionen.
     \begin{definition}
         Eine Funktion $f: X \longrightarrow Y$ ist rechtsinvertierbar \\
-        $\Leftrightarrow \exists g: Y \longrightarrow X: f \odot g = I_x$ \\
+        $\Leftrightarrow \exists g: Y \longrightarrow X: f \circ g = I_x$ \\
         $\Leftrightarrow f$ ist surjektiv
     \end{definition}
 
@@ -148,7 +148,7 @@
     sind ein grundlegendes Baustein für die Kryptographie, Ziel ist aber hier auch alle Annahmen zu verstehen die dazu
     führen. \\
     Da die meisten Definitionen auf probabilistische Algorithmen sich basieren, werden wir erstmal definieren, was
-    vernachlässige Erfolgswahrscheinlichkeit bedeutet, um bessere die folgende Konzepte erklären zu können.
+    vernachlässige Erfolgswahrscheinlichkeit bedeutet, um besser die folgende Konzepte erklären zu können.
 
     \subsection{Vernachlässige Erfolgswahrscheinlichkeit}
 
@@ -160,7 +160,7 @@
             \item Funktion abhängig von der Eingabegroße
             \item D.h, auch wenn man polynomial lange den Algorithmus wiederholt, bekommt man wieder eine
                 vernachlässigbare Erfolgswahrscheinlichkeit
-            \item Damit ist vernachlässigbare Erfolgswahrscheinlichkeit $\equiv$ nicht polynomielzeit berechenbar
+            \item Damit ist vernachlässigbare Erfolgswahrscheinlichkeit $\equiv$ nicht Polynomialzeit berechenbar
         \end{itemize}
     \end{definition}
 
@@ -169,15 +169,15 @@
     \begin{definition}
         Eine Funktion $f: {0, 1}^* \longrightarrow {0, 1}^*$ ist eine starke one-way Funtkion $\Leftrightarrow$
         \begin{enumerate}
-            \item f ist polynomiellzeit berechenbar
-            \item Für jeden polynomiellzeit Algorithmus A, für jedes Polynom p und für große n gilt: \\
+            \item f ist Polynomialzeit berechenbar
+            \item Für jeden in polynomialer Zeit berechenbaren Algorithmus A, für jedes Polynom p und für große n gilt: \\
             $Pr(A(f(w), 1^n) \in f^{-1}(f(w))) \leq \frac{1}{p(n)}$
         \end{enumerate}
 
-        Damit hat A per Definition eine vernachlässige Erfolgswahrscheinlichkeit. $1^n$ wird als Parameter übergeben um zu
-        garantieren, dass die inverse Funktion echt polynomielzeit unberechenbar ist. Wenn man das weglässt, könnte sein,
+        Damit hat A per Definition eine vernachlässigbare Erfolgswahrscheinlichkeit. $1^n$ wird als Parameter übergeben um zu
+        garantieren, dass die inverse Funktion echt Polynomialzeit unberechenbar ist. Wenn man das weglässt, könnte es sein,
         dass die Eingabegröße von f exponentiell größer ist als die Ausgabegröße und damit f nur deswegen nicht invertierbar
-        ist, weil kein Algorithmus in polynomielle Zeit das Ergebniss auf dem Band schreiben kann.
+        ist, weil kein Algorithmus in polynomialer Zeit das Ergebniss auf dem Band schreiben kann.
     \end{definition}
 
 
@@ -186,14 +186,14 @@
     \begin{definition}
         Eine Funktion $f: {0, 1}^* \longrightarrow {0, 1}^*$ ist eine schwache one-way Funtkion $\Leftrightarrow$
         \begin{enumerate}
-            \item f ist polynomiellzeit berechenbar
-            \item Es existiert ein Polynom p, so dass für alle polynomiellzeit Algorithmen A und große n: \\
+            \item f ist Polynomialzeit berechenbar
+            \item Es existiert ein Polynom p, so dass für alle polynomialzeit berechenbare Algorithmen A und große n: \\
             $Pr(A(f(w), 1^n) \notin f^{-1}f(w)) > \frac{1}{p(n)}$
         \end{enumerate}
 
     \end{definition}
 
-    Merke, dass f invertierbar sein kann, nur nicht in polynomieller Zeit. Weiter steht in der Definition nicht fest,
+    Merke, dass f invertierbar sein kann, nur nicht in polynomialer Zeit. Weiter steht in der Definition nicht fest,
     ob f injektiv oder surjektiv ist, da hier f nicht unbedingt in mathematischem Sinne invertierbar ist. D.h. auch
     $f(x) = 2$ ist laut dieser Definition keine Einwegfunktion, da $g(x) = 1$ schon als zu f inverse Funktion gilt.
     Surjektivität werden wir für ``Public-Key`` Kryptosysteme auf jeden Fall brauchen. Ohne injektivität kann man schon
@@ -204,6 +204,29 @@
     müssen wir aber auch die längenerhaltende Funktionen einführen, die in der Praxis ganz hilfreich sind.
 
     % end of weak one way function definition
+
+    \begin{theorem}
+        Es existiert eine schwache Einwegfunktion $\Leftrightarrow$ eine starke Einwegfunktion existiert.
+    \end{theorem}
+    \begin{proof}
+        Der Beweis dafür ist ziemlich lang und kompliziert, deswegen werden wir hier nur die Schema erläutern. In
+        dem Buch von Oded Goldreich ``Foundations of Cryptography - Basic Tools`` kann man im Abschnitt 2.3.2 den
+        vollständigen Beweis finden.
+
+        Die Idee ist aus einer schwachen Einwegfunktion f, eine starke Einwegfunktion g folgendermaßen zu konstruieren.
+
+        $g(x_1, ..., x_{t(n)}) = f(x_1),...,f(x_{t(n)})$, wobei $|x_1| = |x_{t(n)}|$ und $t(n) = n . p(n)$. Also
+        $n^2p(n)$-bit lange Eingabe wird in n Blöcke je mit Länge $t(n)$. \\ \\
+
+        Der Rest des Beweises nimmt an, dass g keine starke Einwegfunktion ist und konstruiert daraus ein Algorithmus,
+        der f in polynomialer Zeit mit vernachlässigbare Fehlerwahrscheinlichkeit invertiert, woraus der Wiederspruch
+        entsteht. \\ \\
+
+        Der Beweis ist so konstruiert, da man nicht sicher sein kann, das ein solcher Algorithmus jeden Block
+        einzeln invertieren wird, was in einer maximalen Erfolgswahrscheinlichkeit von $(1 - \frac{1}{p(n)})^{np(n)}$
+        resultieren wurden. Das zeigt, dass Verstärkung von der Komplexität einer Aufgabe deutlich schwieriger ist
+        als probabilistische Verstärkung.
+    \end{proof}
 
     \subsection{Längenerhaltende Funktionen}
 
@@ -216,8 +239,8 @@
     \end{theorem}
     \begin{proof}
         Sei $f: \Sigma^* \longrightarrow \Sigma^*$ eine starke Einwegfunktion.
-        Da f polynomialzeit berechenbar ist $\Rightarrow \forall x \in \Sigma^*: |f(x)| \leq p(|x|)$, d.h. die
-        Länge von jeder Abbildung von f ist polynomiell in der Länge begrenzt. \\
+        Da f Polynomialzeit berechenbar ist $\Rightarrow \forall x \in \Sigma^*: |f(x)| \leq p(|x|)$, d.h. die
+        Länge von jeder Abbildung von f ist polynomial in der Länge begrenzt. \\
         Wir konstruieren $g: \Sigma^* \longrightarrow \Sigma^*$ und $h: \Sigma^* \longrightarrow \Sigma^*$. \\
         $g(x) =^{def} f(x)10^{p(|x|) - |f(x)|}$. \\
         Damit haben wir festgelegt, dass jede Abbildung von g die maximale
@@ -228,10 +251,11 @@
 
         Damit ist trivialerweise h eine längenerhaltende Funktion. Jetzt müssen wir nur zeigen, dass diese auch
         eine starke Einwegfunktion ist. Der Beweis per Wiederspruch folgt.\\ \\
-        Sei B ein Algorithmus, dass g in polynomielle Zeit invertiert. Wir konstruieren den Algorithmus A, der f in
-        polynomielle Zeit invertiert. \\
+        Sei B ein Algorithmus, dass g in polynomielle Zeit mit unvernachlässigbare Erfolgswahrscheinlichkeit invertiert.
+        Wir konstruieren den Algorithmus A, der f in polynomialer Zeit invertiert. \\
         Bei Eingabe $(y, 1^n)$ hällt dann A mit Ausgabe $B(y10^{p(n) - |y|}, 1^{p(n) + 1})$. \\
-        Damit haben wir gezeigt, dass $B \geq_p A$. Wiederspruch, da A polynomiellzeit unberechenbar ist.
+        Damit haben wir gezeigt, dass $B \geq_p A$. Wiederspruch, da A in polynomialer Zeit nur mit vernachlässigbare
+        Erfolgswahrscheinlichkeit terminiert.
 
         Analog für h.
     \end{proof}
@@ -242,16 +266,19 @@
     etwas angepasst, damit die Konvention weiter ähnlich bleibt.
 
     \begin{definition}
-        Eine Funktion $f: \Sigma^* \longrightarrow \Sigma^*$ ist eine Permutation $\Leftrightarrow$
+        Eine Funktion $f: \Sigma^* \longrightarrow \Sigma^*$ ist eine Einwegpermutation $\Leftrightarrow$
         \begin{enumerate}
-            \item f ist polynomiellzeit berechenbar
+            \item f ist eine längenerhaltende Permutation
+            \item f ist Polynomialzeit berechenbar
             \item Für alle probabilistische Algorithmen A, $\forall k \in N^+$ und für große n, wir wählen ein Wort w
             mit $|w| = n$ und führen A mit Eingabe w aus \\
             $Pr_{A, w}(A(f(w)) = w) \leq n^{-k}$
         \end{enumerate}
     \end{definition}
 
-    Hier wurde auch die Definition einer starken Einwegpermutation benutzt. Wie wurde diese einer schwachen aussehen?
+    Hier wurde auch die Definition einer starken Einwegpermutation benutzt. $Pr_{A, w}$ notiert die Wahrscheinlichkeit
+    über die beliebige Wahl von w als auch die Münzwürfe von A.
+    Wie wurde diese einer schwachen aussehen?
 
     \subsection{Bedeutung}
     Die starke längenerhaltende Einwegpermutationen sind das Grundbaustein der Kryptographie. Wenn solche existieren,
@@ -264,11 +291,11 @@
 
     \begin{definition}
         Eine Funktion $f: \Sigma^* \longrightarrow \Sigma^*$ ist eine indexierte Funktion, für die ein
-        probabilistischer polynomiellzeit Algorithmus A
+        probabilistischer Polynomialzeit Algorithmus A
         existiert, und eine zu f inverse Funktion $h: \Sigma^* \longrightarrow \Sigma^*$.
         Dabei müssen f, g und h die folgenden Eigenschaften haben.
         \begin{enumerate}
-            \item f und h sind polynomiellzeit berechenbar
+            \item f und h sind Polynomialzeit berechenbar
             \item Für alle probabilistische Algorithmen $A'$, $\forall k \in N^+$ und für große n, wir wählen eine
             beliebige Rückgabe $(i, t)$ von A bei Eingabe $(w \in \Sigma^n, 1^n)$ \\
             $Pr(A'(i, f_i(w)) = y | f_i(y) = f_i(w)) \leq n^{-k}$
@@ -317,7 +344,7 @@
     So können wir Nachrichten beides kryptieren (mit dem öffentlichen Schlüssel von jemandem, nur der kann das öffnen),
     oder signieren, wobei wir eine Nachricht mit unserem privaten Entschlüsselungsalgorithmus kriptieren. Wenn die
     Nachricht sich mit unserem öffentlichen Schlüssel sich entschlüsseln lässt, dann wurde diese sicherlich mit unserem
-    privaten Schlüssel verschlüssel und wurde damit sicherlich von uns geschrieben.
+    privaten Schlüssel verschlüsselt und wurde damit sicherlich von uns geschrieben.
 
     \subsection{Mathemaschen Hintergrund}
 
@@ -334,16 +361,16 @@
         Sei $f: \Sigma^* \longrightarrow \Sigma^*$, $\Sigma = {0, 1}$, eine Einwegfunktion. \\
         Sei L eine Sprache von Paaren, so dass $(x^*, y) \in L \Leftrightarrow \exists x: f(x) = y$ und $x^*$ ist ein
         Präfix von x. \\
-        $L \in NP$, da bei ein Eingabe $(x^*, y)$ und Zeuge $(x, y)$ können wir in polynomieller Zeit überprüfen,
-        ob $f(x) = y$ (da f polynomiellzeit berechenbar nach der Definition einer Einwegfunktion) und ob $x^*$ ein
+        $L \in NP$, da bei ein Eingabe $(x^*, y)$ und Zeuge $(x, y)$ können wir in polynomialer Zeit überprüfen,
+        ob $f(x) = y$ (da f Polynomialzeit berechenbar nach der Definition einer Einwegfunktion) und ob $x^*$ ein
         Präfix von x ist. \\ \\
 
-        Da aber nach Annahme $P = NP \Rightarrow L \in P$. Sei A das Algorithmus, dass L in polynomieller Zeit
-        entscheidet. Deswegen können wir L benutzen um f in polynomieller
+        Da aber nach Annahme $P = NP \Rightarrow L \in P$. Sei A das Algorithmus, dass L in polynomialer Zeit
+        entscheidet. Deswegen können wir L benutzen um f in polynomialer
         zu invertieren, also um aus je Ausgabe y das entsprechende Eingabewert x zu generieren. \\
         Wir fangen mit $(\epsilon, y)$. Dann raten wir das nächste Zeichen von x und benutzen A um zu überprüfen,
-        ob wir richtig geraten haben. Da A in polynomieller Zeit läuft, haben wir am Ende eine Laufzeit von O($|y|p$),
-        wobei p ein Polynom ist. Damit haben wir in polynomieller Zeit f invertiert, deswegen ist per Definition
+        ob wir richtig geraten haben. Da A in polynomialer Zeit läuft, haben wir am Ende eine Laufzeit von O($|y|p$),
+        wobei p ein Polynom ist. Damit haben wir in polynomialer Zeit f invertiert, deswegen ist per Definition
         f keine Einwegfunktion. Wiederspruch!
     \end{proof}
 
